@@ -18,7 +18,8 @@ import {
   createAdmin,
   updateAdmin,
   deactivateAdmin,
-} from "../../services/Serv_Admins";
+} from "../../services/Serv_admins";
+
 
 function ManageAdmins() {
   // --- ESTADOS PRINCIPALES ---
