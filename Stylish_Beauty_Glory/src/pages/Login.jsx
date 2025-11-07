@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/Login_CSS/login.css";
 import IMG2 from "../assets/IMGL.png";
 import Logo from "../assets/Stylish_Logo_White.png";
 function Login() {
+  const navigate = useNavigate();
   return (
     <div className="register-section">
       
@@ -50,8 +52,9 @@ function Login() {
     </div>
 
     {/* Botón */}
-    <button type="submit">Enviar</button>
-
+    <button type="button" onClick={() => navigate("/admin")}>
+      Enviar
+    </button>
     {/* Texto final */}
     <p className="login-text">
       ¿No tienes un usuario? <a href="/register">Registrate aquí!</a>

@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/Register_CSS/register.css";
 import IMG1 from "../assets/IMGR.png";
 function Register() {
+  const navigate = useNavigate();
   return (
     <div className="register-section">
       
@@ -88,7 +90,9 @@ function Register() {
     </div>
 
     {/* Botón */}
-    <button type="submit">Enviar</button>
+    <button type="button" onClick={() => navigate("/client")}>
+      Enviar
+    </button>
 
     {/* Texto final */}
     <p className="login-text">
