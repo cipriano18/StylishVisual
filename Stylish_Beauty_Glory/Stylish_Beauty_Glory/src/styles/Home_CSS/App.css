@@ -1,0 +1,272 @@
+
+
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background: linear-gradient(to bottom, #f6c8c7, #fffdfd);
+}
+
+/* Header */
+.header {
+  
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  backdrop-filter: blur(15px);
+  padding: 1rem 2rem;
+  z-index: 1000;
+}
+
+.logo {
+  height: 60px;
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+  margin: 0 auto;
+}
+
+.link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.link:hover {
+  color: #f08080;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.login-btn {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: black;
+  border: 2px solid black;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.login-btn:hover {
+  color: white;
+  border-color: white;
+}
+
+.register-btn {
+  padding: 0.5rem 1rem;
+  background-color: #eebbbb;
+  color: white;
+  border: 2px solid #eebbbb;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background-color: #ba8282;
+  border-color: #eebbbb;
+}
+
+/* Main contenido centrado vertical y horizontal */
+.main {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10rem;
+  width: 100%;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.main p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Texto a la izquierda y imagen a la derecha */
+.main-content {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.text {
+  flex: 1;
+  padding-left: 5rem;
+  padding-top: 0;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0;
+}
+
+.main-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.main h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Ola animada inferior */
+.main .wave-bottom {
+  position: absolute;
+  bottom: -1px;      /* pegada al final de la sección */
+  left: 0;
+  width: 100%;
+  height: 100px;
+  transform: rotate(180deg);
+}
+
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .text {
+    padding-left: 2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    flex-direction: column-reverse; /* primero imagen, luego texto */
+    text-align: center;
+  }
+
+  .text, .image-container {
+    flex: unset;
+    padding: 0;
+  }
+
+  .image-container {
+    padding-top: 6rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .main-img {
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .main h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .main p {
+    font-size: 1rem;
+    padding: 0 4rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .main h1 {
+    font-size: 1.5rem;
+
+  }
+
+  .main-img {
+    max-width: 100%;
+  }
+}
+
+/* Responsive Header */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;      /* apila los elementos */
+    align-items: center;         /* centra horizontalmente */
+    padding: 1rem;
+    gap: 0.5rem;                 /* espacio entre filas */
+  }
+
+  .header .logo {
+    margin-bottom: 0.5rem;      /* separa el logo de los botones */
+  }
+
+  .header-buttons {
+    order: 2;                    /* se mantiene al mismo nivel que el logo */
+    margin-bottom: 0.5rem;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;             /* permite que los links bajen de línea si hace falta */
+    justify-content: center;     /* centra los links */
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .link {
+    font-size: 0.9rem;           /* opcional, ajusta tamaño de texto */
+  }
+}
+
+
+/* ANIMACIONES*/
+
+/* Animaciones para main */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ocultamos inicialmente los elementos */
+.main h1,
+.main p,
+.image-container {
+  opacity: 0;
+}
+
+/* Animación del h1 */
+.main h1 {
+  animation: fadeUp 1s forwards;
+  animation-delay: 0.2s;
+}
+
+/* Animación del párrafo */
+.main p {
+  animation: fadeUp 1s forwards;
+  animation-delay: 0.6s;
+}
+
+/* Animación de la imagen */
+.image-container {
+  animation: fadeUp 1s forwards;
+  animation-delay: 1s;
+}

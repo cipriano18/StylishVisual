@@ -1,0 +1,124 @@
+/* 🔹 Contenedor principal */
+.ui-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  background-color: #fdf7f7;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(186, 130, 130, 0.15);
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 🔹 Título */
+.ui-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4a2e2e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 🔹 Controles */
+.ui-toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ui-toolbar-filter {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* 🔹 Separación moderada entre elementos */
+  flex-wrap: wrap; /* 🔹 Permite que se acomoden en pantallas pequeñas */
+}
+
+/* 🔹 Input */
+.ui-toolbar-filter input {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #ba8282;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  transition: box-shadow 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 🔹 Simulación de cursor parpadeando */
+.ui-toolbar-filter input:hover {
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  animation: typingGlow 1.2s infinite;
+}
+
+/* 🔹 Keyframes para efecto de parpadeo */
+@keyframes typingGlow {
+  0% { box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3); }
+  50% { box-shadow: 0 0 0 1px rgba(186, 130, 130, 0.1); }
+  100% { box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3); }
+}
+
+
+.ui-toolbar-filter input::placeholder {
+  color: #ba8282;
+  opacity: 0.5;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.ui-toolbar-filter input:hover::placeholder {
+  transform: translateX(4px);
+  opacity: 0.7;
+}
+
+
+.ui-toolbar-filter input:focus {
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+/* 🔹 Botón */
+.ui-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #cd9292;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  font-family: 'Poppins', sans-serif;
+}
+
+.ui-toolbar-btn:hover {
+  background-color: #cd9292;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.ui-toolbar-btn .ui-toolbar-btn-icon {
+  font-size: 1rem;
+}
+
+.ui-toolbar-btn-icon {
+  font-size: 1rem;
+  transition: transform 0.4s ease;
+}
+.ui-toolbar-btn:hover .ui-toolbar-btn-icon {
+  transform: rotate(360deg);
+}
+
+/* 🔹 Personalización del ícono del calendario */
+.ui-toolbar-filter input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
+}

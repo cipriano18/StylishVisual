@@ -1,0 +1,324 @@
+/* Contenedor base */
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fdf7f7;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Poppins', sans-serif;
+}
+/* Saludo de bienvenida */
+.profile-greeting {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #4a2e2e;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Sección de detalles de perfil */
+
+.profile-section.account {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.account-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-icon {
+  font-size: 7rem;
+  color: #ba8282;
+}
+
+
+
+.profile-username {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #4a2e2e;
+}
+
+.profile-entry-date {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #4a2e2e;
+}
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1;
+  width: fit-content;
+}
+
+.profile-status.activo {
+  background-color: #d4f8d4;
+  color: #2ecc71; 
+}
+
+.profile-status.inactivo {
+  background-color: #f8d4d4;
+  color: #e74c3c; 
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.account-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.account-right .profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #cd9292;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.account-right .profile-btn:hover {
+  background-color: #cd9292;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Sección Contactos */
+
+.profile-section.contacts {
+  padding: 1rem 0;
+  padding-left: 1rem;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 25px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 1rem;
+  
+}
+
+.section-header h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  color: #4a2e2e;
+  font-family: 'Poppins', sans-serif;
+}
+
+.contact-info {
+
+  padding-left: 3rem;
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  column-gap: 5rem;
+  row-gap: 2rem;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: center;
+  gap: 0.4rem;
+  min-width: 150px;
+}
+
+.contact-field strong {
+  font-weight: 500;
+  color: #9f9090;
+  font-size: 0.95rem;
+}
+
+.contact-field span {
+  font-weight: 600;
+  color: #4a2e2e;
+  font-size: 1.05rem;
+}
+
+.contact-input {
+  appearance: none;
+  font-size: 1rem;
+  border-color: transparent;
+  border-bottom: 1px solid #ccc;
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  max-width: 220px;
+  background-color: transparent;
+  color: #4a2e2e;
+  border-radius: 1px;
+}
+
+.contact-input:focus {
+  outline: none;
+  border-bottom-color: #cd9292;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.profile-btn-save {
+  align-items: center;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #cd9292;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.profile-btn-save:disabled {
+  background-color: #f0f0f0;
+  color: #ddb7b7;
+}
+.profile-btn-save:hover:enabled {
+  background-color: #cd9292;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.profile-btn-edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #cd9292;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.profile-btn-edit:hover {
+  background-color: #cd9292;
+  color: #ffffff;
+}
+
+
+/* Sección Profesional */
+.profile-section.professional{
+    padding: 1rem 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff6f6;
+}
+
+.profile-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+}
+
+.profile-block-text{
+    font-family: 'Poppins', sans-serif;
+}
+
+.contact-textarea {
+  font-size: 1rem;
+  padding: 0.6rem 0.75rem;
+  width: 100%;
+  max-width: none;
+  font-family: 'Poppins', sans-serif;
+  resize: vertical;
+  line-height: 1.5;
+  background-color: transparent;
+  color: #4a2e2e;
+  border-color: transparent;
+}
+
+.contact-textarea:focus {
+  outline: none;
+  border: 1px solid #dedede;
+  border-radius: 15px;
+}
+
+.name-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem; /* separa horizontal y verticalmente */
+  margin-top: 0.5rem;
+}
+
+.name-inputs .contact-input {
+  width: 100%;         /* ocupa todo el espacio disponible */
+  max-width: 198px;    /* límite para que no se estire demasiado */
+}
+
+
+.name-field label {
+  display: block;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #b6b6b6;
+}

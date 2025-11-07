@@ -1,0 +1,244 @@
+/* 🔹 Fondo y contenedor */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 24px; /* 🔸 Bordes bien redondeados */
+  box-shadow: 0 8px 24px rgba(186, 130, 130, 0.25); /* 🔸 Sombra cálida */
+  animation: fadeIn 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+  font-family: 'Poppins', sans-serif; /* 🔸 Fuente integrada */
+}
+
+/* 🔹 Tamaños reutilizables */
+.modal-content.small {
+  max-width: 300px;
+}
+
+.modal-content.medium {
+  max-width: 500px;
+}
+
+.modal-content.large {
+  max-width: 700px;
+}
+
+.modal-content.xlarge {
+  max-width: 1080px;
+}
+
+/* 🔹 Inputs universales */
+.modal-content input[type="text"],
+.modal-content input[type="password"],
+.modal-content input[type="date"] {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border-radius: 999px; /* 🔸 Input tipo píldora */
+  border: none;
+  background-color: #fef6f6;
+  font-size: 0.95rem;
+  color: #ba8282;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modal-content input:focus {
+  background-color: #fff1f1;
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+/* 🔹 Botones de acción */
+.modal-actions {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px; /* 🔸 Botón redondeado tipo píldora */
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Botón de confirmación */
+.modal-btn.confirm {
+  background-color: #ba8282;
+  color: #fff;
+}
+
+.modal-btn.confirm:hover {
+  background-color: #a46a6a;
+  transform: translateY(-2px);
+}
+
+/* Botón de cancelar */
+.modal-btn.cancel {
+  background-color: #f2f2f2;
+  color: #4a2e2e;
+}
+
+.modal-btn.cancel:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+/* 🔹 Animación */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.password-field {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.password-input {
+  width: 100%;
+  border-radius: 999px;
+  border: none;
+  background-color: #fef6f6;
+  font-size: 0.95rem;
+  color: #ba8282;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
+  font-family: 'Poppins', sans-serif;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  text-align: center;
+}
+
+.password-input:focus {
+  background-color: #fff1f1;
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+.visibility-toggle {
+  position: absolute;
+  top: 25px;
+  right: -15px;
+  transform: translateY(-50%);
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ffffff;
+  padding: 3px 3px 0 4px;
+  line-height: 1;
+  background-color: #ba8282;
+  border-radius: 999px;
+}
+
+/* 🔹 Textarea estilizado */
+.modal-content textarea {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border-radius: 24px; /* 🔸 Redondeado suave, no tan extremo como input */
+  border: none;
+  background-color: #fef6f6;
+  font-size: 0.95rem;
+  color: #ba8282;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  resize: none;
+  min-height: 70px;
+}
+
+.modal-content textarea:focus {
+  background-color: #fff1f1;
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+.modal-content p{
+  font-size: 0.85rem;
+  color: #4a2e2e;
+}
+
+
+.modal-content input[type="number"] {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border-radius: 999px; /* 🔸 Input tipo píldora */
+  border: none;
+  background-color: #fef6f6;
+  font-size: 0.95rem;
+  color: #ba8282;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modal-content input[type="number"]:focus {
+  background-color: #fff1f1;
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+/* 🔹 Eliminar flechas en Chrome */
+.modal-content input[type="number"]::-webkit-outer-spin-button,
+.modal-content input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.modal-content select {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border-radius: 999px; /* 🔸 Píldora */
+  border: none;
+  background-color: #fef6f6;
+  font-size: 0.95rem;
+  color: #ba8282;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
+  font-family: 'Poppins', sans-serif;
+  appearance: none; /* 🔸 Elimina estilo nativo */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='%23ba8282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+}
+
+.modal-content select:focus {
+  background-color: #fff1f1;
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+.modal-content input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
+}
+

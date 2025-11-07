@@ -1,0 +1,270 @@
+
+/*Esto es de sidevar*/
+.admin-layout {
+  display: flex;
+  flex-direction: row; /* Alinea los hijos horizontalmente */
+  height: 100vh;        /* Ocupa toda la altura de la ventana */
+  overflow: hidden; /* Evita que el layout completo haga scroll */
+
+}
+
+
+/* 🔹 Esto es del contendio cambiante */
+.admin-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 100vh;
+  padding: 24px;
+  background-color:#fbeaea;
+}
+
+/* 🔹 Sidebar como contenedor flexible vertical */
+.sidebar {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* ocupa toda la altura de la ventana */
+  padding: 16px;
+  background-color: #ba8282;
+  position: sticky; /* Alternativa a fixed si quieres que se quede en scroll local */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 🔹 Navegación ocupa el espacio disponible */
+.sidebar-nav {
+  flex-grow: 1;
+}
+
+/* 🔹 Perfil siempre al fondo */
+.sidebar-profile {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #ccc;
+}
+
+/* 🔹 Estilo del enlace de perfil */
+.profile-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+}
+
+.profile-link:hover {
+  background-color: #875858; /* Fondo más claro al hacer hover */
+  border-radius: 8px;
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.profile-link:hover .profile-text {
+  transform: translateX(2px); /* Pequeño desplazamiento lateral */
+}
+
+.profile-name {
+    color: #ffffff;
+  font-weight: bold;
+}
+
+.profile-edit {
+  font-size: 0.85rem;
+  color: #ebebeb;
+}
+
+/* 🔹 Ícono del perfil más grande */
+.sidebar-profile .sidebar-icon {
+  font-size: 1.8rem;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.profile-link:hover .sidebar-icon {
+  transform: scale(1.2); /* Agranda el ícono suavemente */
+}
+
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.logo-sidebar {
+  width: 270px;
+  max-width: 470px;         /* Tamaño máximo */
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 50px auto 0 auto; /* Centrado vertical y horizontal */
+  padding-bottom: 3rem;
+}
+
+
+/* 🔹 Estilos para los enlaces de navegación */
+
+.sidebar-nav {
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 12px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.sidebar-nav a:hover {
+  background-color: #875858;
+  color: #ffffff;
+  transform: scale(1.03); /* Pequeño agrandamiento */
+}
+
+.active-link {
+  background-color: #c89292;
+  color: #ffffff;
+  font-weight: bold;
+  border-left: 4px solid #875858;
+}
+
+.sidebar-nav a:active {
+  transform: scale(0.96); /* Pequeño encogimiento al hacer clic */
+}
+
+.sidebar-nav a:active .sidebar-icon {
+  transform: scale(1.1); /* Ícono crece un poco al hacer clic */
+}
+
+.profile-link:active {
+  transform: scale(0.96);
+}
+
+.profile-link:active .sidebar-icon {
+  transform: scale(1.1);
+}
+
+.sidebar-nav a .sidebar-icon {
+  transition: transform 0.3s ease;
+}
+
+.sidebar-nav a:hover .sidebar-icon {
+  transform: scale(1.2); /* Ícono crece suavemente */
+}
+
+/* 🔹 Íconos en los enlaces de navegación */
+
+.sidebar-icon {
+  margin-right: 12px;
+  font-size: 1.2rem;
+  color: inherit;
+}
+
+/* Animación de fade-in para el contenido */
+.admin-content {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ajustes para pantallas pequeñas */
+
+@media (max-width: 1024px) and (min-width: 480px) {
+  .admin-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    padding: 8px;
+    overflow-x: auto;
+    margin: 0;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 0;
+  }
+
+  .sidebar-nav a {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .sidebar-profile {
+    display: none; /* Podemos moverlo a un menú si quieres */
+  }
+
+  .admin-content {
+    height: auto;
+    overflow-y: visible;
+    padding: 16px;
+  }
+}
+
+.sidebar-icon {
+  margin-right: 12px;
+  font-size: 1.2rem;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+/* 🔄 Tambaleo al hover */
+.sidebar-nav a:hover .sidebar-icon,
+.profile-link:hover .sidebar-icon {
+  animation: shakeIcon 0.4s ease;
+  transform: scale(1.2);
+}
+
+/* 🔹 Keyframes compartidos */
+@keyframes shakeIcon {
+  0% { transform: rotate(0deg) scale(1.2); }
+  25% { transform: rotate(-10deg) scale(1.2); }
+  50% { transform: rotate(10deg) scale(1.2); }
+  75% { transform: rotate(-6deg) scale(1.2); }
+  100% { transform: rotate(0deg) scale(1.2); }
+}

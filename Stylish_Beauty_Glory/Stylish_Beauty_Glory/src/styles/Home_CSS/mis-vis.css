@@ -1,0 +1,74 @@
+
+.mission-vision {
+  position: relative;
+  padding: 60px 20px;
+  background: #ba8282;
+  color: white;
+  text-align: center; /* centra todo */
+  overflow: hidden;
+  padding-bottom: 7rem;
+}
+
+/* Grid Misión y Visión */
+.mission-vision .mission-vision-grid {
+  display: flex;
+  gap: 4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mission-vision .mv-item {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* Alinear ícono y título en la misma línea */
+.mission-vision .mv-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  justify-content: center; /* centra ícono y título */
+}
+
+.mission-vision .mv-header .icon {
+  font-size: 2.5rem;
+  color: #fff;
+}
+
+.mission-vision .mv-header h3 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.mission-vision .mv-item p {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 400px;   /* ancho máximo del párrafo */
+  margin: 0 auto;     /* centra horizontalmente */
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mission-vision .mission-vision-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mission-vision .mv-header {
+    justify-content: center;
+  }
+}
+
+.mission-vision .wave-bottom {
+  position: absolute;
+  bottom: -1px;      /* pegada al final de la sección */
+  left: 0;
+  width: 100%;
+  height: 100px;
+  transform: rotate(180deg);
+}
+
+
+

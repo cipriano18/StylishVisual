@@ -1,0 +1,154 @@
+table, th, td {
+  font-family: 'Poppins', sans-serif;
+}
+/* 🔹 Tabla base */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  background-color: #fdf7f7;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(186, 130, 130, 0.2);
+}
+
+/* 🔹 Encabezado */
+thead {
+  background-color: #fdf7f7;
+  color: #4a2e2e;
+
+}
+
+th {
+  text-align: left;
+  padding: 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #a46a6a;
+}
+
+/* 🔹 Cuerpo */
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f2d6d5;
+  vertical-align: middle;
+  color: #4a2e2e;
+  background-color: transparent;
+}
+
+/* 🔹 Hover en filas */
+tbody tr {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: rgb(249, 235, 235);
+  transform: scale(1.01);
+}
+
+tbody td:hover {
+  color: #4a2e2e;
+}
+
+/* 🔹 Inputs inline */
+td input[type="text"] {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #ba8282;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* 🔹 Etiquetas de estado */
+.status-label {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Colores de estado */
+.status-pendiente {
+  background-color: #ffe5b4;
+  color: #a86c00;
+}
+
+.status-cancelado {
+  background-color: #d6f0ff; /* azul cielo suave */
+  color: #0077b6;            /* azul profundo y confiable */
+}
+
+.status-activo {
+  background-color: #d4f8d4;
+  color: #2e7d32;
+}
+
+.status-inactivo {
+  background-color: #f8d4d4;
+  color: #c62828;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin-right: 6px;
+  font-size: 1.3rem;
+  color: #6b4c4c;
+  transition: color 0.3s ease;
+}
+
+/* 🔄 Tambaleo + escala al hover */
+.icon-btn:hover {
+  color: #ba8282;
+  animation: shakeIcon 0.4s ease;
+  transform: scale(1.2);
+}
+
+/* 🔹 Keyframes para el efecto de tambaleo */
+@keyframes shakeIcon {
+  0% { transform: rotate(0deg) scale(1.2); }
+  25% { transform: rotate(-10deg) scale(1.2); }
+  50% { transform: rotate(10deg) scale(1.2); }
+  75% { transform: rotate(-6deg) scale(1.2); }
+  100% { transform: rotate(0deg) scale(1.2); }
+}
+
+/* 🔹 Paginación base */
+.table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 6px;
+}
+
+.table-pagination button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 999px;
+  background-color: #fbeaea;
+  color: #4a2e2e;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.15);
+}
+
+.table-pagination button:hover {
+  background-color: #f2bcbc;
+}
+
+.no-info {
+  text-align: center;
+  color: #8b5252;
+  margin-top: 1rem;
+}
