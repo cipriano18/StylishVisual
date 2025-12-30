@@ -1,11 +1,12 @@
-import { API_BASE } from "./config";
+import { apiFetch } from "./api";
 
 // Obtener todos los administradores
 export async function fetchAdmins() {
   try {
-    const res = await fetch(`${API_BASE}/admins`);
+    const res = await apiFetch("/admins");
     return await res.json();
-  } catch {
+  } catch (error) {
+    console.error("fetchAdmins error:", error);
     return null;
   }
 }
@@ -13,13 +14,12 @@ export async function fetchAdmins() {
 // Crear un nuevo administrador
 export async function createAdmin(data) {
   try {
-    const res = await fetch(`${API_BASE}/admins`, {
+    const res = await apiFetch("/admins", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
     return await res.json();
-  } catch {
+  } catch (error) {
     return null;
   }
 }
@@ -27,9 +27,8 @@ export async function createAdmin(data) {
 // Editar datos de un administrador (por cédula)
 export async function updateAdmin(identityCard, updatedData) {
   try {
-    const res = await fetch(`${API_BASE}/admins/${identityCard}`, {
+    const res = await apiFetch(`/admins/${identityCard}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedData),
     });
     return await res.json();
@@ -37,11 +36,10 @@ export async function updateAdmin(identityCard, updatedData) {
     return null;
   }
 }
-
 // Dar de baja a un administrador (por cédula)
 export async function deactivateAdmin(identityCard) {
   try {
-    const res = await fetch(`${API_BASE}/admins/${identityCard}/inactivar`, {
+    const res = await apiFetch(`/admins/${identityCard}/inactivar`, {
       method: "PUT",
     });
     return await res.json();
