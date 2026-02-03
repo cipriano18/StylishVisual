@@ -30,5 +30,18 @@ button {
   font-size: 1em;
 }
 
+::-webkit-scrollbar {
+  width: 10px;              /* ancho de la barra vertical */
+  height: 8px;             /* alto de la barra horizontal */
+  
+}
 
+::-webkit-scrollbar-track {
+  background: #facece;     /* color del track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #9e6a6a; /* color del "pulgar" */
+  border-radius: 4px;
+}
 

@@ -1,17 +1,49 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StylishLogo from "../assets/Stylish_Logo_Black.png";
-import IMG1 from "../assets/IMG1.png";
 import IMG2 from "../assets/Glori.png";
 import "../styles/Home_CSS/App.css";
-import "../styles/Home_CSS/portafolio.css";
 import "../styles/Home_CSS/wave.css";
 import "../styles/Home_CSS/about.css";
 import "../styles/Home_CSS/mis-vis.css";
 import "../styles/Home_CSS/footer.css";
+import "../styles/Carousel_CSS/carousel.css";
+import "../styles/Home_CSS/portfolio.css";
+import {fetchPortfolios} from "../services/Serv_portFolio"
+
+import portIcon from "../assets/PortIcon.png";
+//swiper
+// Importa los componentes de Swiper
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Importa los estilos básicos de Swiper
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+// Opcional: módulos extra
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 
 function App() {
   const navigate = useNavigate();
+  const [services, setServices] = useState([]);
+
+  // Datos de servicios para el carrusel
+  useEffect(() => {
+  const cargarPortafolios = async () => {
+    const data = await fetchPortfolios();
+    if (data?.portfolios) {
+      setServices(data.portfolios); // 👈 aquí reemplazas el arreglo estático
+    } else {
+      toast.error("Error cargando portafolios");
+    }
+  };
+  cargarPortafolios();
+}, []);
+
+
+
   return (
     <>
 
@@ -47,9 +79,7 @@ function App() {
               Aquí no solo se trata de uñas hermosas, se trata de vivir una experiencia donde el cariño, la dedicación y la creatividad se reflejan en cada servicio.
             </p>
           </div>
-          <div className="image-container">
-            <img src={IMG1} alt="Decoración" className="main-img" />
-          </div>
+
         </div>
           <svg
           className="wave-bottom"
@@ -72,17 +102,59 @@ function App() {
         </svg>
       </main>
 
-      {/* Portfolio / Servicios */}
-      <section className="portfolio" id="services">
-       <h2>¡Trabajos que inspiran confianza!</h2>
-        <p>Porque no hay mejor recompensa que ver a nuestros clientes felices con los resultados.</p>
-        <div className="portfolio-grid">
-          <div className="portfolio-item">Servicio 1</div>
-          <div className="portfolio-item">Servicio 2</div>
-          <div className="portfolio-item">Servicio 3</div>
-          <div className="portfolio-item">Servicio 4</div>
-        </div>
-      </section>
+{/* Portfolio / Servicios */}
+<section className="portfolio" id="services">
+  <div className="portfolio-header-img"> <img src= {portIcon} alt="Portafolio" /> </div>
+  <h2>¡Trabajos que inspiran confianza!</h2>
+  <p>Porque no hay mejor recompensa que ver a nuestros clientes felices con los resultados.</p>
+
+<div className="divider">
+<Swiper
+  modules={[Navigation, Pagination, Autoplay]}
+  spaceBetween={8}
+  slidesPerView={3}
+  navigation
+  pagination={{
+    clickable: true,
+    el: ".swiper-pagination",   // contenedor de paginación
+  }}
+  autoplay={{ delay: 4000 }}
+  breakpoints={{
+    640: { slidesPerView: 3 },
+    768: { slidesPerView: 3 }, 
+    1024: { slidesPerView: 3 },
+  }}
+>
+  {services.slice(0, 7).map((service, index) => (
+    <SwiperSlide key={index}>
+      <div
+        className="portfolio-item"
+        style={{ backgroundImage: `url(${service.image_url})` }} 
+      >
+        <p>{service.description}</p>
+        <span className="service-tag">{service.service_name}</span>
+      </div>
+    </SwiperSlide>
+  ))}
+
+  <SwiperSlide>
+    <div className="portfolio-item cta-slide">
+      <h2>¿Todavía no te convencemos?</h2>
+      <p>Inicia sesión o regístrate y déjate inspirar por nuestro portafolio completo.</p>
+      <button className="cta-btn" onClick={() => navigate("/login")}>
+        ¡Llevame allí!
+      </button>
+    </div>
+  </SwiperSlide>
+
+  {/* contenedor de paginación */}
+  <div className="swiper-pagination"></div>
+</Swiper>
+</div>
+</section>
+
+
+
 
       {/* About / Acerca de nosotros */}
       <section className="about-section" id="about">
@@ -218,9 +290,11 @@ function App() {
     </div>
 
     {/* Derechos */}
-    <div className="footer-copy">
-      <p>© 2025 Stylish Beauty Glori. Todos los derechos reservados.</p>
-    </div>
+  <div className="footer-copy">
+    <p>
+      © 2025 - {new Date().getFullYear()} Stylish Beauty Glori. Todos los derechos reservados.
+    </p>
+  </div>
   </div>
 </footer>
     </>

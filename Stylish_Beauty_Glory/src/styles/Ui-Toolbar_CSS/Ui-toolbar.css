@@ -15,6 +15,7 @@
 
 /* 🔹 Título */
 .ui-toolbar-title {
+  font-family: "Yeseva One", serif;
   font-size: 1.5rem;
   font-weight: 600;
   color: #4a2e2e;
@@ -122,3 +123,22 @@
 .ui-toolbar-filter input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
 }
+
+
+.ui-toolbar-select {
+  padding: 10px;
+  border-radius: 999px;
+  border: 1px solid #ffffff;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  color: #ba8282;
+  border: none;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.ui-toolbar-select:focus {
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+

@@ -43,12 +43,6 @@
   align-items: center;
 }
 
-/* Formulario */
-.register-right h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
 .register-left h2 {
   padding-top: 11rem;
   font-family: 'Roboto', sans-serif;
@@ -82,6 +76,7 @@
 }
 
 .registerr-form button {
+  font-family: "Josefin Sans", sans-serif;
   padding: 0.8rem 1rem;
   background-color: #eebbbb;
   color: white;
@@ -105,6 +100,10 @@ width: 180.5%;     /* grosor de la ola */
 transform: rotate(90deg); /* rotación para ponerla vertical */
 }
 
+@supports (-webkit-app-region: drag) {
+  .wave-left { right: -685px; } 
+}
+
 .hand-img {
   position: absolute;
   top: 70px;
@@ -119,7 +118,7 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 
 .register-right h2 {
   color: white;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   font-weight: 500;
   text-align: center;
 }
@@ -143,7 +142,7 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 }
 
 .registerr-form label {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   display: flex;
   flex-direction: column;
   font-weight: 500;
