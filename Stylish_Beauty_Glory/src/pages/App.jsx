@@ -8,7 +8,7 @@ import "../styles/Home_CSS/about.css";
 import "../styles/Home_CSS/mis-vis.css";
 import "../styles/Home_CSS/footer.css";
 import "../styles/Carousel_CSS/carousel.css";
-import "../styles/Home_CSS/portfolio.css";
+import "../styles/Home_CSS/portFolio.css";
 import {fetchPortfolios} from "../services/Serv_portFolio"
 
 import portIcon from "../assets/PortIcon.png";
