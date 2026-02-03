@@ -1,4 +1,4 @@
-
+/* Styles for About Section */
 .about-section {
   background: linear-gradient(to bottom, #f6c8c7, #fffdfd);
   position: relative;
@@ -32,13 +32,13 @@
 .about-text h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
-
+  color: #2a0e0e; 
 }
 
 .about-text p {
   font-size: 1.125rem;
   line-height: 1.7;
-  color: #333;
+  color: #2a0e0e;
 }
 
 /* Responsive */

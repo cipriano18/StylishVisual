@@ -1,0 +1,67 @@
+.portfolio-card {
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  height: 300px; 
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  color: #fff;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease
+}
+
+.portfolio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+.portfolio-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.portfolio-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.portfolio-description {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.portfolio-service {
+  background: #fff;
+  color: #333;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.edit-btn {
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+

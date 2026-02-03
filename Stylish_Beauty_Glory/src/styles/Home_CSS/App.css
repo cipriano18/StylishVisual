@@ -1,6 +1,4 @@
 
-
-
 /* Reset básico */
 * {
   margin: 0;
@@ -15,7 +13,8 @@ body {
 
 /* Header */
 .header {
-  
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 17px;
   width: 100%;
   position: fixed;
   top: 0;
@@ -56,6 +55,7 @@ body {
 }
 
 .login-btn {
+  font-family: "Josefin Sans", sans-serif;
   padding: 0.5rem 1rem;
   background-color: transparent;
   color: black;
@@ -71,17 +71,20 @@ body {
 }
 
 .register-btn {
+  font-family: "Josefin Sans", sans-serif;
   padding: 0.5rem 1rem;
-  background-color: #eebbbb;
+  background-color: #d5afaf;
   color: white;
-  border: 2px solid #eebbbb;
+  border: 2px solid #d5afaf;
   border-radius: 100px;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
 .register-btn:hover {
-  background-color: #ba8282;
-  border-color: #eebbbb;
+  color: #d5afaf;
+  background-color: white;
+  border-color: white;
 }
 
 /* Main contenido centrado vertical y horizontal */
@@ -92,15 +95,38 @@ body {
   align-items: center;
   padding-bottom: 10rem;
   width: 100%;
-  margin-top: 2rem;
   text-align: left;
+
+  /* Imagen de fondo */
+  background-image: url('../../assets/test.jpg');
+
+  /* Ajustes visuales */
+  background-size: cover;       /* La imagen cubre todo el área */
+  background-position: center;  /* Centrada */
+  background-repeat: no-repeat; /* No se repite */
+
+  /* Opcional: si quieres que el contenido se vea mejor */
+  position: relative;
+  z-index: 1;
+
 }
 
 .main p {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
+  position: relative;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 18px;
   line-height: 1.6;
-  color: #333;
+  color: #2a0e0e;
+  z-index: 1;
+  margin-right: 50px;
+}
+
+.main h1 {
+  font-family: "Yeseva One", serif;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #f6c8c7;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Texto a la izquierda y imagen a la derecha */
@@ -112,9 +138,11 @@ body {
 }
 
 .text {
-  flex: 1;
+  flex: 1;  
   padding-left: 5rem;
-  padding-top: 0;
+  padding-right: 900px;
+  padding-top: 12rem;
+  padding-bottom: 4.5rem;
 }
 
 .image-container {
@@ -129,12 +157,8 @@ body {
   height: auto;
   display: block;
 }
+ 
 
-.main h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
 
 /* Ola animada inferior */
 .main .wave-bottom {
