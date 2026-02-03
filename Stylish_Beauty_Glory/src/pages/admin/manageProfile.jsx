@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import {FaUserCircle,FaPencilAlt,FaKey,FaUserSlash} from "react-icons/fa";
+import axios from "axios";
+import {
+  FaUserCircle,
+  FaPencilAlt,
+  FaKey,
+  FaUserSlash,
+  FaEye,
+  FaEyeSlash
+} from "react-icons/fa";
 import "../../styles/Profile_CSS/ProfileBase.css";
-import { fetchAdminProfile } from "../../services/Serv_profiles";
-import { updateAdmin } from "../../services/Serv_admins";
-import { updateUser, inactivateUser } from "../../services/Serv_users";
-import { toast } from "react-hot-toast";
+import { API_BASE } from "../../services/config";
+
 function ManageProfile() {
-  const navigate = useNavigate();
 
   /* ===============================
      🔹 Estados BASE (SIEMPRE ARRIBA)
@@ -36,8 +40,8 @@ function ManageProfile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showNewPassword] = useState(false);
-  const [showConfirmPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
 
@@ -45,32 +49,53 @@ function ManageProfile() {
      🔄 Cargar perfil desde backend
      =============================== */
   useEffect(() => {
-     const loadProfile = async () => {
-       try {
-         const data = await fetchAdminProfile();
-         if (data?.admin) {
-           const admin = data.admin;
-            // Normalizar contactos
-           const contacts = admin.contacts.map(c => ({
-             type: c.contact_type,
-              value: c.contact_value,
-             })); 
-             // Set perfil 
-             setProfile({ ...admin, contacts, });
-              // Inicializar estados editables 
-              setEditedPhone(contacts.find(c => c.type === "TELEFONO")?.value || "");
-              setEditedEmail(contacts.find(c => c.type === "EMAIL")?.value || "");
-              setEditedSpecialty(admin.specialty || "");
-              setEditedCertifications(admin.certifications || "");
-              setEditedWorkingDays(admin.working_days || "");
-             } 
-          } catch (error) {
-             console.error("Error al cargar perfil:", error);
-          } finally { 
-            setLoading(false);
-           } 
-          }; loadProfile();
-         }, []);
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+
+        const res = await axios.get(
+          `${API_BASE}/profile/admin`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const admin = res.data.admin;
+
+        // Normalizar contactos
+        const contacts = admin.contacts.map(c => ({
+          type: c.contact_type,
+          value: c.contact_value,
+        }));
+
+        // Set perfil
+        setProfile({
+          ...admin,
+          contacts,
+        });
+
+        // Inicializar estados editables
+        setEditedPhone(contacts.find(c => c.type === "TELEFONO")?.value || "");
+        setEditedEmail(contacts.find(c => c.type === "EMAIL")?.value || "");
+        setEditedSpecialty(admin.specialty || "");
+        setEditedCertifications(admin.certifications || "");
+        setEditedWorkingDays(admin.working_days || "");
+
+      } catch (error) {
+        console.error(
+          "Error al cargar perfil:",
+          error.response?.status,
+          error.response?.data
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   /* ===============================
      ⏳ Estados de carga seguros
@@ -93,119 +118,19 @@ function ManageProfile() {
   /* ===============================
      🧩 Handlers
      =============================== */
+  const handleSaveContacts = () => {
+    console.log("Contactos actualizados:", editedPhone, editedEmail);
+    setIsEditingContacts(false);
+  };
 
-const handleUpdatePassword = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user.user_id;
-
-    const updatedData = {
-      password: newPassword,
-    };
-
-    const result = await updateUser(userId, updatedData);
-
-    if (result && !result.error) {
-      console.log("Contraseña actualizada en backend:", result);
-      toast.success(result.message || "Contraseña actualizada correctamente");
-      setShowPasswordModal(false);
-      setNewPassword("");
-      setConfirmPassword("");
-    } else {
-      console.error("Error al actualizar contraseña:", result?.error);
-      toast.error(result?.error || "Error al actualizar contraseña");
-    }
-  } catch (err) {
-    console.error("Error en handleUpdatePassword:", err);
-    toast.error("Error al actualizar contraseña");
-  }
-};
-
-
-const handleSaveContacts = async () => {
-  try {
-    const identityCard = profile.identity_card;
-
-    const updatedData = {
-      email: editedEmail,
-      phone: editedPhone,
-    };
-
-    const result = await updateAdmin(identityCard, updatedData);
-
-    if (result && !result.error) {
-      // Actualizar estado local con lo que devuelve la API
-      setProfile(prev => ({
-        ...prev,
-        email: editedEmail,
-        phone: editedPhone,
-      }));
-      setIsEditingContacts(false);
-      console.log("Contactos actualizados en backend:", result);
-      toast.success(result.message || "Contactos actualizados correctamente");
-    } else {
-      console.error("Error al actualizar contactos:", result?.error);
-      toast.error(result?.error || "Error al actualizar contactos");
-    }
-  } catch (err) {
-    console.error("Error en handleSaveContacts:", err);
-    toast.error("Error al actualizar contactos");
-  }
-};
-
-
-
-const handleSaveProfessional = async () => {
-  try {
-    const identityCard = profile.identity_card;
-
-    const updatedData = {
-      specialty: editedSpecialty,
-      certifications: editedCertifications,
-      working_days: editedWorkingDays,
-    };
-
-    const result = await updateAdmin(identityCard, updatedData);
-
-    if (result && !result.error) {
-      setProfile(prev => ({
-        ...prev,
-        ...updatedData,
-      }));
-      setIsEditingProfessional(false);
-      toast.success(result.message || "Datos profesionales actualizados correctamente");
-    } else {
-      toast.error(result?.error || "Error al actualizar datos profesionales");
-    }
-  } catch (err) {
-    toast.error("Error al actualizar datos profesionales");
-  }
-};
-
-const handleDeactivateAccount = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user.user_id;
-
-    const result = await inactivateUser(userId);
-
-    if (result && !result.error) {
-
-      // Opcional: limpiar sesión y redirigir al login
-      localStorage.clear();
-      navigate("/");
-
-    } else {
-      console.error("Error al desactivar cuenta:", result?.error);
-      toast.error(result?.error || "Error al desactivar cuenta");
-    }
-  } catch (err) {
-    console.error("Error en handleDeactivateAccount:", err);
-    toast.error("Error al desactivar cuenta");
-  } finally {
-    setShowDeactivateModal(false);
-  }
-};
+  const handleSaveProfessional = () => {
+    console.log("Datos profesionales actualizados:", {
+      especialidad: editedSpecialty,
+      certificaciones: editedCertifications,
+      dias: editedWorkingDays,
+    });
+    setIsEditingProfessional(false);
+  };
 
   /* ===============================
      🖥️ JSX
@@ -388,7 +313,7 @@ const handleDeactivateAccount = async () => {
             <h3>Cambiar contraseña</h3>
 
             <input
-              type={showNewPassword ? "text" : "text"}
+              type={showNewPassword ? "text" : "password"}
               placeholder="Nueva contraseña"
               value={newPassword}
               onChange={e => setNewPassword(e.target.value)}
@@ -396,7 +321,7 @@ const handleDeactivateAccount = async () => {
             />
 
             <input
-              type={showConfirmPassword ? "text" : "text"}
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirmar contraseña"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
@@ -414,10 +339,8 @@ const handleDeactivateAccount = async () => {
                 className="modal-btn confirm"
                 onClick={() => {
                   if (newPassword === confirmPassword && newPassword.length >= 6) {
-                    handleUpdatePassword();
+                    console.log("Contraseña actualizada");
                     setShowPasswordModal(false);
-                  }else{
-                    toast.error("Las contraseñas no coinciden o son demasiado cortas");
                   }
                 }}
               >
@@ -433,7 +356,7 @@ const handleDeactivateAccount = async () => {
         <div className="modal-overlay">
           <div className="modal-content medium">
             <h3>¿Estás seguro?</h3>
-            <p>Esta acción desactivará tu cuenta permanentemente. Para reactivarla, deberás contactar al administrador.</p>
+            <p>Esta acción desactivará tu cuenta.</p>
             <div className="modal-actions">
               <button
                 className="modal-btn cancel"
@@ -444,7 +367,7 @@ const handleDeactivateAccount = async () => {
               <button
                 className="modal-btn confirm"
                 onClick={() => {
-                  handleDeactivateAccount();
+                  console.log("Cuenta desactivada");
                   setShowDeactivateModal(false);
                 }}
               >

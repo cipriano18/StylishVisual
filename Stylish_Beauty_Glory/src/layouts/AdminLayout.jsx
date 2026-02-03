@@ -16,8 +16,6 @@ import {
   FaTruck,
   FaMoneyBillWave,
   FaUserCircle,
-  FaSpa,
-  FaImages,
 } from "react-icons/fa";
 
 export default function AdminLayout() {
@@ -122,18 +120,6 @@ export default function AdminLayout() {
               <NavLink to="/admin/payable" className={({ isActive }) => isActive ? "active-link" : ""}>
                 <FaMoneyBillWave className="sidebar-icon" />
                 Gestión de Cuentas por Pagar
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/admin/service" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaSpa className="sidebar-icon" />
-                Gestión de Servicios
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/admin/portfolio" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaImages className="sidebar-icon" />
-                Gestión de Portafolio
               </NavLink>
             </li>
           </ul>

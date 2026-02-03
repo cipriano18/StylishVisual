@@ -183,9 +183,6 @@
   color: #4a2e2e;
 }
 
-.modal-content label{
-font-family: "Josefin Sans", sans-serif;
-}
 
 .modal-content input[type="number"] {
   width: 100%;
@@ -244,3 +241,4 @@ font-family: "Josefin Sans", sans-serif;
 .modal-content input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
 }
+

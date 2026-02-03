@@ -11,8 +11,6 @@ import ManageUsers from "../pages/admin/showUsers";
 import ManageSuppliers from "../pages/admin/manageSuppliers";
 import ManageAccountsPayable from "../pages/admin/manageAccountsPayable";
 import ManageProfileAdmin from "../pages/admin/manageProfile";
-import ManageServices from "../pages/admin/manageServices";
-import ManagePortFolio from "../pages/admin/managePortFolio";
 
 // --- CLIENTE ---
 import ClientLayout from "../layouts/ClientLayout";
@@ -37,8 +35,6 @@ export default function AppRoutes() {
         <Route path="suppliers" element={<ManageSuppliers />} />
         <Route path="payable" element={<ManageAccountsPayable />} />
         <Route path="profile" element={<ManageProfileAdmin />} />
-        <Route path="service" element={<ManageServices />} />
-        <Route path="portfolio" element={<ManagePortFolio />} />
       </Route>
 
       {/* 🔹 Sección de clientes */}

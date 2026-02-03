@@ -25,7 +25,6 @@
 /* Sección de detalles de perfil */
 
 .profile-section.account {
-  
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -154,6 +153,7 @@
 }
 
 .contact-info {
+
   padding-left: 3rem;
   display: flex;
   justify-content: left;
@@ -268,9 +268,7 @@
     font-family: 'Poppins', sans-serif;
     background-color: #fff6f6;
 }
-.profile-section.professional p{
-  font-family: 'Poppins', sans-serif;
-}
+
 .profile-block {
   display: flex;
   flex-direction: column;
