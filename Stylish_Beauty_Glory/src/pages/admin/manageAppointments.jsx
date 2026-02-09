@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import "../../styles/Modals_CSS/modalBase.css";
-import "../../styles/Table_CSS/TableBase.css";
-import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 
+import "../../styles/modals_css/modalbase.css";
+import "../../styles/table_css/tablebase.css";
+import "../../styles/ui-toolbar_css/ui-toolbar.css";
+
+import { fetchServices } from "../../services/Serv_services";
 import { createAppointment, getAppointments } from "../../services/Serv_appointments";
-import { fetchServices} from "../../services/Serv_services";
 import { FaPlus, FaEdit } from "react-icons/fa";
 import { toast } from "react-hot-toast";
-
 function ManageAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
