@@ -135,10 +135,47 @@
   border: none;
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
   font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
 }
 
 .ui-toolbar-select:focus {
   box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
   outline: none;
+}
+
+/* 🔹 Select en la toolbar */
+.ui-toolbar-filter select {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #cd9292;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  appearance: none; /* 🔹 elimina estilos nativos */
+}
+
+/* 🔹 Hover (igual que botón) */
+.ui-toolbar-filter select:hover {
+  background-color: #cd9292;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* 🔹 Focus */
+.ui-toolbar-filter select:focus {
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+/* 🔹 Opciones internas */
+.ui-toolbar-filter select option {
+  color: #4a2e2e;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif;
 }
 

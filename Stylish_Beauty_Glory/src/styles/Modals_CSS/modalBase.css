@@ -244,3 +244,31 @@ font-family: "Josefin Sans", sans-serif;
 .modal-content input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
 }
+
+
+.modal-content input[type="time"] {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border-radius: 999px; /* 🔸 Píldora */
+  border: none;
+  background-color: #fef6f6;
+  font-size: 0.95rem;
+  color: #ba8282;
+  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 🔹 Focus */
+.modal-content input[type="time"]:focus {
+  background-color: #fff1f1;
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+/* 🔹 Personalización del ícono del reloj */
+.modal-content input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
+  cursor: pointer;
+}

@@ -13,10 +13,13 @@ import ManageAccountsPayable from "../pages/admin/manageAccountsPayable";
 import ManageProfileAdmin from "../pages/admin/manageProfile";
 import ManageServices from "../pages/admin/manageServices";
 import ManagePortFolio from "../pages/admin/managePortFolio";
+import ManageSales from "../pages/admin/manageSales";
+import ManageAppointments from "../pages/admin/manageAppointments";
 
 // --- CLIENTE ---
 import ClientLayout from "../layouts/ClientLayout";
 import ManageMyDetails from "../pages/client/manageProfile";
+import ClientHome from "../pages/client/home";
 
 export default function AppRoutes() {
   return (
@@ -39,6 +42,9 @@ export default function AppRoutes() {
         <Route path="profile" element={<ManageProfileAdmin />} />
         <Route path="service" element={<ManageServices />} />
         <Route path="portfolio" element={<ManagePortFolio />} />
+        <Route path="sales" element={<ManageSales />} />
+        <Route path="appointments" element={<ManageAppointments />} />
+        
       </Route>
 
       {/* 🔹 Sección de clientes */}
@@ -47,6 +53,7 @@ export default function AppRoutes() {
         <Route index element={<Navigate to="profile" replace />} />
 
         <Route path="profile" element={<ManageMyDetails />} />
+        <Route path="home" element={<ClientHome />} />
       </Route>
 
       {/* 🔹 Si la ruta no existe */}

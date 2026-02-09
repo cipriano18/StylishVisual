@@ -153,8 +153,8 @@ p, li, input, textarea {
   z-index: 1;
   display: inline-block;
   margin-top: 6px;
-  background-color: #fff;   /* fondo blanco */
-  color: #000;              /* texto negro */
+  background-color: #d89998;   /* fondo blanco */
+  color: #ffffff;              /* texto negro */
   font-size: 0.75rem;       /* más pequeño */
   padding: 2px 8px;
   border-radius: 12px;      /* bordes redondeados */

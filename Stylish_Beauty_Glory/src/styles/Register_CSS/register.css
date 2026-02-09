@@ -10,9 +10,34 @@
 
 }
 
+ .register-form .resend-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-family: "Josefin Sans", sans-serif;
+  color: rgb(119, 70, 70);
+  font-size: 15px;
+}
+
+ .register-form .resend-btn {
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.register-form .resend-btn:disabled {
+  background-color: #ffffff;
+  cursor: not-allowed;
+}
 
 .legend-text {
-  color: white;
+  color: rgb(119, 70, 70);
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 14px;
+  padding-bottom: 1rem;
 }
 
 /* Ambos lados ocupan exactamente la mitad */
@@ -83,21 +108,7 @@
   border-radius: 8px;
 }
 
-.register-form button {
-  font-family: "Josefin Sans", sans-serif;
-  padding: 0.8rem 1rem;
-  background-color: #eebbbb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
 
-.register-form button:hover {
-  background-color: #ba8282;
-}
 
 .wave-left { 
 position: absolute;
@@ -138,7 +149,6 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   gap: 1rem;
   width: 100%;
   max-width: 600px;
-
 }
 
 .form-row {
@@ -221,6 +231,7 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 
 
 .register-form button {
+  font-family: "Josefin Sans", sans-serif;
   padding: 0.8rem;
   border: none;
   background: linear-gradient(90deg, #875858, #eebbbb);
@@ -349,4 +360,28 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 }
 
 
+.register-form .back-container {
+   display: flex; 
+   justify-content: flex-start; /* alinea a la izquierda */ 
+}
+.register-form .back-btn {
+  all: unset;
+  display: inline-flex;          /* flex para alinear ícono y texto */
+  align-items: center;           /* centra verticalmente */
+  gap: 6px;                      /* espacio entre ícono y texto */
+  
+  background: linear-gradient(90deg, #875858, #b18282);
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 6px 12px;
+  
+  color: #ffffff;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 14px;
+  margin-bottom: 12px;
+  transition: background-position 0.5s, transform 0.2s;
+}
 
+.back-btn:hover {
+  text-decoration: underline;
+}

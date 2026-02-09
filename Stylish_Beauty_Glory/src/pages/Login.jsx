@@ -4,8 +4,8 @@ import axios from "axios";
 import "../styles/Login_CSS/login.css";
 import IMG2 from "../assets/IMGL.png";
 import Logo from "../assets/Stylish_Logo_White.png";
-import { API_BASE } from "../services/config";
 import LoaderOverlay from "./overlay/UniversalOverlay";
+import { login } from "../services/Serv_login";
 
 function Login() {
   const navigate = useNavigate();
@@ -14,35 +14,28 @@ function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // 👈 nuevo estado
 
-  const handleLogin = async () => {
-    setIsLoading(true); // 👈 activar loader
-    try {
-      const res = await axios.post(`${API_BASE}/login`, {
-        username,
-        password,
-      });
-      console.log("Respuesta completa de login:", res.data);
-      const { access_token, refresh_token, user } = res.data;
 
-      // Guardar tokens y usuario en localStorage
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("refresh_token", refresh_token);
-      localStorage.setItem("user", JSON.stringify(user));
 
-      // Redirigir según el rol
-      if (user.role?.toLowerCase() === "administrador") {
-        navigate("/admin");
-      } else if (user.role?.toLowerCase() === "cliente") {
-        navigate("/client");
-      } else {
-        setError("Rol no reconocido");
-      }
-    } catch (err) {
-      setError("Credenciales inválidas");
-    } finally {
-      setIsLoading(false); // 👈 desactivar loader
+const handleLogin = async () => {
+  setIsLoading(true);
+  try {
+    const { user } = await login(username, password);
+
+    // Redirigir según el rol
+    if (user.role?.toLowerCase() === "administrador") {
+      navigate("/admin");
+    } else if (user.role?.toLowerCase() === "cliente") {
+      navigate("/client");
+    } else {
+      setError("Rol no reconocido");
     }
-  };
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="register-section">

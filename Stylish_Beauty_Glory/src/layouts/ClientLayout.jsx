@@ -79,7 +79,7 @@ export default function ClientLayout() {
           <ul>
             <li>
               <NavLink
-                to="/client/myDetails"
+                to="/client/home"
                 className={({ isActive }) => isActive ? "active-link" : ""}
               >
                 <span className="sidebar-icon"><FaHome /></span>

@@ -149,6 +149,10 @@ const handleDeactivateVendor = async () => {
       <div className="ui-toolbar">
         <h1 className="ui-toolbar-title">Gestión de Proveedores</h1>
         <div className="ui-toolbar-controls">
+          <button className="ui-toolbar-btn" onClick={() => setShowAddModal(true)}>
+            <FaPlus className="ui-toolbar-btn-icon" />
+            Nuevo proveedor
+          </button>
           <div className="ui-toolbar-filter">
             <input
               type="text"
@@ -157,10 +161,6 @@ const handleDeactivateVendor = async () => {
               onChange={(e) => setSearchId(e.target.value)}
             />
           </div>
-          <button className="ui-toolbar-btn" onClick={() => setShowAddModal(true)}>
-            <FaPlus className="ui-toolbar-btn-icon" />
-            Nuevo proveedor
-          </button>
         </div>
       </div>
 

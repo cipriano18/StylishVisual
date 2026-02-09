@@ -3,8 +3,8 @@ import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Portfolio_CSS/normalCard.css";
 import "../../styles/Portfolio_CSS/PortfolioModal.css";
-import { fetchPortfolios, createPortfolio, updatePortfolio, deletePortfolio } from "../../services/Serv_portFolio";
 
+import { fetchPortfolios, createPortfolio, updatePortfolio, deletePortfolio } from "../../services/Serv_portFolio";
 import {fetchServices} from "../../services/Serv_services";
 import { FaPlus, FaPen, FaTrash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
@@ -481,5 +481,4 @@ const handleUpdatePortfolio = async (data) => {
 }
 
 export default ManagePortfolio;
-
 

@@ -21,6 +21,8 @@
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .portfolio-info {
@@ -44,7 +46,7 @@
   display: inline-block;
   width: fit-content;
 }
-
+.delete-btn,
 .edit-btn {
   border: 2px solid #fff;
   background: transparent;
@@ -58,10 +60,35 @@
   transition: all 0.3s ease;
   cursor: pointer;
 }
-
+.delete-btn:hover,
 .edit-btn:hover {
-  background: #fff;
-  color: #000;
+  background: #ba8282;
+  color: #ffffff;
+}
+
+.portfolio-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* espacio entre botones */
 }
 
 
+/* Overlay con gradiente */
+.portfolio-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.5) 0%,   
+    rgba(0, 0, 0, 0.3) 40%,  
+    rgba(0, 0, 0, 0) 100%   
+  );
+  border-radius: 12px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.portfolio-card:hover::before {
+  opacity: 1;
+}

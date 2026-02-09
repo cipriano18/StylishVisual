@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import {requestVerificationCode, verifyCode } from "../services/Serv_codes";
+import {createClient} from "../services/Serv_clients";
 import "../styles/Register_CSS/register.css";
 import IMG1 from "../assets/IMGR.png";
 import Logo from "../assets/Stylish_Logo_White.png";
+import { login } from "../services/Serv_login";
+import { FaArrowLeft } from "react-icons/fa";
 
 function Register() {
+
+  //contador para reenvío de código
+  const [resendTimer, setResendTimer] = useState(120); // 2 minutos en segundos
+
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -22,6 +31,15 @@ function Register() {
     codigo: "",
   });
 
+   useEffect(() => {
+    if (step === 2 && resendTimer > 0) {
+      const interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [step, resendTimer]);
+
   // Manejo de cambios en inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,26 +52,133 @@ function Register() {
   };
 
   // Enviar primer formulario
-  const handleFirstSubmit = () => {
-    // localStorage
+const handleFirstSubmit = async () => {
+  const { nombre, fechaNacimiento, genero, telefono, cedula, correo } = formData;
+
+  if (!nombre || !fechaNacimiento || !genero || !telefono || !cedula || !correo) {
+    toast.error("Todos los campos son obligatorios");
+    return;
+  }
+
+  try {
     localStorage.setItem("registerData", JSON.stringify(formData));
 
-    // API para enviar el código al correo
-    // await sendCodeToEmail(formData.correo);
+    const res = await requestVerificationCode(correo);
 
-    // Cambiar al segundo paso
-    setStep(2);
-  };
+    if (res && res.message) {
+      toast.success(res.message);
+      setStep(2);                
+    } else {
+      toast.error(res.error||"No se pudo enviar el código, intenta de nuevo");
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Error al solicitar el código de verificación");
+  }
+};
 
   // Enviar segundo formulario
-  const handleSecondSubmit = () => {
-    const initialData = JSON.parse(localStorage.getItem("registerData"));
-    const finalData = { ...initialData, ...secondStepData };
+  const handleSecondSubmit = async () => {
+    const { usuario, contrasena, codigo } = secondStepData;
 
-    // Aquí envías finalData a tu API
-    // await registerUser(finalData);
+    // 1️⃣ Validar que todos los campos estén llenos
+    if (!usuario || !contrasena || !codigo) {
+      toast.error("Todos los campos son obligatorios");
+      return;
+    }
 
-    navigate("/client");
+    try {
+      // Recuperar datos del primer paso
+      const initialData = JSON.parse(localStorage.getItem("registerData"));
+      const email = initialData?.correo;
+
+      if (!email) {
+        toast.error("No se encontró el correo del registro");
+        return;
+      }
+
+      // 2️⃣ Verificar el código con la API
+      const res = await verifyCode(email, codigo);
+
+      // La API devuelve un objeto con "message"
+      if (res && res.message && res.message.includes("Correo verificado correctamente")) {
+        toast.success(res.message);
+
+      // 3️⃣ Preparar datos finales con la estructura que espera la API
+        const parts = initialData.nombre.trim().split(" ");
+
+        let primary_name = "";
+        let secondary_name = "";
+        let first_surname = "";
+        let second_surname = "";
+
+        if (parts.length === 1) {
+          primary_name = parts[0];
+        } else if (parts.length === 2) {
+          primary_name = parts[0];
+          first_surname = parts[1];
+        } else if (parts.length === 3) {
+          primary_name = parts[0];
+          second_surname = parts[1];
+          first_surname = parts[2];
+        } else if (parts.length >= 4) {
+          primary_name = parts[0];
+          secondary_name = parts[1];
+          first_surname = parts[2];
+          second_surname = parts[3];
+        }
+
+        const finalData = {
+          username: usuario,
+          password: contrasena,
+          role_id: 2,
+          identity_card: initialData.cedula,
+          primary_name,
+          secondary_name,
+          first_surname,
+          second_surname,
+          birth_date: initialData.fechaNacimiento,
+          gender: initialData.genero.charAt(0).toUpperCase(),
+          email: initialData.correo,
+          phone: initialData.telefono,
+        };
+
+        // 4️⃣ Enviar datos a la API de clientes 
+        const clientRes = await createClient(finalData);
+        if (clientRes && clientRes.message) {
+          toast.success(clientRes.message);
+
+          try {
+            // Hacer login automático con los datos recién creados
+            const { user } = await login(finalData.username, finalData.password);
+
+            // Si el login funciona, limpiar datos de registro
+            localStorage.removeItem("registerData");
+
+            // Redirigir siempre al cliente
+            if (user.role?.toLowerCase() === "cliente") {
+              navigate("/client");
+            }
+          } catch (err) {
+            toast.error("Error al iniciar sesión automáticamente");
+            // Si falla el login automático, limpiar igual y mandar al login manual
+            localStorage.removeItem("registerData");
+            navigate("/login");
+          }
+        } else {
+          toast.error(clientRes?.error || "Error al crear el cliente, intenta de nuevo");
+          if(clientRes.missing_fields){
+            toast.error(`Campos faltantes: ${clientRes.missing_fields.join(", ")}`);
+          }
+        }
+
+      } else {
+        toast.error(res.error||"El código de verificación no es válido");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error al verificar el código");
+    }
   };
 
   return (
@@ -161,10 +286,13 @@ function Register() {
                 placeholder="Ingresa tu correo electrónico"
               />
             </label>
-
-            <button type="button" onClick={handleFirstSubmit}>
-              Optener Código de Verificación
+            <button
+              type="button"
+              onClick={handleFirstSubmit}
+            >
+              Obtener Código de Verificación
             </button>
+
                 {/* Texto final */}
     <p className="login-text">
       ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
@@ -174,6 +302,24 @@ function Register() {
 
         {step === 2 && (
   <form className="register-form">
+    <div className="back-container">
+    {/* Botón para volver al Step 1 */}
+  <button
+    type="button"
+    className="back-btn"
+    onClick={() => {
+      const savedData = JSON.parse(localStorage.getItem("registerData"));
+      if (savedData) {
+        setFormData(savedData); // 👈 restaura los datos previos al Step 1
+      }
+      setStep(1); // 👈 vuelve al Step 1
+    }}
+  >
+    <FaArrowLeft/>
+    Paso anterior
+  </button>
+
+    </div>
     {/* Usuario y contraseña en una sola fila */}
     <div className="form-row">
       <label>
@@ -201,9 +347,8 @@ function Register() {
 
     {/* Mini leyenda */}
     <small className="legend-text">
-      NOTA: No olvides estos datos, serán necesarios para iniciar sesión cada vez que entres a la página.
+      No olvides estos datos, serán necesarios para iniciar sesión cada vez que entres a la página.
     </small>
-
     <label>
       Código de verificación
       <input
@@ -214,7 +359,31 @@ function Register() {
         placeholder="Ingresa el código enviado"
       />
     </label>
-
+    <div className="resend-container">
+      <span>¿Aún no te llega el código?</span>
+      <button
+        type="button"
+        className="resend-btn"
+        disabled={resendTimer > 0}
+        onClick={async () => {
+          try {
+            const res = await requestVerificationCode(formData.correo);
+            if (res && res.message) {
+              toast.success(res.message);
+              setResendTimer(120); // reiniciar contador
+            }
+          } catch (err) {
+            toast.error("Error al solicitar nuevamente el código");
+          }
+        }}
+      >
+        {resendTimer > 0
+          ? `Solicitar de nuevo (${Math.floor(resendTimer / 60)}:${(resendTimer % 60)
+              .toString()
+              .padStart(2, "0")})`
+          : "Solicitar de nuevo"}
+      </button>
+    </div>
     <button type="button" onClick={handleSecondSubmit}>
       Confirmar Registro
     </button>
@@ -226,7 +395,20 @@ function Register() {
   </form>
 )}
 
-      </section>
+</section>
+    <Toaster
+  position="center-top"
+  toastOptions={{
+    style: {
+      background: "#875858",
+      color: "#fff",
+      borderRadius: "12px",
+      fontFamily: "Poppins, sans-serif",
+      zIndex: 9999,
+    },
+  }}
+/>
+
     </div>
   );
 }

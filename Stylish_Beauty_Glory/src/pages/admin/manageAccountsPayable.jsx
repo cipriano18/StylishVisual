@@ -394,9 +394,6 @@ const handleEditarFactura = async (facturaEditada) => {
       </div>
 
       <div className="modal-actions">
-        <button className="modal-btn cancel" onClick={() => setShowAddModal(false)}>
-          Cancelar
-        </button>
         <button
           className="modal-btn confirm"
           onClick={async () => {
@@ -405,6 +402,9 @@ const handleEditarFactura = async (facturaEditada) => {
           }}
         >
           Crear
+        </button>
+                <button className="modal-btn cancel" onClick={() => setShowAddModal(false)}>
+          Cancelar
         </button>
       </div>
     </div>

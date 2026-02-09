@@ -4,10 +4,7 @@ import "../../styles/Table_CSS/TableBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 
 import { createRole, deleteRole, updateRole, fetchRoles } from "../../services/Serv_roles";
-
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-
-
 import { toast } from "react-hot-toast";
 
 
@@ -142,6 +139,10 @@ function ManageRoles() {
       <div className="ui-toolbar">
         <h1 className="ui-toolbar-title">Gestión de roles de usuario</h1>
         <div className="ui-toolbar-controls">
+          <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
+            <FaPlus className="ui-toolbar-btn-icon" />
+            Nuevo Rol
+          </button>
           <div className="ui-toolbar-filter">
             <input
               type="text"
@@ -150,10 +151,6 @@ function ManageRoles() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
-            <FaPlus className="ui-toolbar-btn-icon" />
-            Nuevo Rol
-          </button>
         </div>
       </div>
 

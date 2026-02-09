@@ -292,6 +292,10 @@ return (
       <div className="ui-toolbar-title">Gestión de Administradores</div>
 
       <div className="ui-toolbar-controls">
+        <button className="ui-toolbar-btn" onClick={() => setShowCreateModal(true)}>
+          <FaPlus className="ui-toolbar-btn-icon" />
+          Nuevo administrador
+        </button>
         <div className="ui-toolbar-filter">
           <input
             type="text"
@@ -299,10 +303,6 @@ return (
             value={searchId}
             onChange={(e) => setSearchId(e.target.value)}
           />
-        <button className="ui-toolbar-btn" onClick={() => setShowCreateModal(true)}>
-          <FaPlus className="ui-toolbar-btn-icon" />
-          Nuevo administrador
-        </button>
         </div>
       </div>
     </div>

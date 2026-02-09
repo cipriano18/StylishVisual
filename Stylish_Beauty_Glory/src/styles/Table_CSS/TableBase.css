@@ -75,6 +75,28 @@ td input[type="text"] {
 }
 
 /* Colores de estado */
+.status-disponible {
+  background-color: #d4f8d4; /* verde suave */
+  color: #2e7d32;           /* verde profundo */
+}
+
+.status-cancelada {
+  background-color: #f8d4d4; /* rojo suave */
+  color: #c62828;            /* rojo intenso */
+}
+
+.status-agendada {
+  background-color: #ffe5b4; /* naranja suave */
+  color: #a86c00;            /* naranja oscuro */
+}
+
+.status-finalizada {
+  background-color: #d6f0ff; /* azul suave */
+  color: #0077b6;            /* azul profundo */
+}
+
+
+/* Colores de estado */
 .status-pendiente {
   background-color: #ffe5b4;
   color: #a86c00;

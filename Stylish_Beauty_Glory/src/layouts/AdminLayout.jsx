@@ -18,16 +18,23 @@ import {
   FaUserCircle,
   FaSpa,
   FaImages,
+  FaTags,
+  FaCalendarAlt,
+  FaChevronDown, 
+  FaChevronRight,
+  FaBookOpen,
+  FaRegCalendarPlus,
 } from "react-icons/fa";
 
 export default function AdminLayout() {
+  const [openCitas, setOpenCitas] = useState(false);
 
   /* ===============================
      🔹 Estado del admin
      =============================== */
   const [nombreUsuario, setNombreUsuario] = useState("Cargando...");
   const [loadingProfile, setLoadingProfile] = useState(true);
-
+  
   /* ===============================
      🔄 Cargar perfil admin
      =============================== */
@@ -87,57 +94,98 @@ export default function AdminLayout() {
           </Link>
         </div>
 
-        {/* NAVEGACIÓN */}
-        <nav className="sidebar-nav">
-          <ul>
-            <li>
-              <NavLink to="/admin/roles" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaUserShield className="sidebar-icon" />
-                Gestión de roles de usuario
-              </NavLink>
-            </li>
+{/* NAVEGACIÓN */}
+<nav className="sidebar-nav">
+  <ul>
 
-            <li>
-              <NavLink to="/admin/admins" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaUserTie className="sidebar-icon" />
-                Gestión de Administradores
-              </NavLink>
-            </li>
+    {/* Citas */}
+    <li>
+      <button 
+        className={`sidebar-toggle ${openCitas ? "active-link" : ""}`} 
+        onClick={() => setOpenCitas(!openCitas)}
+      >
+        <FaCalendarAlt className="sidebar-icon" />
+        <span className="sidebar-text">Gestión de citas</span>
+        <span className="sidebar-arrow">
+          {openCitas ? <FaChevronDown /> : <FaChevronRight />}
+        </span>
+      </button>
 
-            <li>
-              <NavLink to="/admin/users" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaUsers className="sidebar-icon" />
-                Gestión de Usuarios
-              </NavLink>
-            </li>
+      {openCitas && (
+        <ul className="sidebar-submenu">
+          <li>
+            <NavLink to="/admin/appointments" className={({ isActive }) => isActive ? "active-link" : ""}>
+              <FaRegCalendarPlus className="sidebar-icon" />
+              Citas
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/admin/agenda" className={({ isActive }) => isActive ? "active-link" : ""}>
+             <FaBookOpen className="sidebar-icon" />
+              Agenda
+            </NavLink>
+          </li>
+        </ul>
+      )}
+    </li>
+    {/* Usuarios y Roles */}
+    <li>
+      <NavLink to="/admin/users" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaUsers className="sidebar-icon" />
+        Gestión de Usuarios
+      </NavLink>
+    </li>
+    <li>
+      <NavLink to="/admin/roles" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaUserShield className="sidebar-icon" />
+        Gestión de Roles de usuario
+      </NavLink>
+    </li>
+    <li>
+      <NavLink to="/admin/admins" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaUserTie className="sidebar-icon" />
+        Gestión de Administradores
+      </NavLink>
+    </li>
 
-            <li>
-              <NavLink to="/admin/suppliers" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaTruck className="sidebar-icon" />
-                Gestión de Proveedores
-              </NavLink>
-            </li>
+    {/* Servicios y Portafolio */}
+    <li>
+      <NavLink to="/admin/service" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaSpa className="sidebar-icon" />
+        Gestión de Servicios
+      </NavLink>
+    </li>
+    <li>
+      <NavLink to="/admin/portfolio" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaImages className="sidebar-icon" />
+        Gestión de Portafolio
+      </NavLink>
+    </li>
 
-            <li>
-              <NavLink to="/admin/payable" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaMoneyBillWave className="sidebar-icon" />
-                Gestión de Cuentas por Pagar
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/admin/service" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaSpa className="sidebar-icon" />
-                Gestión de Servicios
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/admin/portfolio" className={({ isActive }) => isActive ? "active-link" : ""}>
-                <FaImages className="sidebar-icon" />
-                Gestión de Portafolio
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
+    {/* Ventas y Finanzas */}
+    <li>
+      <NavLink to="/admin/sales" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaTags className="sidebar-icon" />
+        Gestión de Ventas
+      </NavLink>
+    </li>
+    <li>
+      <NavLink to="/admin/payable" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaMoneyBillWave className="sidebar-icon" />
+        Gestión de Cuentas por Pagar
+      </NavLink>
+    </li>
+
+    {/* Proveedores */}
+    <li>
+      <NavLink to="/admin/suppliers" className={({ isActive }) => isActive ? "active-link" : ""}>
+        <FaTruck className="sidebar-icon" />
+        Gestión de Proveedores
+      </NavLink>
+    </li>
+  </ul>
+</nav>
+
 
         {/* PERFIL */}
         <div className="sidebar-profile">

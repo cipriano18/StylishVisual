@@ -278,3 +278,65 @@
   75% { transform: rotate(-6deg) scale(1.2); }
   100% { transform: rotate(0deg) scale(1.2); }
 }
+
+/*button toggle*/
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  width: 230px; /* igual que los NavLink */
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  background: none;   /* elimina fondo por defecto del button */
+  border: none;       /* elimina borde por defecto */
+  cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+  background-color: #875858;
+  color: #ffffff;
+  transform: scale(1.03);
+}
+
+.sidebar-toggle:active {
+  transform: scale(0.96);
+}
+
+.sidebar-toggle.active-link {
+  background-color: #c89292;
+  color: #ffffff;
+  font-weight: bold;
+  border-left: 4px solid #875858;
+}
+
+.sidebar-toggle .sidebar-icon {
+  margin-right: 12px;
+  font-size: 1.2rem;
+  color: inherit;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-toggle:hover .sidebar-icon {
+  transform: scale(1.2);
+  animation: shakeIcon 0.4s ease;
+}
+
+
+.sidebar-arrow { 
+  font-size: 0.9rem; 
+  margin-left: auto; /* asegura que quede al final */ 
+  transition: transform 0.3s ease; 
+  display: flex; 
+  align-items: center; 
+}
+
+.sidebar-toggle:hover .sidebar-arrow { 
+  transform: scale(1.2); 
+}
+

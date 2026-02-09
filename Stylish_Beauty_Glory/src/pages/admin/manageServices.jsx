@@ -102,7 +102,7 @@ const handleAddService = async () => {
 useEffect(() => {
   const cargarServicios = async () => {
     const data = await fetchServices();
-
+    console.log("Resultado de fetchServices:", data);
     if (data && Array.isArray(data.services)) {
       setServices(data.services);
       setFilteredServices(data.services);
@@ -192,6 +192,10 @@ const handleUpdateService = async () => {
       <div className="ui-toolbar">
         <h1 className="ui-toolbar-title">Gestión de servicios</h1>
         <div className="ui-toolbar-controls">
+          <button className="ui-toolbar-btn" onClick={() => setShowCreateModal(true)}>
+            <FaPlus className="ui-toolbar-btn-icon" />
+            Nuevo Servicio
+          </button>
           <div className="ui-toolbar-filter">
             <input
               type="text"
@@ -200,10 +204,6 @@ const handleUpdateService = async () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="ui-toolbar-btn" onClick={() => setShowCreateModal(true)}>
-            <FaPlus className="ui-toolbar-btn-icon" />
-            Nuevo Servicio
-          </button>
         </div>
       </div>
 
