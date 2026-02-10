@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import "../../styles/modals_css/modalBase.css";
-import "../../styles/table_css/tablebase.css";
-import "../../styles/ui-toolbar_css/ui-toolbar.css";
+import "../../styles/Modals_css/modalBase.css";
+import "../../styles/Table_css/TableBase.css";
+import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 
 import { fetchServices } from "../../services/Serv_services";
 import { createAppointment, getAppointments } from "../../services/Serv_appointments";
