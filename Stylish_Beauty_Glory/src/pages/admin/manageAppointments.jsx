@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import "../../styles/modals_css/modalbase.css";
+import "../../styles/modals_css/modalBase.css";
 import "../../styles/table_css/tablebase.css";
 import "../../styles/ui-toolbar_css/ui-toolbar.css";
 
