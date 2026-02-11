@@ -72,7 +72,6 @@ function ManageSales() {
             }
 
             const res = await fetchSalesByDateRange(searchStartDate, searchEndDate);
-            console.log("Respuesta del filtro:", res);
             if (res && res.sales) {
             setSales(res.sales);
             toast.success("Ventas filtradas correctamente");
@@ -125,7 +124,7 @@ function ManageSales() {
         };
 
         const res = await createSale(newSaleData);
-        console.log("Respuesta al agregar venta:", res);
+        //console.log("Respuesta al agregar venta:", res);
         if (res) {
         // Actualizar la tabla con la nueva venta
         setSales((prev) => [...prev, res.sale]);
@@ -158,7 +157,6 @@ function ManageSales() {
     if (editDate) updatedData.date = new Date(editDate).toISOString();
 
     const res = await updateSale(saleToEdit.sale_id, updatedData);
-    console.log("Respuesta updateSale:", res);
 
     if (res && res.sale) {
       // Actualizar la tabla reemplazando la venta editada
@@ -185,7 +183,6 @@ function ManageSales() {
         }
 
         const res = await deleteSale(saleToDelete.sale_id);
-        console.log("Respuesta deleteSale:", res);
 
         if (res) {
         // Actualizar la tabla quitando la venta eliminada

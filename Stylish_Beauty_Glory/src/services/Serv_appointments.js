@@ -24,3 +24,15 @@ export async function getAppointments() {
     return null;
   }
 }
+
+// Editar una cita
+export async function updateAppointment(id, data) { 
+  try { 
+    const res = await apiFetch(`/appointments/${id}`, { 
+      method: "PUT", 
+      body: JSON.stringify(data), }); 
+    return await res.json();
+  } catch {
+    return null; 
+  } 
+}
