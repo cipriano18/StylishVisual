@@ -47,3 +47,28 @@ export async function getAppointmentsByClient(clientId) {
       return null; 
     }
 }
+
+// Obtener citas disponibles
+export async function getAvailableAppointments() {
+  try {
+    const res = await apiFetch("/appointments/available", {
+      method: "GET",
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+// Agendar una cita
+export async function bookAppointment(appointmentId, clientId) {
+  try {
+    const res = await apiFetch(`/appointments/${appointmentId}/agendar`, {
+      method: "PUT",
+      body: JSON.stringify({ client_id: clientId }),
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}

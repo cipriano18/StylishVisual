@@ -20,6 +20,7 @@ import ManageAppointments from "../pages/admin/manageAppointments";
 import ClientLayout from "../layouts/ClientLayout";
 import ManageMyDetails from "../pages/client/manageProfile";
 import ClientHome from "../pages/client/home";
+import ClientAppointments from "../pages/client/scheduleAppointments";
 
 export default function AppRoutes() {
   return (
@@ -54,6 +55,7 @@ export default function AppRoutes() {
 
         <Route path="profile" element={<ManageMyDetails />} />
         <Route path="home" element={<ClientHome />} />
+        <Route path="appointments" element={<ClientAppointments />} />
       </Route>
 
       {/* 🔹 Si la ruta no existe */}
