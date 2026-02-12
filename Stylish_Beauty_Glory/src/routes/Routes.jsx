@@ -50,7 +50,7 @@ export default function AppRoutes() {
       {/* 🔹 Sección de clientes */}
       <Route path="/client" element={<ClientLayout />}>
         {/* Redirección automática si solo entra a /client */}
-        <Route index element={<Navigate to="profile" replace />} />
+        <Route index element={<Navigate to="home" replace />} />
 
         <Route path="profile" element={<ManageMyDetails />} />
         <Route path="home" element={<ClientHome />} />

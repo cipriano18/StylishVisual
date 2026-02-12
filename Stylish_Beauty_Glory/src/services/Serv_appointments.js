@@ -36,3 +36,14 @@ export async function updateAppointment(id, data) {
     return null; 
   } 
 }
+
+// Obtener citas por cliente 
+export async function getAppointmentsByClient(clientId) {
+  try { 
+    const res = await apiFetch(`/appointments/client/${clientId}`, { 
+      method: "GET", }); 
+      return await res.json(); 
+    } catch { 
+      return null; 
+    }
+}

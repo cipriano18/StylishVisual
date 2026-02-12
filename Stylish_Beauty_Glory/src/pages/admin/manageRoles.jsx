@@ -160,7 +160,6 @@ function ManageRoles() {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Acciones</th>
               </tr>
@@ -168,7 +167,6 @@ function ManageRoles() {
             <tbody>
               {filteredRoles.map((role) => (
                 <tr key={role.role_id}>
-                  <td>{role.role_id}</td>
                   <td>
                     {editingId === role.role_id ? (
                       <input
@@ -213,6 +211,7 @@ function ManageRoles() {
         <div className="modal-overlay">
           <div className="modal-content small">
             <h2>Agregar nuevo rol</h2>
+            <p>Nombre del rol</p>
             <input
               type="text"
               placeholder="Nombre del rol"

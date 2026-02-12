@@ -194,7 +194,7 @@ const handleUpdateService = async () => {
         <div className="ui-toolbar-controls">
           <button className="ui-toolbar-btn" onClick={() => setShowCreateModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
-            Nuevo Servicio
+            Nuevo servicio
           </button>
           <div className="ui-toolbar-filter">
             <input
@@ -258,12 +258,14 @@ const handleUpdateService = async () => {
         <div className="modal-overlay">
           <div className="modal-content medium">
             <h2>Agregar nuevo servicio</h2>
+            <p>Nombre del servicio</p>
             <input
               type="text"
               placeholder="Nombre del servicio"
               value={newServiceName}
               onChange={(e) => setNewServiceName(e.target.value)}
             />
+            <p>Descripción del servicio</p>
             <textarea
               rows="3"
               placeholder="Descripción del servicio"
@@ -337,12 +339,14 @@ const handleUpdateService = async () => {
         <div className="modal-overlay">
             <div className="modal-content medium">
             <h2>Editar servicio</h2>
+            <p>Nombre del servicio</p>
             <input
                 type="text"
                 placeholder="Nombre del servicio"
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
             />
+            <p>Descripción del servicio</p>
             <textarea
                 rows="3"
                 placeholder="Descripción del servicio"

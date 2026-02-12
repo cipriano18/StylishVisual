@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Table_CSS/TableBase.css";
 import { fetchFacturass, createFactura, updateFactura } from "../../services/Serv_payables";
+import {fetchSuppliers} from "../../services/Serv_suppliers";
 import { FaSearch, FaEdit, FaEye, FaPlus } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
@@ -13,6 +14,7 @@ function ManageAccounts() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
   const [facturaEditando, setFacturaEditando] = useState(null);
+  const [suppliers, setSuppliers] = useState([]);
 
   const [consulta, setConsulta] = useState({
     fechaInicio: "",
@@ -29,6 +31,23 @@ function ManageAccounts() {
     description: "",
     code: "",
   });
+  //carga de proveedores
+  useEffect(() => {
+  const cargarProveedores = async () => {
+    try {
+      const result = await fetchSuppliers();
+      if (result?.error) {
+        toast.error("Error al obtener proveedores");
+      } else if (Array.isArray(result.suppliers)) {
+        setSuppliers(result.suppliers);
+      }
+    } catch (error) {
+      console.error("Error cargando proveedores:", error);
+      toast.error("Hubo un error al cargar los proveedores");
+    }
+  };
+  cargarProveedores();
+}, []);
 
   //Get Inicial de facturas del mes
   useEffect(() => {
@@ -189,7 +208,7 @@ const handleEditarFactura = async (facturaEditada) => {
         <div className="ui-toolbar-controls">
         <button className="ui-toolbar-btn" onClick={() => setShowAddModal(true)}>
           <FaPlus className="ui-toolbar-btn-icon" />
-          Agregar Cuenta
+          Agregar cuenta
         </button>
 
 
@@ -324,15 +343,22 @@ const handleEditarFactura = async (facturaEditada) => {
         </div>
 
         <div>
-          <p>ID Proveedor</p>
-          <input
-            type="text"
+          <p>Proveedor</p>
+          <select
             value={nuevaFactura.supplier_id}
             onChange={(e) =>
-              setNuevaFactura({ ...nuevaFactura, supplier_id: e.target.value })
+              setNuevaFactura({ ...nuevaFactura, supplier_id: parseInt(e.target.value, 10) })
             }
-          />
+          >
+            <option value=""> Sin Proveedor</option>
+            {suppliers.map((prov) => (
+              <option key={prov.supplier_id} value={prov.supplier_id}>
+                {prov.name}
+              </option>
+            ))}
+          </select>
         </div>
+
 
         <div>
           <p>Monto</p>
@@ -530,19 +556,22 @@ const handleEditarFactura = async (facturaEditada) => {
             }
           />
         </div>
-        <div>
-          <p>ID Proveedor</p>
-          <input
-            type="text"
-            value={facturaEditando.supplier_id}
-            onChange={(e) =>
-              setFacturaEditando({
-                ...facturaEditando,
-                supplier_id: e.target.value,
-              })
-            }
-          />
-        </div>
+            <div>
+  <p>Proveedor</p>
+  <select
+    value={facturaEditando.supplier_id} // aquí usas el estado de la factura que estás editando
+    onChange={(e) =>
+      setFacturaEditando({ ...facturaEditando, supplier_id: parseInt(e.target.value, 10) })
+    }
+  >
+    <option value="">Sin proveedor</option>
+    {suppliers.map((prov) => (
+      <option key={prov.supplier_id} value={prov.supplier_id}>
+        {prov.name}
+      </option>
+    ))}
+  </select>
+</div>
 
         <div>
           <p>Monto</p>
@@ -626,12 +655,6 @@ const handleEditarFactura = async (facturaEditada) => {
 
       <div className="modal-actions">
         <button
-          className="modal-btn cancel"
-          onClick={() => setFacturaEditando(null)}
-        >
-          Cancelar
-        </button>
-        <button
           className="modal-btn confirm"
           onClick={async () => {
             const success = await handleEditarFactura(facturaEditando);
@@ -639,6 +662,12 @@ const handleEditarFactura = async (facturaEditada) => {
           }}
         >
           Guardar cambios
+        </button>
+                <button
+          className="modal-btn cancel"
+          onClick={() => setFacturaEditando(null)}
+        >
+          Cancelar
         </button>
       </div>
     </div>

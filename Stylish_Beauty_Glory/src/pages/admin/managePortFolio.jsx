@@ -237,7 +237,7 @@ const handleUpdatePortfolio = async (data) => {
         <div className="ui-toolbar-controls">
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
-            Nuevo Portafolio
+            Nuevo portafolio
           </button>
           <div className="ui-toolbar-filter">
             <select

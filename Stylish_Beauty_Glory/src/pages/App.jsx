@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import StylishLogo from "../assets/Stylish_Logo_Black.png";
 import IMG2 from "../assets/Glori.png";
 import "../styles/Home_CSS/App.css";
@@ -34,7 +35,7 @@ function App() {
   const cargarPortafolios = async () => {
     const data = await fetchPortfolios();
     if (data?.portfolios) {
-      setServices(data.portfolios); // 👈 aquí reemplazas el arreglo estático
+      setServices(data.portfolios);
     } else {
       toast.error("Error cargando portafolios");
     }
@@ -297,6 +298,19 @@ function App() {
   </div>
   </div>
 </footer>
+
+    <Toaster
+  position="center-top"
+  toastOptions={{
+    style: {
+      background: "#875858",
+      color: "#fff",
+      borderRadius: "12px",
+      fontFamily: "Poppins, sans-serif",
+      zIndex: 9999,
+    },
+  }}
+/>
     </>
   );
 }

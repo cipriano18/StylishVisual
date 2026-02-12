@@ -8,7 +8,6 @@ import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import { fetchServices } from "../../services/Serv_services";
 import { createAppointment, getAppointments, updateAppointment} from "../../services/Serv_appointments";
 import {notifyAppointmentMoved} from "../../services/Serv_notifications";
-
 import { FaPlus, FaEdit } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
@@ -219,7 +218,7 @@ filtered = filtered.filter(c => {
   <div className="ui-toolbar-controls">
     <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
       <FaPlus className="ui-toolbar-btn-icon" />
-      Agregar Cita
+      Agregar cita
     </button>
 
     <div className="ui-toolbar-filter">

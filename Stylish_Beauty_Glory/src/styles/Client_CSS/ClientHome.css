@@ -16,25 +16,72 @@
 /* Caja de citas */
 .left-column {
   position: relative;
-  flex: 0 0 25%; /* ancho reducido */
+  flex: 0 0 20%; /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   overflow: hidden;
   background: linear-gradient(to bottom, #875858, #d6a1a1);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   color: white;
-}
 
+}
+.middle-column h2,
+.right-column h2,
+.left-column h2{
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
 /* Caja de consejos */
 .right-column {
   position: relative;
-  flex: 1;
+  flex: 0 0 40%; /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   overflow: hidden;
   background: #f4efef;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   color: #000;
+}
+
+.right-column p {
+  font-size: 14px;
+  margin-top: 0.7rem;
+}
+/* Caja de fechas */
+.middle-column {
+  position: relative;
+  flex: 0 0 25%; /* ancho reducido */
+  border-radius: 10px;
+  padding: 1.5rem;
+  padding-top: 10px;
+  overflow: hidden;
+  background: #f4efef;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  color: #000;
+}
+
+/* Fecha de hoy alineada a la derecha y con color distinto */
+.middle-column p.hoy {
+  text-align: right;
+  color: #ba838375; /* un tono diferente para destacarla */
+  font-size: 12px;
+}
+
+/* Separación entre el título y la lista */
+.middle-column h2 {
+  margin-bottom: 0.5rem; /* espacio visible antes de la lista */
+}
+
+/* Lista de citas */
+.middle-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.middle-column li {
+  font-size: 14px;
+  text-align: justify;
 }
 
 /* Wrapper interno para imagen + texto */
@@ -72,7 +119,7 @@
   font-weight: bold;
   color: #f6f6f6;
   margin-top: 0.5rem;
-  text-align: left;
+  text-align: center;
 }
 
 /* Botón circular */
@@ -99,11 +146,25 @@
 
 /* Sección inferior */
 .bottom-section {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #f0f0f0;
+  text-align: center;   /* 🔹 centra todo el contenido de texto */
+  padding: 2rem 1rem;   /* 🔹 agrega espacio alrededor */
 }
+
+.bottom-section h2 {
+  display: inline-flex; /* 🔹 permite ícono + texto alineados */
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;          /* 🔹 espacio entre ícono y texto */
+  margin-bottom: 1rem;  /* 🔹 separación con la descripción */
+}
+
+.bottom-section p {
+  max-width: 600px;     /* 🔹 limita ancho para que se vea elegante */
+  margin: 0 auto 2rem;  /* 🔹 centra y agrega espacio debajo */
+  font-size: 1rem;
+  color: #444;
+}
+
 
 /* Bolitas */
 .bubble {
@@ -124,4 +185,52 @@
   100% { transform: translateY(0) translateX(0); }
 }
 
+
+.social-section {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.social-section p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.social-icons a {
+  transition: transform 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: scale(1.2);
+}
+
+
+/* Estilos del modal */
+.client-portfolio-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9); /* fondo oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.client-portfolio-modal-overlay {
+  box-shadow: none;
+}
+
+.client-portfolio-modal-content img {
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
 

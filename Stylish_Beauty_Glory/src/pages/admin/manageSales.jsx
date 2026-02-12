@@ -51,7 +51,6 @@ function ManageSales() {
         const res = await fetchSalesByDateRange(start, end);
         if (res && res.sales) {
             setSales(res.sales);
-            toast.success(res.message || "Ventas del mes cargadas");
         } else {
             toast.error(res.error || "Error al cargar ventas del mes");
         }
@@ -209,7 +208,7 @@ function ManageSales() {
         <div className="ui-toolbar-controls">
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
-            Agregar factura
+            Agregar venta
           </button>
           <div className="ui-toolbar-filter">
             <label>Desde:</label>

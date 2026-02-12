@@ -170,7 +170,6 @@ const handleDeactivateVendor = async () => {
           <table className="ui-table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Teléfono</th>
                 <th>Correo</th>
@@ -186,7 +185,6 @@ const handleDeactivateVendor = async () => {
 
                 return (
                   <tr key={v.id}>
-                    <td>{v.id}</td>
                     {/* Nombre */}
                     <td>
                       {isEditing ? (
@@ -290,18 +288,21 @@ const handleDeactivateVendor = async () => {
       <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
         <div className="modal-content medium" onClick={(e) => e.stopPropagation()}>
           <h2>Agregar Proveedor</h2>
+          <p>Nombre</p>
           <input
             type="text"
             placeholder="Nombre"
             value={newVendor.name}
             onChange={(e) => setNewVendor({ ...newVendor, name: e.target.value })}
           />
+          <p>Teléfono</p>
           <input
             type="text"
             placeholder="Teléfono"
             value={newVendor.phone}
             onChange={(e) => setNewVendor({ ...newVendor, phone: e.target.value })}
           />
+          <p>Correo</p>
           <input
             type="text"
             placeholder="Correo"
