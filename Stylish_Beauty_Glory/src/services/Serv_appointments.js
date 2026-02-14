@@ -72,3 +72,39 @@ export async function bookAppointment(appointmentId, clientId) {
     return null;
   }
 }
+
+// Cancelar una cita (cliente)
+export async function cancelAppointmentByClient(appointmentId) {
+  try {
+    const res = await apiFetch(`/appointments/${appointmentId}/cancelar-cliente`, {
+      method: "PUT",
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+// Cancelar cita por (administrador)
+export async function cancelAppointmentByAdmin(appointmentId) {
+  try {
+    const res = await apiFetch(`/appointments/${appointmentId}/cancelar`, {
+      method: "PUT",
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+// Finalizar cita
+export async function finalizeAppointment(appointmentId) {
+  try {
+    const res = await apiFetch(`/appointments/${appointmentId}/finalizar`, {
+      method: "PUT",
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}

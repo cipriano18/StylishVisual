@@ -49,6 +49,7 @@ function ManageSales() {
         setSearchStartDate(start); 
         setSearchEndDate(end);
         const res = await fetchSalesByDateRange(start, end);
+        console.log("Ventas del mes actual:", res);
         if (res && res.sales) {
             setSales(res.sales);
         } else {
@@ -120,6 +121,7 @@ function ManageSales() {
         client_id: parseInt(newClientId, 10),
         amount: parseFloat(newAmount),
         date: new Date(newDate).toISOString(), // formato ISO
+
         };
 
         const res = await createSale(newSaleData);
@@ -248,7 +250,7 @@ function ManageSales() {
   {sales.map((sale) => (
     <tr key={sale.sale_id}>
       <td>{sale.client?.name}</td>
-      <td>{sale.appointment?.id || "-"}</td>
+      <td>{sale.appointment?.appointment_id || "-"}</td>
       <td>{sale.amount}</td>
       <td>{sale.date.split("T")[0]}</td>
       <td>

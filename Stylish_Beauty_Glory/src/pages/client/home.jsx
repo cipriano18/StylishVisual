@@ -77,23 +77,23 @@ useEffect(() => {
         setPendingAppointments(pendientes);
 
         if (Array.isArray(citasRes.appointments)) {
+          const hoy = new Date().toISOString().split("T")[0];
           // Contar pendientes
           const pendientes = citasRes.appointments.filter(
-            (c) => c.status === "Agendada"
+            (c) => c.status === "Agendada" && c.date.split("T")[0] >= hoy
           ).length;
           setPendingAppointments(pendientes);
 
-
           //Filtrar agendadas
           const agendadas = citasRes.appointments.filter(
-            (c) => c.status === "Agendada"
+            (c) => c.status === "Agendada" && c.date.split("T")[0] >= hoy
           );
 
           //Ordenar por fecha ascendente
           const ordenadas = agendadas.sort(
             (a, b) => new Date(a.date) - new Date(b.date)
           );
-
+          console.log("Citas ordenadas:", ordenadas);
           //Primeras 3
           setImportantDates(ordenadas.slice(0, 3));
         }

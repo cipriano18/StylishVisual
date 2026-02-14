@@ -248,6 +248,7 @@ filtered = filtered.filter(c => {
     <table>
       <thead>
         <tr>
+          <th>ID</th>
           <th>Fecha</th>
           <th>Hora</th>
           <th>Duración</th>
@@ -269,6 +270,7 @@ filtered = filtered.filter(c => {
 
         return (
           <tr key={cita.appointment_id}>
+            <td>{cita.appointment_id}</td>
             <td>{cita.date.split("T")[0]}</td>
             <td>{cita.time}</td>
             <td>{cita.duration}</td>

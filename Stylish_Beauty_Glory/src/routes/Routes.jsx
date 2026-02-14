@@ -15,13 +15,13 @@ import ManageServices from "../pages/admin/manageServices";
 import ManagePortFolio from "../pages/admin/managePortFolio";
 import ManageSales from "../pages/admin/manageSales";
 import ManageAppointments from "../pages/admin/manageAppointments";
-
+import ManageSchedule from "../pages/admin/adminSchedule";
 // --- CLIENTE ---
 import ClientLayout from "../layouts/ClientLayout";
 import ManageMyDetails from "../pages/client/manageProfile";
 import ClientHome from "../pages/client/home";
 import ClientAppointments from "../pages/client/scheduleAppointments";
-
+import ClientSchedule from "../pages/client/clientSchedule";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -45,6 +45,7 @@ export default function AppRoutes() {
         <Route path="portfolio" element={<ManagePortFolio />} />
         <Route path="sales" element={<ManageSales />} />
         <Route path="appointments" element={<ManageAppointments />} />
+        <Route path="schedule" element={<ManageSchedule />} />
         
       </Route>
 
@@ -56,6 +57,7 @@ export default function AppRoutes() {
         <Route path="profile" element={<ManageMyDetails />} />
         <Route path="home" element={<ClientHome />} />
         <Route path="appointments" element={<ClientAppointments />} />
+        <Route path="schedule" element={<ClientSchedule />} />
       </Route>
 
       {/* 🔹 Si la ruta no existe */}

@@ -120,7 +120,7 @@ export default function AdminLayout() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin/agenda" className={({ isActive }) => isActive ? "active-link" : ""}>
+            <NavLink to="/admin/schedule" className={({ isActive }) => isActive ? "active-link" : ""}>
              <FaBookOpen className="sidebar-icon" />
               Agenda
             </NavLink>

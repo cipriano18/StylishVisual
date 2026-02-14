@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Table_CSS/TableBase.css";
+import "../../styles/Modals_CSS/modalBase.css";
 import { fetchFacturass, createFactura, updateFactura } from "../../services/Serv_payables";
 import {fetchSuppliers} from "../../services/Serv_suppliers";
 import { FaSearch, FaEdit, FaEye, FaPlus } from "react-icons/fa";

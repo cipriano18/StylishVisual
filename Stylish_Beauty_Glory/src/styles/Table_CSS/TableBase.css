@@ -81,8 +81,8 @@ td input[type="text"] {
 }
 
 .status-cancelada {
-  background-color: #f8d4d4; /* rojo suave */
-  color: #c62828;            /* rojo intenso */
+background-color: #cdb5f6; /* rojo anaranjado suave */
+  color: #584776;
 }
 
 .status-agendada {

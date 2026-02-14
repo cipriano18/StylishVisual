@@ -95,7 +95,7 @@ export default function ClientLayout() {
               </NavLink>
 
               <NavLink
-                to="/client/myDetails"
+                to="/client/schedule"
                 className={({ isActive }) => isActive ? "active-link" : ""}
               >
                 <span className="sidebar-icon"><FaBookOpen /></span>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 import { getAvailableAppointments, bookAppointment } from "../../services/Serv_appointments";
-import "../../styles/Client_CSS/scheduleAppointments.css";
+import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import { API_BASE } from "../../services/config";
 
@@ -218,23 +218,7 @@ useEffect(() => {
         <div className="modal-overlay">
             <div className="modal-content medium">
             <h2>Confirmar cita</h2>
-                <p>
-                Estás a punto de agendar tu cita de{" "}
-                <strong>{selectedAppointment.service?.name}</strong>{" "}
-                para el{" "}
-                <strong>{new Date(selectedAppointment.date).toLocaleDateString("es-ES", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                })}</strong>{" "}
-                a las{" "}
-                <strong>{new Date(`1970-01-01T${selectedAppointment.time}`).toLocaleTimeString("es-ES", {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true
-                })}</strong>. ¿Deseas continuar?
-                </p>
-
+            <p> Estás a punto de agendar esta cita ¿Deseas continuar?</p>
             <div className="modal-actions">
                 <button className="modal-btn confirm" onClick={handleConfirmAgendar}>
                 Confirmar
