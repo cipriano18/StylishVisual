@@ -9,18 +9,20 @@ export async function fetchPortfolios() {
     return null;
   }
 }
+// Crear un nuevo portafolio
 export async function createPortfolio(formData) {
   try {
     const res = await apiFetch("/portfolios", {
       method: "POST",
       body: formData,
     });
-    const data = await res.json();
-    return data.portfolio; 
+
+    return await res.json();
   } catch {
     return null;
   }
 }
+
 
 // Editar un portafolio existente
 export async function updatePortfolio(id, formData) {
