@@ -33,7 +33,7 @@ function ManageRoles() {
         setFilteredRoles(data);
       } else {
         console.error("Error cargando roles:", data);
-        toast.error("Hubo un error al cargar todos los roles");
+        toast.error(data?.error || "Hubo un error al cargar todos los roles");
       }
     };
     cargarRoles();
@@ -60,7 +60,7 @@ function ManageRoles() {
     try {
       const data = await createRole(nombreLimpio);
       if (data.error) {
-        toast.error(data.error);
+        toast.error(data.error || "Error al crear el rol");
         return;
       }
 
@@ -81,7 +81,7 @@ function ManageRoles() {
     try {
       const data = await deleteRole(roleToDelete.role_id);
       if (data.error) {
-        toast.error(data.error);
+        toast.error(data.error || "Error al eliminar el rol");
         return;
       }
 
@@ -110,7 +110,7 @@ function ManageRoles() {
     try {
       const data = await updateRole(editingId, nombreLimpio);
       if (data.error) {
-        toast.error(data.error);
+        toast.error(data.error || "Error al editar el rol");
         return;
       }
 

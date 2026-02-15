@@ -84,7 +84,7 @@ function ManageServices() {
       }
 
       // Extraer el servicio creado de la respuesta
-      const newService = data.service || data; // fallback si tu API cambia
+      const newService = data.service || data;
 
       // Actualizar lista
       setServices((prev) => [...prev, newService]);
@@ -104,13 +104,12 @@ function ManageServices() {
   useEffect(() => {
     const cargarServicios = async () => {
       const data = await fetchServices();
-      console.log("Resultado de fetchServices:", data);
       if (data && Array.isArray(data.services)) {
         setServices(data.services);
         setFilteredServices(data.services);
       } else {
         console.error("Error cargando servicios:", data);
-        toast.error("Hubo un error al cargar los servicios");
+        toast.error(data?.error || "Hubo un error al cargar los servicios");
       }
     };
 

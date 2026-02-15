@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
-import { getClients } from "../../services/Serv_clients";
+import { toast } from "react-hot-toast";
+
+//CSS
+import "../../styles/Modals_CSS/modalBase.css";
+import "../../styles/Table_CSS/TableBase.css";
+import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
+
+//Servicios & Overlays
 import {
   createSale,
   fetchSalesByDateRange,
   updateSale,
   deleteSale,
-} from "../../services/Serv_sales"; //Funciones de la API
-
-import "../../styles/Modals_CSS/modalBase.css";
-import "../../styles/Table_CSS/TableBase.css";
-import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
-import { toast } from "react-hot-toast";
+} from "../../services/Serv_sales";
+import { getClients } from "../../services/Serv_clients";
+import LoaderOverlay from "../overlay/UniversalOverlay";
 
 function ManageSales() {
+  //estado de overlay
+  const [loading, setLoading] = useState(false);
+
   //imputs modal agregar
   const [newClientId, setNewClientId] = useState("");
   const [newAmount, setNewAmount] = useState("");
@@ -43,15 +50,18 @@ function ManageSales() {
   useEffect(() => {
     const fetchClients = async () => {
       try {
+        setLoading(true);
         const res = await getClients();
 
         if (Array.isArray(res.clients)) {
           setClients(res.clients);
         } else {
-          console.error("Respuesta inesperada:", res);
+          toast.error(res?.error || "Error al cargar clientes");
         }
       } catch (error) {
         console.error("Error cargando clientes:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -62,11 +72,11 @@ function ManageSales() {
   useEffect(() => {
     const loadSales = async () => {
       try {
+        setLoading(true);
         const { start, end } = getCurrentMonthRange();
         setSearchStartDate(start);
         setSearchEndDate(end);
         const res = await fetchSalesByDateRange(start, end);
-        console.log("Ventas del mes actual:", res);
         if (res && res.sales) {
           setSales(res.sales);
         } else {
@@ -74,6 +84,8 @@ function ManageSales() {
         }
       } catch (err) {
         toast.error("Error al cargar ventas del mes");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -91,9 +103,9 @@ function ManageSales() {
       const res = await fetchSalesByDateRange(searchStartDate, searchEndDate);
       if (res && res.sales) {
         setSales(res.sales);
-        toast.success("Ventas filtradas correctamente");
+        toast.success(res?.message || "Ventas filtradas correctamente");
       } else {
-        toast.error("No se encontraron ventas en ese rango");
+        toast.error(res?.error || "No se encontraron ventas en ese rango");
       }
     } catch (err) {
       toast.error("Error al filtrar ventas");
@@ -176,11 +188,11 @@ function ManageSales() {
       if (res && res.sale) {
         // Actualizar la tabla reemplazando la venta editada
         setSales((prev) => prev.map((s) => (s.sale_id === saleToEdit.sale_id ? res.sale : s)));
-        toast.success("Factura actualizada correctamente");
+        toast.success(res?.message || "Factura actualizada correctamente");
         setShowEditModal(false);
         setSaleToEdit(null);
       } else {
-        toast.error("Error al actualizar la factura");
+        toast.error(res?.error || "Error al actualizar la factura");
       }
     } catch (err) {
       toast.error("Error inesperado al actualizar");
@@ -200,11 +212,11 @@ function ManageSales() {
       if (res) {
         // Actualizar la tabla quitando la venta eliminada
         setSales((prev) => prev.filter((s) => s.sale_id !== saleToDelete.sale_id));
-        toast.success("Venta eliminada correctamente");
+        toast.success(res?.message || "Venta eliminada correctamente");
         setShowDeleteModal(false);
         setSaleToDelete(null);
       } else {
-        toast.error("Error al eliminar la venta");
+        toast.error(res?.error || "Error al eliminar la venta");
       }
     } catch (err) {
       toast.error("Error inesperado al eliminar");
@@ -215,6 +227,7 @@ function ManageSales() {
     <>
       {/* Toolbar */}
       <div className="ui-toolbar">
+        {loading && <LoaderOverlay message="Cargando Ventas..." />}
         <h1 className="ui-toolbar-title">Gestión de Ventas</h1>
         <div className="ui-toolbar-controls">
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>

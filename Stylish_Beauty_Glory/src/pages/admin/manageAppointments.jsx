@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { API_BASE } from "../../services/config";
+import { FaPlus, FaEdit, FaUserPlus } from "react-icons/fa";
+import { toast } from "react-hot-toast";
+
+//CSS
 import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Table_CSS/TableBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 
+//Servicios & Overlays
 import { fetchServices } from "../../services/Serv_services";
 import {
   createAppointment,
@@ -12,13 +16,19 @@ import {
   updateAppointment,
 } from "../../services/Serv_appointments";
 import { notifyAppointmentMoved } from "../../services/Serv_notifications";
-import { FaPlus, FaEdit } from "react-icons/fa";
-import { toast } from "react-hot-toast";
+import { API_BASE } from "../../services/config";
+import LoaderOverlay from "../overlay/UniversalOverlay";
 
 function ManageAppointments() {
+  //estado de overlay
+  const [loading, setLoading] = useState(false);
+
   //estados del modal editar cita
   const [editModal, setEditModal] = useState(false);
+
+  const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [clientId, setClientId] = useState("");
 
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -31,6 +41,7 @@ function ManageAppointments() {
   useEffect(() => {
     const cargarServicios = async () => {
       try {
+        setLoading(true);
         const result = await fetchServices();
 
         if (result?.error) {
@@ -41,6 +52,8 @@ function ManageAppointments() {
       } catch (error) {
         console.error("Error cargando servicios:", error);
         toast.error("Hubo un error al cargar los servicios");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,6 +64,7 @@ function ManageAppointments() {
   useEffect(() => {
     const cargarCitas = async () => {
       try {
+        setLoading(true);
         const result = await getAppointments();
         console.log("Citas obtenidas:", result);
         if (result?.error) {
@@ -61,6 +75,8 @@ function ManageAppointments() {
       } catch (error) {
         console.error("Error cargando citas:", error);
         toast.error("Hubo un error al cargar las citas");
+      } finally {
+        setLoading(false);
       }
     };
     cargarCitas();
@@ -122,7 +138,6 @@ function ManageAppointments() {
         // 🔹 Notificar al cliente si la cita está reservada
         console.log(selectedAppointment);
         if (selectedAppointment.client.client_id) {
-          console.log("Notificando al cliente sobre la modificación...");
           try {
             const token = localStorage.getItem("access_token");
             if (token) {
@@ -133,13 +148,16 @@ function ManageAppointments() {
 
               const admin = res.data.admin;
 
-              await notifyAppointmentMoved({
+              const notifyResult = await notifyAppointmentMoved({
                 client_id: selectedAppointment.client.client_id,
                 appointment_id: selectedAppointment.appointment_id,
-                admin_id: admin.admin_id, // 🔹 aquí usas el id real del admin
+                admin_id: admin.admin_id,
               });
-
-              toast.success("Cliente notificado de la modificación");
+              if (notifyResult?.error) {
+                toast.error(notifyResult.error || "Error notificando al cliente");
+              } else {
+                toast.success(notifyResult?.message || "Cliente notificado de la modificación");
+              }
             }
           } catch (notifyError) {
             console.error("Error notificando al cliente:", notifyError);
@@ -181,7 +199,7 @@ function ManageAppointments() {
         if (result.error) toast.error(result.error);
         if (result.missing_fields) toast.error(result.missing_fields);
       } else {
-        toast.success("Cita creada correctamente");
+        toast.success(result?.message || "Cita creada correctamente");
         const updated = await getAppointments();
         if (Array.isArray(updated.appointments)) {
           setAppointments(updated.appointments);
@@ -199,11 +217,69 @@ function ManageAppointments() {
       toast.error("Error al crear cita");
     }
   };
+  // Asignar cliente a cita
+  const assignClientToAppointment = async (appointment_id, client_id, setAppointments) => {
+    try {
+      // 🔹 Construir cuerpo dinámico
+      const updatedCita = { status: "Ag" };
+      if (client_id) {
+        updatedCita.client_id = client_id;
+      }
+
+      // 🔹 Usar tu servicio ya existente
+      const result = await updateAppointment(appointment_id, updatedCita);
+
+      if (result?.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success(result?.message || "Cita asignada correctamente");
+
+      // 🔹 Notificar solo si hay cliente
+      if (client_id) {
+        try {
+          const token = localStorage.getItem("access_token");
+          if (token) {
+            const res = await axios.get(`${API_BASE}/profile/admin`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const admin = res.data.admin;
+
+            const notifyResult = await notifyAppointmentMoved({
+              client_id,
+              appointment_id,
+              admin_id: admin.admin_id,
+            });
+
+            if (notifyResult?.error) {
+              toast.error(notifyResult.error || "Error notificando al cliente");
+            } else {
+              toast.success(notifyResult?.message || "Cliente notificado de la asignación");
+            }
+          }
+        } catch (notifyError) {
+          console.error("Error notificando al cliente:", notifyError);
+          toast.error("No se pudo notificar al cliente");
+        }
+      }
+
+      // 🔹 Refrescar citas
+      const refreshed = await getAppointments();
+      if (Array.isArray(refreshed.appointments)) {
+        setAppointments(refreshed.appointments);
+      }
+    } catch (error) {
+      console.error("Error asignando cliente a cita:", error);
+      toast.error("Error asignando cliente a cita");
+    }
+  };
 
   return (
     <>
       {/* Toolbar */}
       <div className="ui-toolbar">
+        {loading && <LoaderOverlay message="Cargando Citas..." />}
         <h1 className="ui-toolbar-title">Gestión de Citas</h1>
         <div className="ui-toolbar-controls">
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
@@ -271,6 +347,19 @@ function ManageAppointments() {
                       >
                         <FaEdit />
                       </button>
+                      {cita.date.split("T")[0] >= new Date().toLocaleDateString("sv-SE") &&
+                        cita.status === "Disponible" && (
+                          <button
+                            className="icon-btn assign"
+                            title="Asignar cliente"
+                            onClick={() => {
+                              setSelectedAppointment(cita);
+                              setShowAssignModal(true);
+                            }}
+                          >
+                            <FaUserPlus />
+                          </button>
+                        )}
                     </td>
                   </tr>
                 );
@@ -281,6 +370,47 @@ function ManageAppointments() {
           <p className="no-info">No hay citas relevantes. Agrega citas para tus clientes!</p>
         )}
       </div>
+
+      {/* Modal asignar cliente */}
+      {showAssignModal && (
+        <div className="modal-overlay">
+          <div className="modal-content small">
+            <h2>Asignar cliente</h2>
+
+            <div className="modal-form">
+              <label>
+                ID del cliente:
+                <input
+                  type="number"
+                  value={clientId}
+                  onChange={(e) => setClientId(e.target.value)}
+                  placeholder="Ingrese ID del cliente"
+                />
+              </label>
+            </div>
+
+            <div className="modal-actions">
+              <button
+                className="modal-btn confirm"
+                onClick={async () => {
+                  await assignClientToAppointment(
+                    selectedAppointment.appointment_id, // id de la cita
+                    clientId, // id del cliente (puede estar vacío)
+                    setAppointments // refresca citas
+                  );
+                  setShowAssignModal(false); // cerrar modal
+                  setClientId(""); // limpiar input
+                }}
+              >
+                Asignar
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowAssignModal(false)}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal agregar cita */}
       {showModal && (

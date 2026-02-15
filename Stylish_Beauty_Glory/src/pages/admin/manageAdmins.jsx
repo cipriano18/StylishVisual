@@ -1,7 +1,4 @@
 import { useState, useEffect } from "react";
-import "../../styles/Modals_CSS/modalBase.css";
-import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
-import "../../styles/Table_CSS/TableBase.css";
 import { toast } from "react-hot-toast";
 import {
   FaPlus,
@@ -14,9 +11,17 @@ import {
   FaLock,
 } from "react-icons/fa";
 
+//CSS
+import "../../styles/Modals_CSS/modalBase.css";
+import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
+import "../../styles/Table_CSS/TableBase.css";
+
+//Servicios
 import { fetchAdmins, createAdmin, updateAdmin, deactivateAdmin } from "../../services/Serv_admins";
 
 function ManageAdmins() {
+  //estado de overlay
+
   // --- ESTADOS PRINCIPALES ---
   const [admins, setAdmins] = useState([]);
   const [filteredAdmins, setFilteredAdmins] = useState([]);
@@ -28,6 +33,7 @@ function ManageAdmins() {
       const data = await fetchAdmins();
       if (!data || !Array.isArray(data.admins)) {
         console.error("Error al cargar administradores");
+        toast.error(data?.error || "Error al cargar administradores");
         return;
       }
 
@@ -119,7 +125,7 @@ function ManageAdmins() {
   };
   //editar administrador
   const handleUpdateAdmin = async (admin_id, updatedData) => {
-    const result = await updateAdmin(editAdminIdentityCard, updatedData); // ✅ sin transformación
+    const result = await updateAdmin(editAdminIdentityCard, updatedData);
 
     if (!result || result.error) {
       toast.error(result.error || "Error al actualizar administrador");

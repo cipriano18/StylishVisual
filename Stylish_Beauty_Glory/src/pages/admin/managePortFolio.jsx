@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
+import { FaPlus, FaPen, FaTrash } from "react-icons/fa";
+import { toast } from "react-hot-toast";
+
+//CSS
 import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Portfolio_CSS/normalCard.css";
 import "../../styles/Portfolio_CSS/PortfolioModal.css";
 
+//Servicios & Overlays
 import {
   fetchPortfolios,
   createPortfolio,
@@ -11,8 +16,7 @@ import {
   deletePortfolio,
 } from "../../services/Serv_portFolio";
 import { fetchServices } from "../../services/Serv_services";
-import { FaPlus, FaPen, FaTrash } from "react-icons/fa";
-import { toast } from "react-hot-toast";
+import LoaderOverlay from "../overlay/UniversalOverlay";
 
 /* ===============================
    🔹 Componente PortfolioCard
@@ -56,6 +60,9 @@ function PortfolioCard({ portfolio, onEdit, onDelete }) {
    🔹 Página principal
    =============================== */
 function ManagePortfolio() {
+  //estado de overlay
+  const [loading, setLoading] = useState(false);
+
   const [portfolios, setPortfolios] = useState([]);
   const [filteredPortfolios, setFilteredPortfolios] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,14 +88,14 @@ function ManagePortfolio() {
   const handleDeletePortfolio = async () => {
     try {
       const res = await deletePortfolio(portfolioToDelete.portfolio_id);
-      if (res) {
+      if (res.message) {
         setPortfolios((prev) =>
           prev.filter((p) => p.portfolio_id !== portfolioToDelete.portfolio_id)
         );
-        toast.success("Portafolio eliminado correctamente");
+        toast.success(res?.message || "Portafolio eliminado correctamente");
         setShowDeleteModal(false);
       } else {
-        toast.error("Error al eliminar el portafolio");
+        toast.error(res?.error || "Error al eliminar el portafolio");
       }
     } catch (err) {
       toast.error("Error inesperado al eliminar");
@@ -124,6 +131,7 @@ function ManagePortfolio() {
       if (data?.services) {
         setServices(data.services);
       } else {
+        toast.error(data?.error || "Error cargando servicios");
         console.error("No se pudieron cargar los servicios");
       }
     };
@@ -133,14 +141,15 @@ function ManagePortfolio() {
   // Cargar portafolios
   useEffect(() => {
     const cargarPortafolios = async () => {
+      setLoading(true);
       const data = await fetchPortfolios();
-      console.log("Portafolios cargados:", data);
       if (data?.portfolios) {
         setPortfolios(data.portfolios);
         setFilteredPortfolios(data.portfolios);
       } else {
-        toast.error("Error cargando portafolios");
+        toast.error(data?.error || "Error cargando portafolios");
       }
+      setLoading(false);
     };
     cargarPortafolios();
   }, []);
@@ -167,6 +176,7 @@ function ManagePortfolio() {
     formData.append("image", newPortfolioData.image);
     formData.append("description", newPortfolioData.description);
     try {
+      setLoading(true);
       const data = await createPortfolio(formData);
 
       if (data.error) {
@@ -176,20 +186,23 @@ function ManagePortfolio() {
 
       setPortfolios((prev) => [...prev, data.portfolio]);
       setFilteredPortfolios((prev) => [...prev, data.portfolio]);
-      toast.success("Portafolio agregado correctamente");
+      toast.success(data?.message || "Portafolio agregado correctamente");
       setShowModal(false);
       setNewPortfolioData({ description: "", id_service: "", image: null });
     } catch {
       toast.error("Error de red al crear portafolio");
+    } finally {
+      setLoading(false);
     }
   };
   const handleUpdatePortfolio = async (data) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("description", data.description);
       formData.append("id_service", data.id_service);
 
-      // Si el usuario subió una nueva imagen
+      //nueva imagen
       if (data.image) {
         formData.append("image", data.image);
       }
@@ -197,8 +210,7 @@ function ManagePortfolio() {
       // Llamada al servicio
       const res = await updatePortfolio(data.id, formData);
 
-      if (res) {
-        // ✅ Actualiza localmente con lo que el usuario digitó
+      if (res?.message) {
         setPortfolios((prev) =>
           prev.map((p) =>
             p.portfolio_id === data.id
@@ -214,13 +226,15 @@ function ManagePortfolio() {
           )
         );
 
-        toast.success("Portafolio actualizado correctamente");
+        toast.success(res?.message || "Portafolio actualizado correctamente");
         setShowEditModal(false);
       } else {
-        toast.error("Error al actualizar el portafolio");
+        toast.error(res?.error || "Error al actualizar el portafolio");
       }
     } catch (err) {
       toast.error("Error inesperado al actualizar");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -228,6 +242,7 @@ function ManagePortfolio() {
     <>
       {/* Toolbar */}
       <div className="ui-toolbar">
+        {loading && <LoaderOverlay message="Cargando Portafolios..." />}
         <h1 className="ui-toolbar-title">Gestión de portafolio</h1>
         <div className="ui-toolbar-controls">
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>

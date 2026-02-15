@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
+import { FaSearch, FaEdit, FaEye, FaPlus } from "react-icons/fa";
+import { toast } from "react-hot-toast";
+
+//CSS
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Table_CSS/TableBase.css";
 import "../../styles/Modals_CSS/modalBase.css";
+
+//Servicios & Overlays
 import { fetchFacturass, createFactura, updateFactura } from "../../services/Serv_payables";
 import { fetchSuppliers } from "../../services/Serv_suppliers";
-import { FaSearch, FaEdit, FaEye, FaPlus } from "react-icons/fa";
-import { toast } from "react-hot-toast";
+import LoaderOverlay from "../overlay/UniversalOverlay";
 
 function ManageAccounts() {
   const [cuentas, setCuentas] = useState([]);
@@ -24,10 +29,10 @@ function ManageAccounts() {
 
   const [nuevaFactura, setNuevaFactura] = useState({
     supplier_id: "",
-    type: "Co", // "Co" o "Cr"
+    type: "Co",
     amount: "",
     date: "",
-    due_date: "", // solo para crédito
+    due_date: "",
     name: "",
     description: "",
     code: "",
@@ -38,7 +43,7 @@ function ManageAccounts() {
       try {
         const result = await fetchSuppliers();
         if (result?.error) {
-          toast.error("Error al obtener proveedores");
+          toast.error(result.error || "Error al obtener proveedores");
         } else if (Array.isArray(result.suppliers)) {
           setSuppliers(result.suppliers);
         }
@@ -64,14 +69,15 @@ function ManageAccounts() {
 
   //get de facturas
   const fetchFacturas = async (inicio, fin) => {
-    setLoading(true);
     setError("");
 
     try {
+      setLoading(true);
       const data = await fetchFacturass(inicio, fin);
 
       if (!data || data.error) {
         const mensaje = data?.error || "Error al obtener las facturas.";
+        toast.error(mensaje);
         throw new Error(mensaje);
       }
 
@@ -182,6 +188,7 @@ function ManageAccounts() {
   return (
     <>
       <div className="manage-accounts-container">
+        {loading && <LoaderOverlay message="Cargando tus cuentas por pagar..." />}
         {/* 🔹 Toolbar */}
         <div className="ui-toolbar">
           <h1 className="ui-toolbar-title">Gestión de Cuentas por Pagar</h1>
@@ -288,7 +295,7 @@ function ManageAccounts() {
       {showAddModal && (
         <div className="modal-overlay">
           <div className="modal-content medium">
-            <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Nueva Factura</h2>
+            <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Nueva cuenta</h2>
 
             <div
               style={{
@@ -403,7 +410,7 @@ function ManageAccounts() {
       {facturaSeleccionada && (
         <div className="modal-overlay">
           <div className="modal-content large">
-            <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Detalles de la Factura</h2>
+            <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Detalles de la cuenta</h2>
 
             {/* 🔹 Datos de la factura */}
             <div
@@ -488,7 +495,7 @@ function ManageAccounts() {
       {facturaEditando && (
         <div className="modal-overlay">
           <div className="modal-content medium">
-            <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Editar Factura</h2>
+            <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Editar cuenta</h2>
 
             <div
               style={{

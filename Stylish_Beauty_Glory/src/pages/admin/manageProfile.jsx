@@ -1,38 +1,35 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaPencilAlt, FaKey, FaUserSlash } from "react-icons/fa";
+import { toast } from "react-hot-toast";
+
+//CSS
 import "../../styles/Profile_CSS/ProfileBase.css";
+
+//Servicios
 import { fetchAdminProfile } from "../../services/Serv_profiles";
 import { updateAdmin } from "../../services/Serv_admins";
 import { updateUser, inactivateUser } from "../../services/Serv_users";
-import { toast } from "react-hot-toast";
+
 function ManageProfile() {
   const navigate = useNavigate();
 
-  /* ===============================
-     🔹 Estados BASE (SIEMPRE ARRIBA)
-     =============================== */
+  // Estados de perfil
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /* ===============================
-     🔹 Estados CONTACTOS
-     =============================== */
+  //edicion de contactos
   const [isEditingContacts, setIsEditingContacts] = useState(false);
   const [editedPhone, setEditedPhone] = useState("");
   const [editedEmail, setEditedEmail] = useState("");
 
-  /* ===============================
-     🔹 Estados PROFESIONALES
-     =============================== */
+  //edicion de datos profesionales
   const [isEditingProfessional, setIsEditingProfessional] = useState(false);
   const [editedSpecialty, setEditedSpecialty] = useState("");
   const [editedCertifications, setEditedCertifications] = useState("");
   const [editedWorkingDays, setEditedWorkingDays] = useState("");
 
-  /* ===============================
-     🔹 Estados MODALES
-     =============================== */
+  //edicion de contraseña
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -41,9 +38,7 @@ function ManageProfile() {
 
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
 
-  /* ===============================
-     🔄 Cargar perfil desde backend
-     =============================== */
+  // Cargar perfil
   useEffect(() => {
     const loadProfile = async () => {
       try {
@@ -66,6 +61,7 @@ function ManageProfile() {
         }
       } catch (error) {
         console.error("Error al cargar perfil:", error);
+        toast.error(data?.error || "Error al cargar perfil");
       } finally {
         setLoading(false);
       }
@@ -73,15 +69,11 @@ function ManageProfile() {
     loadProfile();
   }, []);
 
-  /* ===============================
-     ⏳ Estados de carga seguros
-     =============================== */
+  //Carga
   if (loading) return <p>Cargando perfil...</p>;
   if (!profile) return <p>No se pudo cargar el perfil.</p>;
 
-  /* ===============================
-     🧠 Detectar cambios
-     =============================== */
+  //detectar cambios
   const hasContactChanges =
     editedPhone !== profile.contacts.find((c) => c.type === "TELEFONO")?.value ||
     editedEmail !== profile.contacts.find((c) => c.type === "EMAIL")?.value;
@@ -91,10 +83,7 @@ function ManageProfile() {
     editedCertifications !== profile.certifications ||
     editedWorkingDays !== profile.working_days;
 
-  /* ===============================
-     🧩 Handlers
-     =============================== */
-
+  //cambiar contraseña
   const handleUpdatePassword = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -134,7 +123,7 @@ function ManageProfile() {
       const result = await updateAdmin(identityCard, updatedData);
 
       if (result && !result.error) {
-        // Actualizar estado local con lo que devuelve la API
+        // Actualiza estado local
         setProfile((prev) => ({
           ...prev,
           email: editedEmail,
@@ -188,7 +177,6 @@ function ManageProfile() {
       const result = await inactivateUser(userId);
 
       if (result && !result.error) {
-        // Opcional: limpiar sesión y redirigir al login
         localStorage.clear();
         navigate("/");
       } else {
@@ -203,9 +191,6 @@ function ManageProfile() {
     }
   };
 
-  /* ===============================
-     🖥️ JSX
-     =============================== */
   return (
     <>
       <div className="profile-wrapper">

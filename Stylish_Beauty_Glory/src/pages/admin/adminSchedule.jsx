@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE } from "../../services/config";
 import { toast } from "react-hot-toast";
+//CSS
 import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Modals_CSS/modalBase.css";
 
+//Servicios & Overlays
 import {
   getAdminSchedule,
   cancelAppointmentByAdmin,
@@ -13,8 +15,9 @@ import {
 } from "../../services/Serv_appointments";
 import { createSale } from "../../services/Serv_sales";
 import { notifyAppointmentCanceled } from "../../services/Serv_notifications";
+import LoaderOverlay from "../overlay/UniversalOverlay";
 
-//swiper
+//Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -22,6 +25,9 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 
 function AdminSchedule() {
+  //estado de overlay
+  const [loading, setLoading] = useState(false);
+
   const [selectedDate, setSelectedDate] = useState("");
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -38,6 +44,7 @@ function AdminSchedule() {
     if (!selectedAppointment) return;
 
     try {
+      setLoading(true);
       // Cancelar en backend
       const res = await cancelAppointmentByAdmin(selectedAppointment.appointment_id);
 
@@ -80,6 +87,7 @@ function AdminSchedule() {
       console.error("Error cancelando cita:", error);
       toast.error("Error al cancelar la cita. Intenta de nuevo más tarde.");
     } finally {
+      setLoading(false);
       setShowModal(false);
       setSelectedAppointment(null);
       setCancelReason("");
@@ -89,6 +97,7 @@ function AdminSchedule() {
   //Finalizar cita y registrar venta
   const handleFinalizeAppointment = async (cita, amount) => {
     try {
+      setLoading(true);
       // 1. Finalizar cita en backend
       const res = await finalizeAppointment(cita.appointment_id);
 
@@ -127,6 +136,7 @@ function AdminSchedule() {
       console.error("Error finalizando cita:", error);
       toast.error("Error al finalizar la cita. Intenta de nuevo más tarde.");
     } finally {
+      setLoading(false);
       setShowFinalizeModal(false);
       setSelectedAppointment(null);
       setFinalizeAmount("");
@@ -151,6 +161,7 @@ function AdminSchedule() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
+        setLoading(true);
         const res = await getAdminSchedule();
         console.log("Respuesta de getAdminSchedule:", res); // 🔹 log para depuración
         if (Array.isArray(res.appointments)) {
@@ -163,6 +174,8 @@ function AdminSchedule() {
       } catch (error) {
         console.error("Error cargando citas:", error);
         toast.error("No se pudieron cargar las citas. Intenta de nuevo más tarde.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -183,6 +196,7 @@ function AdminSchedule() {
 
   return (
     <div className="client-appointments">
+      {loading && <LoaderOverlay message="Cargando Agenda..." />}
       {/* Barra superior de búsqueda */}
       <section className="search-section">
         <div className="ui-toolbar">
@@ -245,10 +259,13 @@ function AdminSchedule() {
                           })}
                         </p>
                         <p>Duración: {cita.duration}</p>
-                        <p>Cliente: {cita.client?.name}</p>
-                        <span className={`appointment-tag ${cita.status.toLowerCase()}`}>
-                          {cita.status}
-                        </span>
+                        <p>Cliente: {cita.client?.name || "No registrado"}</p>
+
+                        {cita.status !== "Agendada" && (
+                          <span className={`appointment-tag ${cita.status.toLowerCase()}`}>
+                            {cita.status}
+                          </span>
+                        )}
 
                         {cita.status === "Agendada" && (
                           <>
@@ -300,7 +317,7 @@ function AdminSchedule() {
               <button
                 className="modal-btn confirm"
                 onClick={handleCancelAppointment}
-                disabled={!cancelReason.trim()} // 🔹 evita confirmar sin razón
+                disabled={!cancelReason.trim()}
               >
                 Confirmar
               </button>
