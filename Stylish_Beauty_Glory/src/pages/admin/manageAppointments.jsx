@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 
 function ManageAppointments() {
 
+  
   //estados del modal editar cita
   const [editModal, setEditModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
