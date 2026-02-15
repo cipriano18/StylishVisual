@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-
+import LoaderOverlay from "../overlay/UniversalOverlay";
 import {cancelAppointmentByClient, getAppointmentsByClient } from "../../services/Serv_appointments";
 import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
@@ -92,9 +92,10 @@ function ClientSchedule() {
             try {
                 if (!clientId) return;
                 const res = await getAppointmentsByClient(clientId);
-
+                console.log("Citas obtenidas del cliente:", res.appointments);
                 if (Array.isArray(res.appointments)) {
-                    const hoy = new Date().toISOString().split("T")[0];
+                    const hoy = new Date().toLocaleDateString("sv-SE");
+                    console.log("Fecha de hoy:", hoy);
                     const futuras = res.appointments.filter(
                     (cita) => cita.date.split("T")[0] >= hoy
                     );
@@ -147,7 +148,7 @@ function ClientSchedule() {
             {/* Sección de citas */}
             <section className="appointments-section">
                 {Object.keys(citasPorFecha).length === 0 ? (
-                    <p className="no-appointments">Parece que no hay citas disponibles.</p>
+                    <p className="no-appointments">Parece que no tienes citas agendadas.</p>
                     ) : (
                     Object.keys(citasPorFecha).map((fecha) => {
                     const [year, month, day] = fecha.split("-");

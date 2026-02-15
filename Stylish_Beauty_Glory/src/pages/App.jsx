@@ -133,7 +133,7 @@ function App() {
         style={{ backgroundImage: `url(${service.image_url})` }} 
       >
         <p>{service.description}</p>
-        <span className="service-tag">{service.service_name}</span>
+        <span className="service-tag">{service.service.service_name}</span>
       </div>
     </SwiperSlide>
   ))}

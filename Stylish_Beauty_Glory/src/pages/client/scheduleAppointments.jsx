@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-
+import LoaderOverlay from "../overlay/UniversalOverlay";
 import { getAvailableAppointments, bookAppointment } from "../../services/Serv_appointments";
 import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
@@ -98,12 +98,14 @@ useEffect(() => {
 
       if (Array.isArray(res.appointments)) { 
         const hoy = new Date().toLocaleDateString("sv-SE"); // YYYY-MM-DD
+        
         //hoy en adelante
         const filtradas = res.appointments.filter((cita) => {
           const citaFecha = cita.date.split("T")[0];
           return citaFecha >= hoy;
         });
-        setAvailableAppointments(filtradas); 
+        const ordenadas = filtradas.sort( (a, b) => new Date(a.date) - new Date(b.date) );
+        setAvailableAppointments(ordenadas); 
       } else { 
         toast.error(res.error||"Error al cargar citas disponibles");
       } 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../../styles/Client_CSS/ClientHome.css";
 import "../../styles/Portfolio_CSS/normalCard.css";
+import LoaderOverlay from "../overlay/UniversalOverlay";
 import { FaArrowRight, FaCalendarAlt, FaHandSparkles, FaSpa, FaInstagram, FaTiktok } from "react-icons/fa";
 import {getAppointmentsByClient} from "../../services/Serv_appointments";
 import { fetchPortfolios} from "../../services/Serv_portFolio";
@@ -20,7 +21,7 @@ function PortfolioCard({ portfolio, onClick }) {
       <div className="portfolio-card-content">
         <div className="portfolio-info">
           <p className="portfolio-description">{portfolio.description}</p>
-          <span className="portfolio-service">{portfolio.service_name}</span>
+          <span className="portfolio-service"> {portfolio.service?.service_name || portfolio.service_name} </span>
         </div>
       </div>
     </div>
@@ -28,6 +29,9 @@ function PortfolioCard({ portfolio, onClick }) {
 }
 
 function ClientHome() {
+  //estado de overlay
+  const [loading, setLoading] = useState(true);
+
   //Ampliar imagen
   const [selectedImage, setSelectedImage] = useState(null);
   // Estado para citas pendientes
@@ -40,7 +44,9 @@ function ClientHome() {
 useEffect(() => {
   const cargarPortafolios = async () => {
     try {
+      setLoading(true); // 🔹 mostrar overlay
       const result = await fetchPortfolios();
+      console.log("Portafolios obtenidos:", result.portfolios);
       if (result?.error) {
         console.error("Error al obtener portafolios:", result.error);
       } else if (Array.isArray(result.portfolios)) {
@@ -51,6 +57,8 @@ useEffect(() => {
       }
     } catch (error) {
       console.error("Error cargando portafolios:", error);
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -61,6 +69,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchClientAppointments = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("access_token");
       if (!token) return;
 
@@ -77,7 +86,7 @@ useEffect(() => {
         setPendingAppointments(pendientes);
 
         if (Array.isArray(citasRes.appointments)) {
-          const hoy = new Date().toISOString().split("T")[0];
+          const hoy = new Date().toLocaleDateString("sv-SE");
           // Contar pendientes
           const pendientes = citasRes.appointments.filter(
             (c) => c.status === "Agendada" && c.date.split("T")[0] >= hoy
@@ -102,6 +111,8 @@ useEffect(() => {
     } catch (error) {
       console.error("Error cargando citas cliente:", error);
       toast.error("No se pudieron cargar tus citas. Intenta de nuevo más tarde.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,6 +148,7 @@ const [tips, setTips] = useState([
 
   return (
     <div className="client-home">
+      {loading && <LoaderOverlay message="Cargando tu información..." />}
       {/* Sección superior */}
         <section className="top-section">
         <div className="left-column">

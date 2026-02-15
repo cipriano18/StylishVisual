@@ -23,7 +23,7 @@ function PortfolioCard({ portfolio, onEdit, onDelete }) {
       <div className="portfolio-card-content">
         <div className="portfolio-info">
           <p className="portfolio-description">{portfolio.description}</p>
-          <span className="portfolio-service">{portfolio.service_name}</span>
+          <span className="portfolio-service"> {portfolio.service?.service_name || portfolio.service_name} </span>
         </div>
 
       {/* Contenedor de acciones */}
@@ -98,10 +98,10 @@ function ManagePortfolio() {
     setEditPortfolioData({
       id: portfolio.portfolio_id,
       description: portfolio.description,
-      id_service: portfolio.service_id,
-      image: null, // si quieres permitir cambiar imagen
-      image_url: portfolio.image_url, // guarda la actual
-      service_name: portfolio.service_name
+      id_service: portfolio.service.service_id,
+      image: null,
+      image_url: portfolio.image_url,
+      service_name: portfolio.service.service_name
     });
     setShowEditModal(true);
   };
@@ -133,6 +133,7 @@ function ManagePortfolio() {
   useEffect(() => {
     const cargarPortafolios = async () => {
       const data = await fetchPortfolios();
+      console.log("Portafolios cargados:", data);
       if (data?.portfolios) {
         setPortfolios(data.portfolios);
         setFilteredPortfolios(data.portfolios);
@@ -170,6 +171,7 @@ function ManagePortfolio() {
     formData.append("description", newPortfolioData.description);
     try {
       const data = await createPortfolio(formData);
+
       if (data.error) {
         toast.error(data.error);
         return;

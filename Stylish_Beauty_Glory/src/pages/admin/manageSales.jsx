@@ -125,7 +125,7 @@ function ManageSales() {
         };
 
         const res = await createSale(newSaleData);
-        //console.log("Respuesta al agregar venta:", res);
+        console.log("Respuesta al agregar venta:", res);
         if (res) {
         // Actualizar la tabla con la nueva venta
         setSales((prev) => [...prev, res.sale]);
@@ -291,7 +291,7 @@ function ManageSales() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content small">
-            <h2>Nueva factura</h2>
+            <h2>Nueva venta</h2>
             <p>ID Cliente</p>
             <input
             type="text"
@@ -351,7 +351,7 @@ function ManageSales() {
       {showEditModal && (
             <div className="modal-overlay">
                 <div className="modal-content small">
-                <h2>Editar factura</h2>
+                <h2>Editar venta</h2>
                 <p>ID Cliente</p>
                 <input
                     type="text"

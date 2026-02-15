@@ -6,7 +6,7 @@ import { fetchClientProfile } from "../../services/Serv_profiles";
 import { updateUser, inactivateUser } from "../../services/Serv_users";
 import { updateClient } from "../../services/Serv_clients"; 
 import { toast } from "react-hot-toast";
-
+import LoaderOverlay from "../overlay/UniversalOverlay";
 
 function ManageProfile() {
   const navigate = useNavigate();
