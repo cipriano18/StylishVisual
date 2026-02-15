@@ -31,6 +31,6 @@ export async function inactivateUser(id) {
     });
     return await res.json();
   } catch {
-    return null; 
+    return null;
   }
 }

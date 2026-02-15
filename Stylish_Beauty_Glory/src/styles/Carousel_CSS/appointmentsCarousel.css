@@ -20,7 +20,7 @@
 .appointment-card { 
   position: relative; 
   width: 90%; 
-  height: 260px; 
+  height: 290px; 
   border-radius: 10px; 
   display: flex; 
   flex-direction: column; 

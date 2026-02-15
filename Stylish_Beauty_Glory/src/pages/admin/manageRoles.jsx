@@ -7,7 +7,6 @@ import { createRole, deleteRole, updateRole, fetchRoles } from "../../services/S
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
-
 function ManageRoles() {
   const [roles, setRoles] = useState([]);
   const [filteredRoles, setFilteredRoles] = useState([]);
@@ -46,7 +45,7 @@ function ManageRoles() {
     if (isNaN(term)) {
       setFilteredRoles(roles);
     } else {
-      setFilteredRoles(roles.filter(r => r.role_id === term));
+      setFilteredRoles(roles.filter((r) => r.role_id === term));
     }
   }, [searchTerm, roles]);
 
@@ -65,8 +64,8 @@ function ManageRoles() {
         return;
       }
 
-      setRoles(prev => [...prev, data]);
-      setFilteredRoles(prev => [...prev, data]);
+      setRoles((prev) => [...prev, data]);
+      setFilteredRoles((prev) => [...prev, data]);
       toast.success(`Rol creado: ${data.name}`);
       setNewRoleName("");
       setShowModal(false);
@@ -86,7 +85,7 @@ function ManageRoles() {
         return;
       }
 
-      const updatedRoles = roles.filter(r => r.role_id !== roleToDelete.role_id);
+      const updatedRoles = roles.filter((r) => r.role_id !== roleToDelete.role_id);
       setRoles(updatedRoles);
       setFilteredRoles(updatedRoles);
       setRoleToDelete(null);
@@ -115,7 +114,7 @@ function ManageRoles() {
         return;
       }
 
-      const updatedRoles = roles.map(r =>
+      const updatedRoles = roles.map((r) =>
         r.role_id === editingId ? { ...r, name: data.name } : r
       );
       setRoles(updatedRoles);
@@ -219,8 +218,12 @@ function ManageRoles() {
               onChange={(e) => setNewRoleName(e.target.value)}
             />
             <div className="modal-actions">
-              <button className="modal-btn confirm" onClick={handleAddRole}>Agregar</button>
-              <button className="modal-btn cancel" onClick={() => setShowModal(false)}>Cancelar</button>
+              <button className="modal-btn confirm" onClick={handleAddRole}>
+                Agregar
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowModal(false)}>
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
@@ -231,10 +234,16 @@ function ManageRoles() {
         <div className="modal-overlay">
           <div className="modal-content medium">
             <h2>¿Eliminar rol?</h2>
-            <p>¿Estás seguro de que deseas eliminar el rol <strong>{roleToDelete?.name}</strong>?</p>
+            <p>
+              ¿Estás seguro de que deseas eliminar el rol <strong>{roleToDelete?.name}</strong>?
+            </p>
             <div className="modal-actions">
-              <button className="modal-btn confirm" onClick={handleDeleteRole}>Sí, eliminar</button>
-              <button className="modal-btn cancel" onClick={() => setShowDeleteModal(false)}>Cancelar</button>
+              <button className="modal-btn confirm" onClick={handleDeleteRole}>
+                Sí, eliminar
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowDeleteModal(false)}>
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
@@ -244,9 +253,3 @@ function ManageRoles() {
 }
 
 export default ManageRoles;
-
-
-
-
-
-

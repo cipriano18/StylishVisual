@@ -12,11 +12,11 @@ export async function fetchAdminProfile() {
 }
 // Obtener perfil de cliente
 export async function fetchClientProfile() {
-    try {
-        const res = await apiFetch("/profile/client");
-        return await res.json();
-        } catch (err) {
-            console.error("Error al cargar perfil cliente:", err);
-            return null; 
- } 
+  try {
+    const res = await apiFetch("/profile/client");
+    return await res.json();
+  } catch (err) {
+    console.error("Error al cargar perfil cliente:", err);
+    return null;
+  }
 }

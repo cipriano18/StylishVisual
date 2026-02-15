@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
+
+//CSS
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Table_CSS/TableBase.css";
 import "../../styles/Modals_CSS/modalBase.css";
+
+//Servicios
 import { fetchUsers } from "../../services/Serv_users";
-import { toast } from "react-hot-toast";
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -23,7 +27,9 @@ function ManageUsers() {
         setUsers(data);
         setFilteredUsers(data);
       } else {
-        console.error("No se pudo cargar la lista de usuarios, algún problema de red o con la API.");
+        console.error(
+          "No se pudo cargar la lista de usuarios, algún problema de red o con la API."
+        );
         toast.error(data.error || "Hubo un error al cargar la lista de usuarios");
       }
     };
@@ -34,14 +40,11 @@ function ManageUsers() {
   useEffect(() => {
     const filtered = users.filter((user) => {
       return (
-        (filters.user_id === "" ||
-          user.user_id.toString().includes(filters.user_id)) &&
+        (filters.user_id === "" || user.user_id.toString().includes(filters.user_id)) &&
         (filters.username === "" ||
           user.username.toLowerCase().includes(filters.username.toLowerCase())) &&
-        (filters.role_id === "" ||
-          user.role_id.toString().includes(filters.role_id)) &&
-        (filters.status === "" ||
-          user.status.toLowerCase().includes(filters.status.toLowerCase()))
+        (filters.role_id === "" || user.role_id.toString().includes(filters.role_id)) &&
+        (filters.status === "" || user.status.toLowerCase().includes(filters.status.toLowerCase()))
       );
     });
     setFilteredUsers(filtered);

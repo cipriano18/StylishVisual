@@ -26,32 +26,46 @@ export async function getAppointments() {
 }
 
 // Editar una cita
-export async function updateAppointment(id, data) { 
-  try { 
-    const res = await apiFetch(`/appointments/${id}`, { 
-      method: "PUT", 
-      body: JSON.stringify(data), }); 
+export async function updateAppointment(id, data) {
+  try {
+    const res = await apiFetch(`/appointments/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
     return await res.json();
   } catch {
-    return null; 
-  } 
+    return null;
+  }
 }
 
-// Obtener citas por cliente 
+// Obtener citas por cliente
 export async function getAppointmentsByClient(clientId) {
-  try { 
-    const res = await apiFetch(`/appointments/client/${clientId}`, { 
-      method: "GET", }); 
-      return await res.json(); 
-    } catch { 
-      return null; 
-    }
+  try {
+    const res = await apiFetch(`/appointments/client/${clientId}`, {
+      method: "GET",
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 // Obtener citas disponibles
 export async function getAvailableAppointments() {
   try {
     const res = await apiFetch("/appointments/available", {
+      method: "GET",
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+// Obtener Agenda del administrador
+export async function getAdminSchedule() {
+  try {
+    const res = await apiFetch("/appointments/admin", {
       method: "GET",
     });
     return await res.json();

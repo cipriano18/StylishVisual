@@ -23,7 +23,6 @@ export async function createPortfolio(formData) {
   }
 }
 
-
 // Editar un portafolio existente
 export async function updatePortfolio(id, formData) {
   try {

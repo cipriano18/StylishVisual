@@ -35,3 +35,14 @@ export async function createClient(data) {
   }
 }
 
+// Obtener todos los clientes
+export async function getClients() {
+  try {
+    const res = await apiFetch("/clients", {
+      method: "GET",
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}

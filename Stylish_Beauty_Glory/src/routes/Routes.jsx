@@ -46,7 +46,6 @@ export default function AppRoutes() {
         <Route path="sales" element={<ManageSales />} />
         <Route path="appointments" element={<ManageAppointments />} />
         <Route path="schedule" element={<ManageSchedule />} />
-        
       </Route>
 
       {/* 🔹 Sección de clientes */}

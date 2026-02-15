@@ -54,5 +54,3 @@ export async function apiFetch(endpoint, options = {}) {
 
   return res;
 }
-
-

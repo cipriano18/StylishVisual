@@ -1,12 +1,12 @@
-
 import { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
-import { 
-    createSale,
-    fetchSalesByDateRange,
-    updateSale,
-    deleteSale }
-    from "../../services/Serv_sales"; //Funciones de la API
+import { getClients } from "../../services/Serv_clients";
+import {
+  createSale,
+  fetchSalesByDateRange,
+  updateSale,
+  deleteSale,
+} from "../../services/Serv_sales"; //Funciones de la API
 
 import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Table_CSS/TableBase.css";
@@ -14,14 +14,13 @@ import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import { toast } from "react-hot-toast";
 
 function ManageSales() {
-    
-    //imputs modal agregar
-    const [newClientId, setNewClientId] = useState("");
-    const [newAmount, setNewAmount] = useState("");
-    const [newDate, setNewDate] = useState("");
+  //imputs modal agregar
+  const [newClientId, setNewClientId] = useState("");
+  const [newAmount, setNewAmount] = useState("");
+  const [newDate, setNewDate] = useState("");
 
-    //mes actual
-    const getCurrentMonthRange = () => {
+  //mes actual
+  const getCurrentMonthRange = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth(); // 0 = enero
@@ -30,58 +29,76 @@ function ManageSales() {
     const end = now; // hoy
 
     const format = (d) => {
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, "0");
-        const dd = String(d.getDate()).padStart(2, "0");
-        return `${yyyy}-${mm}-${dd}`;
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
     };
 
     return { start: format(start), end: format(end) };
+  };
+
+  const [clients, setClients] = useState([]);
+  console.log("Clientes cargados:", clients); // 🔹 log para verificar clientes
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const res = await getClients();
+
+        if (Array.isArray(res.clients)) {
+          setClients(res.clients);
+        } else {
+          console.error("Respuesta inesperada:", res);
+        }
+      } catch (error) {
+        console.error("Error cargando clientes:", error);
+      }
     };
 
+    fetchClients();
+  }, []);
 
-
-    //cargar ventas del mes actual al iniciar
-    useEffect(() => {
+  //cargar ventas del mes actual al iniciar
+  useEffect(() => {
     const loadSales = async () => {
-        try {
+      try {
         const { start, end } = getCurrentMonthRange();
-        setSearchStartDate(start); 
+        setSearchStartDate(start);
         setSearchEndDate(end);
         const res = await fetchSalesByDateRange(start, end);
         console.log("Ventas del mes actual:", res);
         if (res && res.sales) {
-            setSales(res.sales);
+          setSales(res.sales);
         } else {
-            toast.error(res.error || "Error al cargar ventas del mes");
+          toast.error(res.error || "Error al cargar ventas del mes");
         }
-        } catch (err) {
+      } catch (err) {
         toast.error("Error al cargar ventas del mes");
-        }
+      }
     };
 
     loadSales();
-    }, []);
-    
-    const handleFilterSales = async () => {
-        try {
-            // Validar que haya fechas seleccionadas
-            if (!searchStartDate || !searchEndDate) {
-            toast.error("Debes seleccionar ambas fechas");
-            return;
-            }
+  }, []);
 
-            const res = await fetchSalesByDateRange(searchStartDate, searchEndDate);
-            if (res && res.sales) {
-            setSales(res.sales);
-            toast.success("Ventas filtradas correctamente");
-            } else {
-            toast.error("No se encontraron ventas en ese rango");
-            }
-        } catch (err) {
-            toast.error("Error al filtrar ventas");
-        }
-    };
+  const handleFilterSales = async () => {
+    try {
+      // Validar que haya fechas seleccionadas
+      if (!searchStartDate || !searchEndDate) {
+        toast.error("Debes seleccionar ambas fechas");
+        return;
+      }
+
+      const res = await fetchSalesByDateRange(searchStartDate, searchEndDate);
+      if (res && res.sales) {
+        setSales(res.sales);
+        toast.success("Ventas filtradas correctamente");
+      } else {
+        toast.error("No se encontraron ventas en ese rango");
+      }
+    } catch (err) {
+      toast.error("Error al filtrar ventas");
+    }
+  };
 
   const [sales, setSales] = useState([]);
   const [searchStartDate, setSearchStartDate] = useState("");
@@ -90,13 +107,12 @@ function ManageSales() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [saleToDelete, setSaleToDelete] = useState(null);
 
-
   //estados modal editar
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [saleToEdit, setSaleToEdit] = useState(null);
-    const [editClientId, setEditClientId] = useState("");
-    const [editAmount, setEditAmount] = useState("");
-    const [editDate, setEditDate] = useState("");
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [saleToEdit, setSaleToEdit] = useState(null);
+  const [editClientId, setEditClientId] = useState("");
+  const [editAmount, setEditAmount] = useState("");
+  const [editDate, setEditDate] = useState("");
 
   // Filtrado por rango de fechas
   const filteredSales = sales.filter((sale) => {
@@ -104,29 +120,27 @@ function ManageSales() {
     const saleDate = new Date(sale.date);
     const start = searchStartDate ? new Date(searchStartDate) : null;
     const end = searchEndDate ? new Date(searchEndDate) : null;
-    return (
-      (!start || saleDate >= start) &&
-      (!end || saleDate <= end)
-    );
+    return (!start || saleDate >= start) && (!end || saleDate <= end);
   });
-    //Agregar venta
-    const handleAddSale = async () => {
+  //Agregar venta
+  const handleAddSale = async () => {
     try {
-        if (!newClientId || !newAmount || !newDate) {
+      if (!newAmount || !newDate) {
         toast.error("Todos los campos son obligatorios");
         return;
-        }
+      }
 
-        const newSaleData = {
-        client_id: parseInt(newClientId, 10),
+      const newSaleData = {
         amount: parseFloat(newAmount),
-        date: new Date(newDate).toISOString(), // formato ISO
+        date: new Date(newDate).toISOString(),
+      };
+      if (newClientId) {
+        newSaleData.client_id = parseInt(newClientId, 10);
+      }
 
-        };
-
-        const res = await createSale(newSaleData);
-        console.log("Respuesta al agregar venta:", res);
-        if (res) {
+      const res = await createSale(newSaleData);
+      console.log("Respuesta al agregar venta:", res);
+      if (res) {
         // Actualizar la tabla con la nueva venta
         setSales((prev) => [...prev, res.sale]);
         toast.success(res.message || "Factura agregada correctamente");
@@ -136,71 +150,66 @@ function ManageSales() {
         setNewClientId("");
         setNewAmount("");
         setNewDate("");
-        } else {
+      } else {
         toast.error(res.error || "Error al agregar la factura");
-        }
+      }
     } catch (err) {
-        toast.error("Error inesperado al agregar");
+      toast.error("Error inesperado al agregar");
     }
-    };
-    //editar venta
-    const handleUpdateSale = async () => {
-  try {
-    if (!saleToEdit) {
-      toast.error("No hay venta seleccionada para editar");
-      return;
-    }
-
-    // Construir payload solo con los campos que se editaron
-    const updatedData = {};
-    if (editClientId) updatedData.client_id = parseInt(editClientId, 10);
-    if (editAmount) updatedData.amount = parseFloat(editAmount);
-    if (editDate) updatedData.date = new Date(editDate).toISOString();
-
-    const res = await updateSale(saleToEdit.sale_id, updatedData);
-
-    if (res && res.sale) {
-      // Actualizar la tabla reemplazando la venta editada
-      setSales((prev) =>
-        prev.map((s) => (s.sale_id === saleToEdit.sale_id ? res.sale : s))
-      );
-      toast.success("Factura actualizada correctamente");
-      setShowEditModal(false);
-      setSaleToEdit(null);
-    } else {
-      toast.error("Error al actualizar la factura");
-    }
-  } catch (err) {
-    toast.error("Error inesperado al actualizar");
-  }
-};
-
-    //eliminar venta
-    const handleDeleteSale = async () => {
+  };
+  //editar venta
+  const handleUpdateSale = async () => {
     try {
-        if (!saleToDelete) {
+      if (!saleToEdit) {
+        toast.error("No hay venta seleccionada para editar");
+        return;
+      }
+
+      // Construir payload solo con los campos que se editaron
+      const updatedData = {};
+      if (editClientId) updatedData.client_id = parseInt(editClientId, 10);
+      if (editAmount) updatedData.amount = parseFloat(editAmount);
+      if (editDate) updatedData.date = new Date(editDate).toISOString();
+
+      const res = await updateSale(saleToEdit.sale_id, updatedData);
+
+      if (res && res.sale) {
+        // Actualizar la tabla reemplazando la venta editada
+        setSales((prev) => prev.map((s) => (s.sale_id === saleToEdit.sale_id ? res.sale : s)));
+        toast.success("Factura actualizada correctamente");
+        setShowEditModal(false);
+        setSaleToEdit(null);
+      } else {
+        toast.error("Error al actualizar la factura");
+      }
+    } catch (err) {
+      toast.error("Error inesperado al actualizar");
+    }
+  };
+
+  //eliminar venta
+  const handleDeleteSale = async () => {
+    try {
+      if (!saleToDelete) {
         toast.error("No hay venta seleccionada para eliminar");
         return;
-        }
+      }
 
-        const res = await deleteSale(saleToDelete.sale_id);
+      const res = await deleteSale(saleToDelete.sale_id);
 
-        if (res) {
+      if (res) {
         // Actualizar la tabla quitando la venta eliminada
-        setSales((prev) =>
-            prev.filter((s) => s.sale_id !== saleToDelete.sale_id)
-        );
+        setSales((prev) => prev.filter((s) => s.sale_id !== saleToDelete.sale_id));
         toast.success("Venta eliminada correctamente");
         setShowDeleteModal(false);
         setSaleToDelete(null);
-        } else {
+      } else {
         toast.error("Error al eliminar la venta");
-        }
+      }
     } catch (err) {
-        toast.error("Error inesperado al eliminar");
+      toast.error("Error inesperado al eliminar");
     }
-    };
-
+  };
 
   return (
     <>
@@ -226,10 +235,10 @@ function ManageSales() {
               onChange={(e) => setSearchEndDate(e.target.value)}
             />
           </div>
-            <button className="ui-toolbar-btn" onClick={handleFilterSales}>
+          <button className="ui-toolbar-btn" onClick={handleFilterSales}>
             <FaSearch className="ui-toolbar-btn-icon" />
             Filtrar
-            </button>
+          </button>
         </div>
       </div>
 
@@ -246,41 +255,41 @@ function ManageSales() {
                 <th>Acciones</th>
               </tr>
             </thead>
-<tbody>
-  {sales.map((sale) => (
-    <tr key={sale.sale_id}>
-      <td>{sale.client?.name}</td>
-      <td>{sale.appointment?.appointment_id || "-"}</td>
-      <td>{sale.amount}</td>
-      <td>{sale.date.split("T")[0]}</td>
-      <td>
-        <button
-        className="icon-btn edit"
-        title="Editar"
-        onClick={() => {
-            setSaleToEdit(sale);
-            setEditClientId(sale.client.client_id || "");
-            setEditAmount(sale.amount || "");
-            setEditDate(sale.date ? sale.date.split("T")[0] : "");
-            setShowEditModal(true);
-        }}
-        >
-        <FaEdit />
-        </button>
-        <button
-          className="icon-btn delete"
-          title="Eliminar"
-          onClick={() => {
-            setSaleToDelete(sale);
-            setShowDeleteModal(true);
-          }}
-        >
-          <FaTrash />
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+            <tbody>
+              {sales.map((sale) => (
+                <tr key={sale.sale_id}>
+                  <td>{sale.client?.name || "No registrado"}</td>
+                  <td>{sale.appointment?.appointment_id || "-"}</td>
+                  <td>{sale.amount}</td>
+                  <td>{sale.date.split("T")[0]}</td>
+                  <td>
+                    <button
+                      className="icon-btn edit"
+                      title="Editar"
+                      onClick={() => {
+                        setSaleToEdit(sale);
+                        setEditClientId(sale.client.client_id || "");
+                        setEditAmount(sale.amount || "");
+                        setEditDate(sale.date ? sale.date.split("T")[0] : "");
+                        setShowEditModal(true);
+                      }}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className="icon-btn delete"
+                      title="Eliminar"
+                      onClick={() => {
+                        setSaleToDelete(sale);
+                        setShowDeleteModal(true);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         ) : (
           <p className="no-info">No se encontraron ventas</p>
@@ -294,24 +303,24 @@ function ManageSales() {
             <h2>Nueva venta</h2>
             <p>ID Cliente</p>
             <input
-            type="text"
-            placeholder="ID Cliente"
-            value={newClientId}
-            onChange={(e) => setNewClientId(e.target.value)}
+              type="text"
+              placeholder="ID Cliente"
+              value={newClientId}
+              onChange={(e) => setNewClientId(e.target.value)}
             />
             <p>Monto</p>
             <input
-            type="number"
-            placeholder="Monto"
-            value={newAmount}
-            onChange={(e) => setNewAmount(e.target.value)}
+              type="number"
+              placeholder="Monto"
+              value={newAmount}
+              onChange={(e) => setNewAmount(e.target.value)}
             />
             <p>Fecha de venta</p>
             <input
-            type="date"
-            placeholder="Fecha de venta"
-            value={newDate}
-            onChange={(e) => setNewDate(e.target.value)}
+              type="date"
+              placeholder="Fecha de venta"
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
             />
 
             <div className="modal-actions">
@@ -332,8 +341,8 @@ function ManageSales() {
           <div className="modal-content medium">
             <h2>¿Eliminar venta?</h2>
             <p>
-            ¿Estás seguro de que deseas eliminar la venta de{" "}
-            <strong>{saleToDelete?.client?.name}</strong>?
+              ¿Estás seguro de que deseas eliminar la venta de{" "}
+              <strong>{saleToDelete?.client?.name}</strong>?
             </p>
 
             <div className="modal-actions">
@@ -349,42 +358,41 @@ function ManageSales() {
       )}
       {/* Modal editar */}
       {showEditModal && (
-            <div className="modal-overlay">
-                <div className="modal-content small">
-                <h2>Editar venta</h2>
-                <p>ID Cliente</p>
-                <input
-                    type="text"
-                    placeholder="ID Cliente"
-                    value={editClientId}
-                    onChange={(e) => setEditClientId(e.target.value)}
-                />
-                <p>Monto</p>
-                <input
-                    type="number"
-                    placeholder="Monto"
-                    value={editAmount}
-                    onChange={(e) => setEditAmount(e.target.value)}
-                />
-                <p>Fecha de venta</p>
-                <input
-                    type="date"
-                    placeholder="Fecha de venta"
-                    value={editDate}
-                    onChange={(e) => setEditDate(e.target.value)}
-                />
-                <div className="modal-actions">
-                    <button className="modal-btn confirm" onClick={handleUpdateSale}>
-                    Guardar
-                    </button>
-                    <button className="modal-btn cancel" onClick={() => setShowEditModal(false)}>
-                    Cancelar
-                    </button>
-                </div>
-                </div>
+        <div className="modal-overlay">
+          <div className="modal-content small">
+            <h2>Editar venta</h2>
+            <p>ID Cliente</p>
+            <input
+              type="text"
+              placeholder="ID Cliente"
+              value={editClientId}
+              onChange={(e) => setEditClientId(e.target.value)}
+            />
+            <p>Monto</p>
+            <input
+              type="number"
+              placeholder="Monto"
+              value={editAmount}
+              onChange={(e) => setEditAmount(e.target.value)}
+            />
+            <p>Fecha de venta</p>
+            <input
+              type="date"
+              placeholder="Fecha de venta"
+              value={editDate}
+              onChange={(e) => setEditDate(e.target.value)}
+            />
+            <div className="modal-actions">
+              <button className="modal-btn confirm" onClick={handleUpdateSale}>
+                Guardar
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowEditModal(false)}>
+                Cancelar
+              </button>
             </div>
-        )}
-
+          </div>
+        </div>
+      )}
     </>
   );
 }

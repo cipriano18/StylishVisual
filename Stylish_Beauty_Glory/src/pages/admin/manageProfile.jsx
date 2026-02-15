@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {FaUserCircle,FaPencilAlt,FaKey,FaUserSlash} from "react-icons/fa";
+import { FaUserCircle, FaPencilAlt, FaKey, FaUserSlash } from "react-icons/fa";
 import "../../styles/Profile_CSS/ProfileBase.css";
 import { fetchAdminProfile } from "../../services/Serv_profiles";
 import { updateAdmin } from "../../services/Serv_admins";
@@ -45,32 +45,33 @@ function ManageProfile() {
      🔄 Cargar perfil desde backend
      =============================== */
   useEffect(() => {
-     const loadProfile = async () => {
-       try {
-         const data = await fetchAdminProfile();
-         if (data?.admin) {
-           const admin = data.admin;
-            // Normalizar contactos
-           const contacts = admin.contacts.map(c => ({
-             type: c.contact_type,
-              value: c.contact_value,
-             })); 
-             // Set perfil 
-             setProfile({ ...admin, contacts, });
-              // Inicializar estados editables 
-              setEditedPhone(contacts.find(c => c.type === "TELEFONO")?.value || "");
-              setEditedEmail(contacts.find(c => c.type === "EMAIL")?.value || "");
-              setEditedSpecialty(admin.specialty || "");
-              setEditedCertifications(admin.certifications || "");
-              setEditedWorkingDays(admin.working_days || "");
-             } 
-          } catch (error) {
-             console.error("Error al cargar perfil:", error);
-          } finally { 
-            setLoading(false);
-           } 
-          }; loadProfile();
-         }, []);
+    const loadProfile = async () => {
+      try {
+        const data = await fetchAdminProfile();
+        if (data?.admin) {
+          const admin = data.admin;
+          // Normalizar contactos
+          const contacts = admin.contacts.map((c) => ({
+            type: c.contact_type,
+            value: c.contact_value,
+          }));
+          // Set perfil
+          setProfile({ ...admin, contacts });
+          // Inicializar estados editables
+          setEditedPhone(contacts.find((c) => c.type === "TELEFONO")?.value || "");
+          setEditedEmail(contacts.find((c) => c.type === "EMAIL")?.value || "");
+          setEditedSpecialty(admin.specialty || "");
+          setEditedCertifications(admin.certifications || "");
+          setEditedWorkingDays(admin.working_days || "");
+        }
+      } catch (error) {
+        console.error("Error al cargar perfil:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProfile();
+  }, []);
 
   /* ===============================
      ⏳ Estados de carga seguros
@@ -82,8 +83,8 @@ function ManageProfile() {
      🧠 Detectar cambios
      =============================== */
   const hasContactChanges =
-    editedPhone !== profile.contacts.find(c => c.type === "TELEFONO")?.value ||
-    editedEmail !== profile.contacts.find(c => c.type === "EMAIL")?.value;
+    editedPhone !== profile.contacts.find((c) => c.type === "TELEFONO")?.value ||
+    editedEmail !== profile.contacts.find((c) => c.type === "EMAIL")?.value;
 
   const hasProfessionalChanges =
     editedSpecialty !== profile.specialty ||
@@ -94,118 +95,113 @@ function ManageProfile() {
      🧩 Handlers
      =============================== */
 
-const handleUpdatePassword = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user.user_id;
+  const handleUpdatePassword = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user.user_id;
 
-    const updatedData = {
-      password: newPassword,
-    };
+      const updatedData = {
+        password: newPassword,
+      };
 
-    const result = await updateUser(userId, updatedData);
+      const result = await updateUser(userId, updatedData);
 
-    if (result && !result.error) {
-      console.log("Contraseña actualizada en backend:", result);
-      toast.success(result.message || "Contraseña actualizada correctamente");
-      setShowPasswordModal(false);
-      setNewPassword("");
-      setConfirmPassword("");
-    } else {
-      console.error("Error al actualizar contraseña:", result?.error);
-      toast.error(result?.error || "Error al actualizar contraseña");
+      if (result && !result.error) {
+        console.log("Contraseña actualizada en backend:", result);
+        toast.success(result.message || "Contraseña actualizada correctamente");
+        setShowPasswordModal(false);
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        console.error("Error al actualizar contraseña:", result?.error);
+        toast.error(result?.error || "Error al actualizar contraseña");
+      }
+    } catch (err) {
+      console.error("Error en handleUpdatePassword:", err);
+      toast.error("Error al actualizar contraseña");
     }
-  } catch (err) {
-    console.error("Error en handleUpdatePassword:", err);
-    toast.error("Error al actualizar contraseña");
-  }
-};
+  };
 
+  const handleSaveContacts = async () => {
+    try {
+      const identityCard = profile.identity_card;
 
-const handleSaveContacts = async () => {
-  try {
-    const identityCard = profile.identity_card;
-
-    const updatedData = {
-      email: editedEmail,
-      phone: editedPhone,
-    };
-
-    const result = await updateAdmin(identityCard, updatedData);
-
-    if (result && !result.error) {
-      // Actualizar estado local con lo que devuelve la API
-      setProfile(prev => ({
-        ...prev,
+      const updatedData = {
         email: editedEmail,
         phone: editedPhone,
-      }));
-      setIsEditingContacts(false);
-      console.log("Contactos actualizados en backend:", result);
-      toast.success(result.message || "Contactos actualizados correctamente");
-    } else {
-      console.error("Error al actualizar contactos:", result?.error);
-      toast.error(result?.error || "Error al actualizar contactos");
+      };
+
+      const result = await updateAdmin(identityCard, updatedData);
+
+      if (result && !result.error) {
+        // Actualizar estado local con lo que devuelve la API
+        setProfile((prev) => ({
+          ...prev,
+          email: editedEmail,
+          phone: editedPhone,
+        }));
+        setIsEditingContacts(false);
+        console.log("Contactos actualizados en backend:", result);
+        toast.success(result.message || "Contactos actualizados correctamente");
+      } else {
+        console.error("Error al actualizar contactos:", result?.error);
+        toast.error(result?.error || "Error al actualizar contactos");
+      }
+    } catch (err) {
+      console.error("Error en handleSaveContacts:", err);
+      toast.error("Error al actualizar contactos");
     }
-  } catch (err) {
-    console.error("Error en handleSaveContacts:", err);
-    toast.error("Error al actualizar contactos");
-  }
-};
+  };
 
+  const handleSaveProfessional = async () => {
+    try {
+      const identityCard = profile.identity_card;
 
+      const updatedData = {
+        specialty: editedSpecialty,
+        certifications: editedCertifications,
+        working_days: editedWorkingDays,
+      };
 
-const handleSaveProfessional = async () => {
-  try {
-    const identityCard = profile.identity_card;
+      const result = await updateAdmin(identityCard, updatedData);
 
-    const updatedData = {
-      specialty: editedSpecialty,
-      certifications: editedCertifications,
-      working_days: editedWorkingDays,
-    };
-
-    const result = await updateAdmin(identityCard, updatedData);
-
-    if (result && !result.error) {
-      setProfile(prev => ({
-        ...prev,
-        ...updatedData,
-      }));
-      setIsEditingProfessional(false);
-      toast.success(result.message || "Datos profesionales actualizados correctamente");
-    } else {
-      toast.error(result?.error || "Error al actualizar datos profesionales");
+      if (result && !result.error) {
+        setProfile((prev) => ({
+          ...prev,
+          ...updatedData,
+        }));
+        setIsEditingProfessional(false);
+        toast.success(result.message || "Datos profesionales actualizados correctamente");
+      } else {
+        toast.error(result?.error || "Error al actualizar datos profesionales");
+      }
+    } catch (err) {
+      toast.error("Error al actualizar datos profesionales");
     }
-  } catch (err) {
-    toast.error("Error al actualizar datos profesionales");
-  }
-};
+  };
 
-const handleDeactivateAccount = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user.user_id;
+  const handleDeactivateAccount = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user.user_id;
 
-    const result = await inactivateUser(userId);
+      const result = await inactivateUser(userId);
 
-    if (result && !result.error) {
-
-      // Opcional: limpiar sesión y redirigir al login
-      localStorage.clear();
-      navigate("/");
-
-    } else {
-      console.error("Error al desactivar cuenta:", result?.error);
-      toast.error(result?.error || "Error al desactivar cuenta");
+      if (result && !result.error) {
+        // Opcional: limpiar sesión y redirigir al login
+        localStorage.clear();
+        navigate("/");
+      } else {
+        console.error("Error al desactivar cuenta:", result?.error);
+        toast.error(result?.error || "Error al desactivar cuenta");
+      }
+    } catch (err) {
+      console.error("Error en handleDeactivateAccount:", err);
+      toast.error("Error al desactivar cuenta");
+    } finally {
+      setShowDeactivateModal(false);
     }
-  } catch (err) {
-    console.error("Error en handleDeactivateAccount:", err);
-    toast.error("Error al desactivar cuenta");
-  } finally {
-    setShowDeactivateModal(false);
-  }
-};
+  };
 
   /* ===============================
      🖥️ JSX
@@ -213,7 +209,6 @@ const handleDeactivateAccount = async () => {
   return (
     <>
       <div className="profile-wrapper">
-
         <h2 className="profile-greeting">
           Hola de nuevo {profile.primary_name} {profile.first_surname}!
         </h2>
@@ -291,7 +286,7 @@ const handleDeactivateAccount = async () => {
               {isEditingContacts ? (
                 <input
                   value={editedPhone}
-                  onChange={e => setEditedPhone(e.target.value)}
+                  onChange={(e) => setEditedPhone(e.target.value)}
                   className="contact-input"
                 />
               ) : (
@@ -304,7 +299,7 @@ const handleDeactivateAccount = async () => {
               {isEditingContacts ? (
                 <input
                   value={editedEmail}
-                  onChange={e => setEditedEmail(e.target.value)}
+                  onChange={(e) => setEditedEmail(e.target.value)}
                   className="contact-input"
                 />
               ) : (
@@ -346,33 +341,39 @@ const handleDeactivateAccount = async () => {
             )}
           </div>
 
-          <p><strong>Especialidad:</strong></p>
+          <p>
+            <strong>Especialidad:</strong>
+          </p>
           {isEditingProfessional ? (
             <textarea
               value={editedSpecialty}
-              onChange={e => setEditedSpecialty(e.target.value)}
+              onChange={(e) => setEditedSpecialty(e.target.value)}
               className="contact-textarea"
             />
           ) : (
             <p>{editedSpecialty}</p>
           )}
 
-          <p><strong>Certificaciones:</strong></p>
+          <p>
+            <strong>Certificaciones:</strong>
+          </p>
           {isEditingProfessional ? (
             <textarea
               value={editedCertifications}
-              onChange={e => setEditedCertifications(e.target.value)}
+              onChange={(e) => setEditedCertifications(e.target.value)}
               className="contact-textarea"
             />
           ) : (
             <p>{editedCertifications}</p>
           )}
 
-          <p><strong>Días laborales:</strong></p>
+          <p>
+            <strong>Días laborales:</strong>
+          </p>
           {isEditingProfessional ? (
             <textarea
               value={editedWorkingDays}
-              onChange={e => setEditedWorkingDays(e.target.value)}
+              onChange={(e) => setEditedWorkingDays(e.target.value)}
               className="contact-textarea"
             />
           ) : (
@@ -391,7 +392,7 @@ const handleDeactivateAccount = async () => {
               type={showNewPassword ? "text" : "text"}
               placeholder="Nueva contraseña"
               value={newPassword}
-              onChange={e => setNewPassword(e.target.value)}
+              onChange={(e) => setNewPassword(e.target.value)}
               className="contact-input"
             />
 
@@ -399,15 +400,12 @@ const handleDeactivateAccount = async () => {
               type={showConfirmPassword ? "text" : "text"}
               placeholder="Confirmar contraseña"
               value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="contact-input"
             />
 
             <div className="modal-actions">
-              <button
-                className="modal-btn cancel"
-                onClick={() => setShowPasswordModal(false)}
-              >
+              <button className="modal-btn cancel" onClick={() => setShowPasswordModal(false)}>
                 Cancelar
               </button>
               <button
@@ -416,7 +414,7 @@ const handleDeactivateAccount = async () => {
                   if (newPassword === confirmPassword && newPassword.length >= 6) {
                     handleUpdatePassword();
                     setShowPasswordModal(false);
-                  }else{
+                  } else {
                     toast.error("Las contraseñas no coinciden o son demasiado cortas");
                   }
                 }}
@@ -433,12 +431,12 @@ const handleDeactivateAccount = async () => {
         <div className="modal-overlay">
           <div className="modal-content medium">
             <h3>¿Estás seguro?</h3>
-            <p>Esta acción desactivará tu cuenta permanentemente. Para reactivarla, deberás contactar al administrador.</p>
+            <p>
+              Esta acción desactivará tu cuenta permanentemente. Para reactivarla, deberás contactar
+              al administrador.
+            </p>
             <div className="modal-actions">
-              <button
-                className="modal-btn cancel"
-                onClick={() => setShowDeactivateModal(false)}
-              >
+              <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>
                 Cancelar
               </button>
               <button
@@ -458,4 +456,4 @@ const handleDeactivateAccount = async () => {
   );
 }
 
-export default ManageProfile; 
+export default ManageProfile;

@@ -51,8 +51,7 @@ export async function updateFactura(id, updatedData) {
     const responseData = await res.json();
 
     if (!res.ok) {
-      const mensajeError =
-        responseData.error || "Error al actualizar la factura.";
+      const mensajeError = responseData.error || "Error al actualizar la factura.";
       return { error: mensajeError };
     }
 
