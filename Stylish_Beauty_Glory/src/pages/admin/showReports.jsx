@@ -243,7 +243,7 @@ function DashboardReports() {
           </div>
 
           <div className="chart-container">
-            <h3>Clientes frecuentes</h3>
+            <h3>Top 5 en consumo</h3>
             <table className="clients-table">
               <thead>
                 <tr>
