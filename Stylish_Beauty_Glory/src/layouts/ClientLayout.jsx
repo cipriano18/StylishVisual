@@ -12,15 +12,9 @@ import { API_BASE } from "../services/config";
 import { FaBookOpen, FaCalendarAlt, FaHome, FaUserCircle } from "react-icons/fa";
 
 export default function ClientLayout() {
-  /* ===============================
-     🔹 Estado del cliente
-     =============================== */
   const [nombreUsuario, setNombreUsuario] = useState("Cargando...");
   const [loadingProfile, setLoadingProfile] = useState(true);
 
-  /* ===============================
-     🔄 Cargar perfil cliente
-     =============================== */
   useEffect(() => {
     const fetchClientProfile = async () => {
       try {

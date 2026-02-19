@@ -169,7 +169,7 @@ function AdminSchedule() {
           setAppointments(ordenadas);
           setFilteredAppointments(ordenadas);
         } else {
-          toast.error(res.error || "Error al cargar las citas.");
+          toast.error(res.message || "Error al cargar las citas.");
         }
       } catch (error) {
         console.error("Error cargando citas:", error);

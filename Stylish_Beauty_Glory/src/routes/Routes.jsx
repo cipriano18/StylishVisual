@@ -16,6 +16,7 @@ import ManagePortFolio from "../pages/admin/managePortFolio";
 import ManageSales from "../pages/admin/manageSales";
 import ManageAppointments from "../pages/admin/manageAppointments";
 import ManageSchedule from "../pages/admin/adminSchedule";
+import ShowReports from "../pages/admin/showReports";
 // --- CLIENTE ---
 import ClientLayout from "../layouts/ClientLayout";
 import ManageMyDetails from "../pages/client/manageProfile";
@@ -46,6 +47,7 @@ export default function AppRoutes() {
         <Route path="sales" element={<ManageSales />} />
         <Route path="appointments" element={<ManageAppointments />} />
         <Route path="schedule" element={<ManageSchedule />} />
+        <Route path="reports" element={<ShowReports />} />
       </Route>
 
       {/* 🔹 Sección de clientes */}

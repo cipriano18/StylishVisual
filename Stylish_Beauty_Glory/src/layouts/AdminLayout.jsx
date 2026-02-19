@@ -24,20 +24,15 @@ import {
   FaChevronRight,
   FaBookOpen,
   FaRegCalendarPlus,
+  FaChartBar,
 } from "react-icons/fa";
 
 export default function AdminLayout() {
   const [openCitas, setOpenCitas] = useState(false);
 
-  /* ===============================
-     🔹 Estado del admin
-     =============================== */
   const [nombreUsuario, setNombreUsuario] = useState("Cargando...");
   const [loadingProfile, setLoadingProfile] = useState(true);
 
-  /* ===============================
-     🔄 Cargar perfil admin
-     =============================== */
   useEffect(() => {
     const fetchAdminProfile = async () => {
       try {
@@ -68,9 +63,6 @@ export default function AdminLayout() {
     fetchAdminProfile();
   }, []);
 
-  /* ===============================
-     🖥️ JSX
-     =============================== */
   return (
     <div className="admin-layout">
       {/* SIDEBAR */}
@@ -149,7 +141,6 @@ export default function AdminLayout() {
                 Gestión de Administradores
               </NavLink>
             </li>
-
             {/* Servicios y Portafolio */}
             <li>
               <NavLink
@@ -169,7 +160,6 @@ export default function AdminLayout() {
                 Gestión de Portafolio
               </NavLink>
             </li>
-
             {/* Ventas y Finanzas */}
             <li>
               <NavLink
@@ -189,7 +179,6 @@ export default function AdminLayout() {
                 Gestión de Cuentas por Pagar
               </NavLink>
             </li>
-
             {/* Proveedores */}
             <li>
               <NavLink
@@ -198,6 +187,16 @@ export default function AdminLayout() {
               >
                 <FaTruck className="sidebar-icon" />
                 Gestión de Proveedores
+              </NavLink>
+            </li>
+            {/* Reportes */}
+            <li>
+              <NavLink
+                to="/admin/reports"
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+              >
+                <FaChartBar className="sidebar-icon" />
+                Reportes & Gráficos
               </NavLink>
             </li>
           </ul>
