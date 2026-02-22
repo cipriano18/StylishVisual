@@ -68,16 +68,17 @@ function AdminSchedule() {
           });
 
           const admin = resAdmin.data.admin;
-
-          // 🔹 Notificar al cliente con todos los datos
-          const res = await notifyAppointmentCanceled({
-            client_id: selectedAppointment.client.client_id,
-            appointment_id: selectedAppointment.appointment_id,
-            admin_id: admin.admin_id,
-            reason: cancelReason, // puedes personalizar el motivo
-          });
-          if (res && !res.error) {
-            toast.success(res.message || "Notificación enviada al cliente.");
+          if (selectedAppointment.client?.client_id) {
+            // 🔹 Notificar al cliente con todos los datos
+            const res = await notifyAppointmentCanceled({
+              client_id: selectedAppointment.client.client_id,
+              appointment_id: selectedAppointment.appointment_id,
+              admin_id: admin.admin_id,
+              reason: cancelReason, // puedes personalizar el motivo
+            });
+            if (res && !res.error) {
+              toast.success(res.message || "Notificación enviada al cliente.");
+            }
           }
         }
       } else {
@@ -98,6 +99,18 @@ function AdminSchedule() {
   const handleFinalizeAppointment = async (cita, amount) => {
     try {
       setLoading(true);
+      const today = new Date();
+      const citaDate = new Date(cita.date);
+
+      const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
+      const citaStr = citaDate.toISOString().split("T")[0]; // YYYY-MM-DD
+
+      if (todayStr !== citaStr) {
+        toast.error("Solo se pueden finalizar citas en la fecha programada.");
+        setLoading(false);
+        return;
+      }
+
       // 1. Finalizar cita en backend
       const res = await finalizeAppointment(cita.appointment_id);
 
@@ -105,13 +118,15 @@ function AdminSchedule() {
         toast.success(res.message || "¡Cita finalizada con éxito!");
 
         // 2. Crear venta asociada
+
         const newSaleData = {
-          client_id: cita.client.client_id,
           amount: parseFloat(amount),
           date: new Date(cita.date).toISOString(),
           appointment_id: cita.appointment_id,
         };
-
+        if (cita.client?.client_id) {
+          newSaleData.client_id = cita.client.client_id;
+        }
         const saleRes = await createSale(newSaleData);
 
         if (saleRes && !saleRes.error) {

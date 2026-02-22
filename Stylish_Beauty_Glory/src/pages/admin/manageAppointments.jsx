@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaPlus, FaEdit, FaUserPlus } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+import Select from "react-select";
 
 //CSS
 import "../../styles/Modals_CSS/modalBase.css";
@@ -16,8 +17,17 @@ import {
   updateAppointment,
 } from "../../services/Serv_appointments";
 import { notifyAppointmentMoved } from "../../services/Serv_notifications";
+import { getClients } from "../../services/Serv_clients";
 import { API_BASE } from "../../services/config";
 import LoaderOverlay from "../overlay/UniversalOverlay";
+
+function formatTo12Hour(timeString) {
+  // Suponiendo que viene como "HH:mm" (ej: "14:30")
+  const [hour, minute] = timeString.split(":").map(Number);
+  const suffix = hour >= 12 ? "p. m." : "a. m.";
+  const adjustedHour = ((hour + 11) % 12) + 1; // convierte 0-23 a 1-12
+  return `${adjustedHour}:${minute.toString().padStart(2, "0")} ${suffix}`;
+}
 
 function ManageAppointments() {
   //estado de overlay
@@ -33,8 +43,12 @@ function ManageAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
 
+  //clientes
+  const [clients, setClients] = useState([]);
+
   // Modal agregar cita
   const [showModal, setShowModal] = useState(false);
+
   //Carga de servicios
   const [services, setServices] = useState([]);
 
@@ -43,7 +57,6 @@ function ManageAppointments() {
       try {
         setLoading(true);
         const result = await fetchServices();
-
         if (result?.error) {
           toast.error("Error al obtener servicios");
         } else if (Array.isArray(result.services)) {
@@ -66,7 +79,6 @@ function ManageAppointments() {
       try {
         setLoading(true);
         const result = await getAppointments();
-        console.log("Citas obtenidas:", result);
         if (result?.error) {
           toast.error("Error al obtener citas");
         } else if (Array.isArray(result.appointments)) {
@@ -81,6 +93,33 @@ function ManageAppointments() {
     };
     cargarCitas();
   }, []);
+
+  //Carga de clientes desde la API
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        setLoading(true);
+        const res = await getClients();
+
+        if (Array.isArray(res.clients)) {
+          setClients(res.clients);
+        } else {
+          toast.error(res?.error || "Error al cargar clientes");
+        }
+      } catch (error) {
+        console.error("Error cargando clientes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClients();
+  }, []);
+
+  const clientOptions = clients.map((c) => ({
+    value: c.client_id,
+    label: `${c.primary_name} ${c.first_surname} ${c.second_surname}`,
+  }));
 
   // Filtros
   const [filterDate, setFilterDate] = useState("");
@@ -120,12 +159,14 @@ function ManageAppointments() {
   //editar cita
   const handleUpdateAppointment = async () => {
     const updatedCita = {
-      client_id: selectedAppointment.client_id,
       date: selectedAppointment.date,
       time: selectedAppointment.time,
       service_id: selectedAppointment.service_id,
       duration: selectedAppointment.duration,
     };
+    if (selectedAppointment.client_id) {
+      updatedCita.client_id = selectedAppointment.client_id;
+    }
 
     try {
       const result = await updateAppointment(selectedAppointment.appointment_id, updatedCita);
@@ -136,8 +177,7 @@ function ManageAppointments() {
         toast.success(result?.message || "Cita actualizada correctamente");
 
         // 🔹 Notificar al cliente si la cita está reservada
-        console.log(selectedAppointment);
-        if (selectedAppointment.client.client_id) {
+        if (selectedAppointment.client?.client_id) {
           try {
             const token = localStorage.getItem("access_token");
             if (token) {
@@ -330,23 +370,26 @@ function ManageAppointments() {
                   <tr key={cita.appointment_id}>
                     <td>{cita.appointment_id}</td>
                     <td>{cita.date.split("T")[0]}</td>
-                    <td>{cita.time}</td>
+                    <td>{formatTo12Hour(cita.time)}</td>
                     <td>{cita.duration}</td>
                     <td>{cita.service?.name}</td>
                     <td>
                       <span className={`status-label ${estado.className}`}>{estado.text}</span>
                     </td>
                     <td>
-                      <button
-                        className="icon-btn edit"
-                        title="Editar cita"
-                        onClick={() => {
-                          setSelectedAppointment(cita);
-                          setEditModal(true);
-                        }}
-                      >
-                        <FaEdit />
-                      </button>
+                      {(cita.status === "Disponible" || cita.status === "Agendada") && (
+                        <button
+                          className="icon-btn edit"
+                          title="Editar cita"
+                          onClick={() => {
+                            setSelectedAppointment(cita);
+                            setEditModal(true);
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                      )}
+
                       {cita.date.split("T")[0] >= new Date().toLocaleDateString("sv-SE") &&
                         cita.status === "Disponible" && (
                           <button
@@ -379,12 +422,48 @@ function ManageAppointments() {
 
             <div className="modal-form">
               <label>
-                ID del cliente:
-                <input
-                  type="number"
-                  value={clientId}
-                  onChange={(e) => setClientId(e.target.value)}
-                  placeholder="Ingrese ID del cliente"
+                Cliente:
+                <Select
+                  options={clientOptions}
+                  placeholder="Selecciona o escribe..."
+                  isClearable
+                  isSearchable
+                  value={clientOptions.find((opt) => opt.value === clientId) || null}
+                  onChange={(selected) => setClientId(selected ? selected.value : "")}
+                  styles={{
+                    control: (base, state) => ({
+                      ...base,
+                      borderRadius: "999px",
+                      backgroundColor: state.isFocused ? "#fff1f1" : "#fef6f6",
+                      boxShadow: state.isFocused
+                        ? "0 0 0 3px rgba(186, 130, 130, 0.3)"
+                        : "0 2px 6px rgba(186, 130, 130, 0.2)",
+                      border: "none",
+                      padding: "6px",
+                      fontFamily: "Poppins, sans-serif",
+                      fontSize: "0.95rem",
+                      color: "#ba8282",
+                    }),
+                    option: (base, state) => ({
+                      ...base,
+                      fontSize: "0.9rem",
+                      color: state.isSelected ? "#fff" : "#4a2e2e",
+                      backgroundColor: state.isSelected
+                        ? "#ba8282"
+                        : state.isFocused
+                          ? "#fef6f6"
+                          : "white",
+                      padding: "8px 12px",
+                    }),
+                    placeholder: (base) => ({
+                      ...base,
+                      color: "#ba8282",
+                    }),
+                    singleValue: (base) => ({
+                      ...base,
+                      color: "#4a2e2e",
+                    }),
+                  }}
                 />
               </label>
             </div>
@@ -435,7 +514,22 @@ function ManageAppointments() {
                   type="text"
                   placeholder="HH:MM"
                   value={newDuration}
-                  onChange={(e) => setNewDuration(e.target.value)}
+                  onChange={(e) => {
+                    // permitir escribir libremente números y :
+                    let value = e.target.value.replace(/[^\d]/g, "");
+                    if (value.length > 4) value = value.slice(0, 4);
+                    setNewDuration(value);
+                  }}
+                  onBlur={() => {
+                    // al salir del input, formatear
+                    let value = newDuration.replace(/\D/g, "");
+                    if (!value) return;
+
+                    value = value.padStart(4, "0"); // completar con ceros
+                    const hours = value.slice(0, 2);
+                    const minutes = value.slice(2);
+                    setNewDuration(`${hours}:${minutes}`);
+                  }}
                 />
               </label>
 
@@ -497,10 +591,27 @@ function ManageAppointments() {
                 Duración:
                 <input
                   type="text"
+                  placeholder="HH:MM"
                   value={selectedAppointment.duration}
-                  onChange={(e) =>
-                    setSelectedAppointment({ ...selectedAppointment, duration: e.target.value })
-                  }
+                  onChange={(e) => {
+                    // permitir escribir libremente números
+                    let value = e.target.value.replace(/[^\d]/g, "");
+                    if (value.length > 4) value = value.slice(0, 4);
+                    setSelectedAppointment({ ...selectedAppointment, duration: value });
+                  }}
+                  onBlur={() => {
+                    let value = selectedAppointment.duration.replace(/\D/g, "");
+                    if (!value) return;
+
+                    value = value.padStart(4, "0"); // completar con ceros
+                    const hours = value.slice(0, 2);
+                    const minutes = value.slice(2);
+
+                    setSelectedAppointment({
+                      ...selectedAppointment,
+                      duration: `${hours}:${minutes}`,
+                    });
+                  }}
                 />
               </label>
 

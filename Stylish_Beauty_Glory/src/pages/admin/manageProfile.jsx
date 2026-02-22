@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserCircle, FaPencilAlt, FaKey, FaUserSlash } from "react-icons/fa";
+import { FaUserCircle, FaPencilAlt, FaUserSlash, FaUser } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
 //CSS
@@ -30,11 +30,11 @@ function ManageProfile() {
   const [editedWorkingDays, setEditedWorkingDays] = useState("");
 
   //edicion de contraseña
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
   const [newPassword, setNewPassword] = useState("");
+  const [newUsername, setNewUsername] = useState("");
+
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showNewPassword] = useState(false);
-  const [showConfirmPassword] = useState(false);
 
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
 
@@ -83,31 +83,37 @@ function ManageProfile() {
     editedCertifications !== profile.certifications ||
     editedWorkingDays !== profile.working_days;
 
-  //cambiar contraseña
-  const handleUpdatePassword = async () => {
+  // actualizar usuario (nombre y/o contraseña)
+  const handleUpdateUser = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const userId = user.user_id;
 
-      const updatedData = {
-        password: newPassword,
-      };
+      const updatedData = {};
+
+      if (newPassword) {
+        updatedData.password = newPassword;
+      }
+      if (newUsername) {
+        updatedData.username = newUsername;
+      }
 
       const result = await updateUser(userId, updatedData);
 
       if (result && !result.error) {
-        console.log("Contraseña actualizada en backend:", result);
-        toast.success(result.message || "Contraseña actualizada correctamente");
-        setShowPasswordModal(false);
+        console.log("Usuario actualizado en backend:", result);
+        toast.success(result.message || "Usuario actualizado correctamente");
+        setShowUserModal(false);
         setNewPassword("");
         setConfirmPassword("");
+        setNewUsername("");
       } else {
-        console.error("Error al actualizar contraseña:", result?.error);
-        toast.error(result?.error || "Error al actualizar contraseña");
+        console.error("Error al actualizar usuario:", result?.error);
+        toast.error(result?.error || "Error al actualizar usuario");
       }
     } catch (err) {
-      console.error("Error en handleUpdatePassword:", err);
-      toast.error("Error al actualizar contraseña");
+      console.error("Error en handleUpdateUser:", err);
+      toast.error("Error al actualizar usuario");
     }
   };
 
@@ -217,10 +223,10 @@ function ManageProfile() {
           <div className="account-right">
             <button
               className="profile-btn profile-btn-primary"
-              onClick={() => setShowPasswordModal(true)}
+              onClick={() => setShowUserModal(true)}
             >
-              <FaKey className="btn-icon" />
-              Cambiar contraseña
+              <FaUser className="btn-icon" />
+              Editar mi usuario
             </button>
 
             <button
@@ -367,22 +373,33 @@ function ManageProfile() {
         </section>
       </div>
 
-      {/* MODAL CONTRASEÑA */}
-      {showPasswordModal && (
+      {/* MODAL USUARIO */}
+      {showUserModal && (
         <div className="modal-overlay">
           <div className="modal-content small">
-            <h3>Cambiar contraseña</h3>
+            <h3>Editar usuario</h3>
 
+            <p>Nombre de usuario:</p>
             <input
-              type={showNewPassword ? "text" : "text"}
+              type="text"
+              placeholder="Nuevo nombre"
+              value={newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
+              className="contact-input"
+            />
+
+            <p>Nueva contraseña:</p>
+            <input
+              type="password"
               placeholder="Nueva contraseña"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               className="contact-input"
             />
 
+            <p>Confirmar contraseña:</p>
             <input
-              type={showConfirmPassword ? "text" : "text"}
+              type="password"
               placeholder="Confirmar contraseña"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -390,21 +407,20 @@ function ManageProfile() {
             />
 
             <div className="modal-actions">
-              <button className="modal-btn cancel" onClick={() => setShowPasswordModal(false)}>
-                Cancelar
-              </button>
               <button
                 className="modal-btn confirm"
                 onClick={() => {
-                  if (newPassword === confirmPassword && newPassword.length >= 6) {
-                    handleUpdatePassword();
-                    setShowPasswordModal(false);
+                  if (!newPassword || newPassword === confirmPassword) {
+                    handleUpdateUser();
                   } else {
                     toast.error("Las contraseñas no coinciden o son demasiado cortas");
                   }
                 }}
               >
                 Guardar
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowUserModal(false)}>
+                Cancelar
               </button>
             </div>
           </div>
@@ -421,9 +437,6 @@ function ManageProfile() {
               al administrador.
             </p>
             <div className="modal-actions">
-              <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>
-                Cancelar
-              </button>
               <button
                 className="modal-btn confirm"
                 onClick={() => {
@@ -432,6 +445,9 @@ function ManageProfile() {
                 }}
               >
                 Confirmar
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>
+                Cancelar
               </button>
             </div>
           </div>

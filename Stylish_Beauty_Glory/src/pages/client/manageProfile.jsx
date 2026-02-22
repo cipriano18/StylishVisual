@@ -22,8 +22,10 @@ function ManageProfile() {
   //Perfil & carga
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  //Editar contraseña
+
+  //Editar contraseña y usuario
   const [newPassword, setNewPassword] = useState("");
+  const [newUsername, setNewUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   //Editar información personal
@@ -73,25 +75,34 @@ function ManageProfile() {
     loadProfile();
   }, []);
 
-  //Cambiar contraseña
-  const handleUpdatePassword = async () => {
+  // Cambiar datos de usuario (nombre y/o contraseña)
+  const handleUpdateUser = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const userId = user.user_id;
-      const updatedData = { password: newPassword };
 
-      const result = await updateUser(userId, updatedData); //API
+      const updatedData = {};
+
+      if (newUsername) {
+        updatedData.username = newUsername;
+      }
+      if (newPassword) {
+        updatedData.password = newPassword;
+      }
+
+      const result = await updateUser(userId, updatedData); // API
 
       if (result && !result.error) {
-        toast.success(result.message || "Contraseña actualizada correctamente");
+        toast.success(result.message || "Usuario actualizado correctamente");
         setShowPasswordModal(false);
+        setNewUsername("");
         setNewPassword("");
         setConfirmPassword("");
       } else {
-        toast.error(result?.error || "Error al actualizar contraseña");
+        toast.error(result?.error || "Error al actualizar usuario");
       }
     } catch (err) {
-      toast.error("Error al actualizar contraseña");
+      toast.error("Error al actualizar usuario");
     }
   };
 
@@ -347,22 +358,34 @@ function ManageProfile() {
           </div>
         </section>
       </div>
-      {/* MODAL CAMBIO DE CONTRASEÑA */}
+
+      {/* MODAL USUARIO */}
       {showPasswordModal && (
         <div className="modal-overlay">
           <div className="modal-content small">
-            <h3>Cambiar contraseña</h3>
+            <h3>Editar usuario</h3>
 
+            <p>Nombre de usuario:</p>
             <input
               type="text"
+              placeholder="Nuevo nombre"
+              value={newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
+              className="contact-input"
+            />
+
+            <p>Nueva contraseña:</p>
+            <input
+              type="password"
               placeholder="Nueva contraseña"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               className="contact-input"
             />
 
+            <p>Confirmar contraseña:</p>
             <input
-              type="text"
+              type="password"
               placeholder="Confirmar contraseña"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -370,14 +393,11 @@ function ManageProfile() {
             />
 
             <div className="modal-actions">
-              <button className="modal-btn cancel" onClick={() => setShowPasswordModal(false)}>
-                Cancelar
-              </button>
               <button
                 className="modal-btn confirm"
                 onClick={() => {
-                  if (newPassword === confirmPassword && newPassword.length >= 6) {
-                    handleUpdatePassword();
+                  if (!newPassword || newPassword === confirmPassword) {
+                    handleUpdateUser();
                   } else {
                     toast.error("Las contraseñas no coinciden o son demasiado cortas");
                   }
@@ -385,10 +405,14 @@ function ManageProfile() {
               >
                 Guardar
               </button>
+              <button className="modal-btn cancel" onClick={() => setShowPasswordModal(false)}>
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       )}
+
       {/* MODAL DAR DE BAJA */}
       {showDeactivateModal && (
         <div className="modal-overlay">
@@ -399,9 +423,6 @@ function ManageProfile() {
               al administrador.
             </p>
             <div className="modal-actions">
-              <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>
-                Cancelar
-              </button>
               <button
                 className="modal-btn confirm"
                 onClick={() => {
@@ -410,6 +431,9 @@ function ManageProfile() {
                 }}
               >
                 Confirmar
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>
+                Cancelar
               </button>
             </div>
           </div>

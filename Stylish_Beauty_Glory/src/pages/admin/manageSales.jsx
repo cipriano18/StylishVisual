@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Select from "react-select";
 import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
@@ -46,7 +47,6 @@ function ManageSales() {
   };
 
   const [clients, setClients] = useState([]);
-  console.log("Clientes cargados:", clients); // 🔹 log para verificar clientes
   useEffect(() => {
     const fetchClients = async () => {
       try {
@@ -67,6 +67,11 @@ function ManageSales() {
 
     fetchClients();
   }, []);
+
+  const clientOptions = clients.map((c) => ({
+    value: c.client_id,
+    label: `${c.primary_name} ${c.secondary_name} ${c.first_surname} ${c.second_surname}`,
+  }));
 
   //cargar ventas del mes actual al iniciar
   useEffect(() => {
@@ -169,6 +174,7 @@ function ManageSales() {
       toast.error("Error inesperado al agregar");
     }
   };
+
   //editar venta
   const handleUpdateSale = async () => {
     try {
@@ -254,7 +260,6 @@ function ManageSales() {
           </button>
         </div>
       </div>
-
       {/* Tabla de ventas */}
       <div className="table-list">
         {filteredSales.length > 0 ? (
@@ -308,19 +313,47 @@ function ManageSales() {
           <p className="no-info">No se encontraron ventas</p>
         )}
       </div>
-
       {/* Modal agregar */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content small">
             <h2>Nueva venta</h2>
-            <p>ID Cliente</p>
-            <input
-              type="text"
-              placeholder="ID Cliente"
-              value={newClientId}
-              onChange={(e) => setNewClientId(e.target.value)}
+
+            <p>Cliente</p>
+            <Select
+              options={clientOptions}
+              placeholder="Selecciona o escribe..."
+              isClearable
+              isSearchable
+              value={clientOptions.find((opt) => opt.value === newClientId) || null}
+              onChange={(selected) => setNewClientId(selected ? selected.value : "")}
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  borderRadius: "999px",
+                  backgroundColor: state.isFocused ? "#fff1f1" : "#fef6f6",
+                  boxShadow: state.isFocused
+                    ? "0 0 0 3px rgba(186, 130, 130, 0.3)"
+                    : "0 2px 6px rgba(186, 130, 130, 0.2)",
+                  border: "none",
+                  padding: "6px",
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: "0.95rem",
+                  color: "#ba8282",
+                }),
+                option: (base, state) => ({
+                  ...base,
+                  fontSize: "0.9rem",
+                  color: state.isSelected ? "#fff" : "#4a2e2e",
+                  backgroundColor: state.isSelected
+                    ? "#ba8282"
+                    : state.isFocused
+                      ? "#fef6f6"
+                      : "white",
+                }),
+              }}
             />
+
             <p>Monto</p>
             <input
               type="number"
@@ -328,6 +361,7 @@ function ManageSales() {
               value={newAmount}
               onChange={(e) => setNewAmount(e.target.value)}
             />
+
             <p>Fecha de venta</p>
             <input
               type="date"

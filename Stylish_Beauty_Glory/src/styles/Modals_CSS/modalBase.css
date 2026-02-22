@@ -15,12 +15,15 @@
 .modal-content {
   background-color: #ffffff;
   padding: 2rem;
-  border-radius: 24px; /* 🔸 Bordes bien redondeados */
-  box-shadow: 0 8px 24px rgba(186, 130, 130, 0.25); /* 🔸 Sombra cálida */
+  border-radius: 24px;
+  /* 🔸 Bordes bien redondeados */
+  box-shadow: 0 8px 24px rgba(186, 130, 130, 0.25);
+  /* 🔸 Sombra cálida */
   animation: fadeIn 0.3s ease;
   width: 100%;
   max-width: 400px;
-  font-family: 'Poppins', sans-serif; /* 🔸 Fuente integrada */
+  font-family: 'Poppins', sans-serif;
+  /* 🔸 Fuente integrada */
 }
 
 /* 🔹 Tamaños reutilizables */
@@ -47,7 +50,8 @@
   width: 100%;
   padding: 12px 16px;
   margin-bottom: 1rem;
-  border-radius: 999px; /* 🔸 Input tipo píldora */
+  border-radius: 999px;
+  /* 🔸 Input tipo píldora */
   border: none;
   background-color: #fef6f6;
   font-size: 0.95rem;
@@ -74,7 +78,8 @@
 .modal-btn {
   padding: 10px 18px;
   border: none;
-  border-radius: 999px; /* 🔸 Botón redondeado tipo píldora */
+  border-radius: 999px;
+  /* 🔸 Botón redondeado tipo píldora */
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
@@ -110,6 +115,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -160,7 +166,8 @@
   width: 100%;
   padding: 12px 16px;
   margin-bottom: 1rem;
-  border-radius: 24px; /* 🔸 Redondeado suave, no tan extremo como input */
+  border-radius: 24px;
+  /* 🔸 Redondeado suave, no tan extremo como input */
   border: none;
   background-color: #fef6f6;
   font-size: 0.95rem;
@@ -178,20 +185,21 @@
   outline: none;
 }
 
-.modal-content p{
+.modal-content p {
   font-size: 0.85rem;
   color: #4a2e2e;
 }
 
-.modal-content label{
-font-family: "Josefin Sans", sans-serif;
+.modal-content label {
+  font-family: "Josefin Sans", sans-serif;
 }
 
 .modal-content input[type="number"] {
   width: 100%;
   padding: 12px 16px;
   margin-bottom: 1rem;
-  border-radius: 999px; /* 🔸 Input tipo píldora */
+  border-radius: 999px;
+  /* 🔸 Input tipo píldora */
   border: none;
   background-color: #fef6f6;
   font-size: 0.95rem;
@@ -219,14 +227,16 @@ font-family: "Josefin Sans", sans-serif;
   width: 100%;
   padding: 12px 16px;
   margin-bottom: 1rem;
-  border-radius: 999px; /* 🔸 Píldora */
+  border-radius: 999px;
+  /* 🔸 Píldora */
   border: none;
   background-color: #fef6f6;
   font-size: 0.95rem;
   color: #ba8282;
   box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
   font-family: 'Poppins', sans-serif;
-  appearance: none; /* 🔸 Elimina estilo nativo */
+  appearance: none;
+  /* 🔸 Elimina estilo nativo */
   -webkit-appearance: none;
   -moz-appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='%23ba8282' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
@@ -250,7 +260,8 @@ font-family: "Josefin Sans", sans-serif;
   width: 100%;
   padding: 12px 16px;
   margin-bottom: 1rem;
-  border-radius: 999px; /* 🔸 Píldora */
+  border-radius: 999px;
+  /* 🔸 Píldora */
   border: none;
   background-color: #fef6f6;
   font-size: 0.95rem;
