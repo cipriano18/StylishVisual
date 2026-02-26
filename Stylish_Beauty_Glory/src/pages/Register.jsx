@@ -1,8 +1,8 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import {requestVerificationCode, verifyCode } from "../services/Serv_codes";
-import {createClient} from "../services/Serv_clients";
+import { requestVerificationCode, verifyCode } from "../services/Serv_codes";
+import { createClient } from "../services/Serv_clients";
 import "../styles/Register_CSS/register.css";
 import IMG1 from "../assets/IMGR.png";
 import Logo from "../assets/Stylish_Logo_White.png";
@@ -10,7 +10,6 @@ import { login } from "../services/Serv_login";
 import { FaArrowLeft } from "react-icons/fa";
 
 function Register() {
-
   //contador para reenvío de código
   const [resendTimer, setResendTimer] = useState(120); // 2 minutos en segundos
 
@@ -31,7 +30,7 @@ function Register() {
     codigo: "",
   });
 
-   useEffect(() => {
+  useEffect(() => {
     if (step === 2 && resendTimer > 0) {
       const interval = setInterval(() => {
         setResendTimer((prev) => prev - 1);
@@ -52,30 +51,30 @@ function Register() {
   };
 
   // Enviar primer formulario
-const handleFirstSubmit = async () => {
-  const { nombre, fechaNacimiento, genero, telefono, cedula, correo } = formData;
+  const handleFirstSubmit = async () => {
+    const { nombre, fechaNacimiento, genero, telefono, cedula, correo } = formData;
 
-  if (!nombre || !fechaNacimiento || !genero || !telefono || !cedula || !correo) {
-    toast.error("Todos los campos son obligatorios");
-    return;
-  }
-
-  try {
-    localStorage.setItem("registerData", JSON.stringify(formData));
-
-    const res = await requestVerificationCode(correo);
-
-    if (res && res.message) {
-      toast.success(res.message);
-      setStep(2);                
-    } else {
-      toast.error(res.error||"No se pudo enviar el código, intenta de nuevo");
+    if (!nombre || !fechaNacimiento || !genero || !telefono || !cedula || !correo) {
+      toast.error("Todos los campos son obligatorios");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    toast.error("Error al solicitar el código de verificación");
-  }
-};
+
+    try {
+      localStorage.setItem("registerData", JSON.stringify(formData));
+
+      const res = await requestVerificationCode(correo);
+
+      if (res && res.message) {
+        toast.success(res.message);
+        setStep(2);
+      } else {
+        toast.error(res.error || "No se pudo enviar el código, intenta de nuevo");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error al solicitar el código de verificación");
+    }
+  };
 
   // Enviar segundo formulario
   const handleSecondSubmit = async () => {
@@ -104,7 +103,7 @@ const handleFirstSubmit = async () => {
       if (res && res.message && res.message.includes("Correo verificado correctamente")) {
         toast.success(res.message);
 
-      // 3️⃣ Preparar datos finales con la estructura que espera la API
+        // 3️⃣ Preparar datos finales con la estructura que espera la API
         const parts = initialData.nombre.trim().split(" ");
 
         let primary_name = "";
@@ -143,7 +142,7 @@ const handleFirstSubmit = async () => {
           phone: initialData.telefono,
         };
 
-        // 4️⃣ Enviar datos a la API de clientes 
+        // 4️⃣ Enviar datos a la API de clientes
         const clientRes = await createClient(finalData);
         if (clientRes && clientRes.message) {
           toast.success(clientRes.message);
@@ -167,13 +166,12 @@ const handleFirstSubmit = async () => {
           }
         } else {
           toast.error(clientRes?.error || "Error al crear el cliente, intenta de nuevo");
-          if(clientRes.missing_fields){
+          if (clientRes.missing_fields) {
             toast.error(`Campos faltantes: ${clientRes.missing_fields.join(", ")}`);
           }
         }
-
       } else {
-        toast.error(res.error||"El código de verificación no es válido");
+        toast.error(res.error || "El código de verificación no es válido");
       }
     } catch (err) {
       console.error(err);
@@ -189,10 +187,12 @@ const handleFirstSubmit = async () => {
           <strong>Descubre </strong>tu yo interior y hazlo relucir.
         </p>
         <p className="tell">
-          <strong>Contáctanos: </strong><br />+506 7133-8429
+          <strong>Contáctanos: </strong>
+          <br />
+          +506 7133-8429
         </p>
         <img src={IMG1} alt="Decoración" className="handR-img" />
-              <svg
+        <svg
           className="wave-left"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 100"
@@ -240,11 +240,7 @@ const handleFirstSubmit = async () => {
               </label>
               <label>
                 Género
-                <select
-                  name="genero"
-                  value={formData.genero}
-                  onChange={handleChange}
-                >
+                <select name="genero" value={formData.genero} onChange={handleChange}>
                   <option value="">Selecciona</option>
                   <option value="femenino">Femenino</option>
                   <option value="masculino">Masculino</option>
@@ -286,132 +282,126 @@ const handleFirstSubmit = async () => {
                 placeholder="Ingresa tu correo electrónico"
               />
             </label>
-            <button
-              type="button"
-              onClick={handleFirstSubmit}
-            >
+            <button type="button" onClick={handleFirstSubmit}>
               Obtener Código de Verificación
             </button>
 
-                {/* Texto final */}
-    <p className="login-text">
-      ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
-    </p>
+            {/* Texto final */}
+            <p className="login-text">
+              ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
+            </p>
           </form>
         )}
 
         {step === 2 && (
-  <form className="register-form">
-    <div className="back-container">
-    {/* Botón para volver al Step 1 */}
-  <button
-    type="button"
-    className="back-btn"
-    onClick={() => {
-      const savedData = JSON.parse(localStorage.getItem("registerData"));
-      if (savedData) {
-        setFormData(savedData); // 👈 restaura los datos previos al Step 1
-      }
-      setStep(1); // 👈 vuelve al Step 1
-    }}
-  >
-    <FaArrowLeft/>
-    Paso anterior
-  </button>
+          <form className="register-form">
+            <div className="back-container">
+              {/* Botón para volver al Step 1 */}
+              <button
+                type="button"
+                className="back-btn"
+                onClick={() => {
+                  const savedData = JSON.parse(localStorage.getItem("registerData"));
+                  if (savedData) {
+                    setFormData(savedData); // 👈 restaura los datos previos al Step 1
+                  }
+                  setStep(1); // 👈 vuelve al Step 1
+                }}
+              >
+                <FaArrowLeft />
+                Paso anterior
+              </button>
+            </div>
+            {/* Usuario y contraseña en una sola fila */}
+            <div className="form-row">
+              <label>
+                Nombre de usuario
+                <input
+                  type="text"
+                  name="usuario"
+                  value={secondStepData.usuario}
+                  onChange={handleSecondChange}
+                  placeholder="Ingresa tu usuario"
+                />
+              </label>
 
-    </div>
-    {/* Usuario y contraseña en una sola fila */}
-    <div className="form-row">
-      <label>
-        Nombre de usuario
-        <input
-          type="text"
-          name="usuario"
-          value={secondStepData.usuario}
-          onChange={handleSecondChange}
-          placeholder="Ingresa tu usuario"
-        />
-      </label>
+              <label>
+                Contraseña
+                <input
+                  type="password"
+                  name="contrasena"
+                  value={secondStepData.contrasena}
+                  onChange={handleSecondChange}
+                  placeholder="Ingresa tu contraseña"
+                />
+              </label>
+            </div>
 
-      <label>
-        Contraseña
-        <input
-          type="password"
-          name="contrasena"
-          value={secondStepData.contrasena}
-          onChange={handleSecondChange}
-          placeholder="Ingresa tu contraseña"
-        />
-      </label> 
-    </div>
+            {/* Mini leyenda */}
+            <small className="legend-text">
+              No olvides estos datos, serán necesarios para iniciar sesión cada vez que entres a la
+              página.
+            </small>
+            <label>
+              Código de verificación
+              <input
+                type="text"
+                name="codigo"
+                value={secondStepData.codigo}
+                onChange={handleSecondChange}
+                placeholder="Ingresa el código enviado"
+              />
+            </label>
+            <div className="resend-container">
+              <span>¿Aún no te llega el código?</span>
+              <button
+                type="button"
+                className="resend-btn"
+                disabled={resendTimer > 0}
+                onClick={async () => {
+                  try {
+                    const res = await requestVerificationCode(formData.correo);
+                    if (res && res.message) {
+                      toast.success(res.message);
+                      setResendTimer(120); // reiniciar contador
+                    }
+                  } catch (err) {
+                    toast.error("Error al solicitar nuevamente el código");
+                  }
+                }}
+              >
+                {resendTimer > 0
+                  ? `Solicitar de nuevo (${Math.floor(resendTimer / 60)}:${(resendTimer % 60)
+                      .toString()
+                      .padStart(2, "0")})`
+                  : "Solicitar de nuevo"}
+              </button>
+            </div>
+            <button type="button" onClick={handleSecondSubmit}>
+              Confirmar Registro
+            </button>
 
-    {/* Mini leyenda */}
-    <small className="legend-text">
-      No olvides estos datos, serán necesarios para iniciar sesión cada vez que entres a la página.
-    </small>
-    <label>
-      Código de verificación
-      <input
-        type="text"
-        name="codigo"
-        value={secondStepData.codigo}
-        onChange={handleSecondChange}
-        placeholder="Ingresa el código enviado"
-      />
-    </label>
-    <div className="resend-container">
-      <span>¿Aún no te llega el código?</span>
-      <button
-        type="button"
-        className="resend-btn"
-        disabled={resendTimer > 0}
-        onClick={async () => {
-          try {
-            const res = await requestVerificationCode(formData.correo);
-            if (res && res.message) {
-              toast.success(res.message);
-              setResendTimer(120); // reiniciar contador
-            }
-          } catch (err) {
-            toast.error("Error al solicitar nuevamente el código");
-          }
+            {/* Texto final */}
+            <p className="login-text">
+              ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
+            </p>
+          </form>
+        )}
+      </section>
+      <Toaster
+        position="center-top"
+        toastOptions={{
+          style: {
+            background: "#875858",
+            color: "#fff",
+            borderRadius: "12px",
+            fontFamily: "Poppins, sans-serif",
+            zIndex: 9999,
+          },
         }}
-      >
-        {resendTimer > 0
-          ? `Solicitar de nuevo (${Math.floor(resendTimer / 60)}:${(resendTimer % 60)
-              .toString()
-              .padStart(2, "0")})`
-          : "Solicitar de nuevo"}
-      </button>
-    </div>
-    <button type="button" onClick={handleSecondSubmit}>
-      Confirmar Registro
-    </button>
-
-        {/* Texto final */}
-    <p className="login-text">
-      ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
-    </p>
-  </form>
-)}
-
-</section>
-    <Toaster
-  position="center-top"
-  toastOptions={{
-    style: {
-      background: "#875858",
-      color: "#fff",
-      borderRadius: "12px",
-      fontFamily: "Poppins, sans-serif",
-      zIndex: 9999,
-    },
-  }}
-/>
-
+      />
     </div>
   );
 }
 
 export default Register;
-

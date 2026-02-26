@@ -1,8 +1,10 @@
 .register-section {
   display: flex;
   flex-direction: row;
-  height: 100vh;          /* altura completa de la ventana */
-  width: 100vw;            /* ancho completo de la ventana */
+  height: 100vh;
+  /* altura completa de la ventana */
+  width: 100vw;
+  /* ancho completo de la ventana */
   margin: 0;
   padding: 0;
 }
@@ -11,8 +13,10 @@
 .register-left,
 .register-right {
   position: relative;
-  flex: 0 0 50%;           /* fuerza 50% de ancho */
-  height: 100%;            /* altura completa */
+  flex: 0 0 50%;
+  /* fuerza 50% de ancho */
+  height: 100%;
+  /* altura completa */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,16 +26,18 @@
 }
 
 .logo-img-login {
-  width: 430px;       
-  height: auto;   
+  width: 430px;
+  height: auto;
   margin-bottom: 2rem;
   padding-left: 1rem;
-  padding-bottom: 1rem; 
+  padding-bottom: 1rem;
 
 }
+
 /* Lado izquierdo */
 .register-left {
-  background-color: transparent; /* color que se puede cambiar */
+  background-color: transparent;
+  /* color que se puede cambiar */
   color: #333;
   text-align: center;
 }
@@ -91,17 +97,24 @@
   background-color: #ba8282;
 }
 
-.wave-left { 
-position: absolute;
-top: 0;          /* empieza arriba */
-right: -670px;        /* pegada al borde derecho */
-height: 100px;    /* ocupa toda la altura del contenedor */
-width: 180.5%;     /* grosor de la ola */
-transform: rotate(90deg); /* rotación para ponerla vertical */
+.wave-left {
+  position: absolute;
+  top: 0;
+  /* empieza arriba */
+  right: -670px;
+  /* pegada al borde derecho */
+  height: 100px;
+  /* ocupa toda la altura del contenedor */
+  width: 180.5%;
+  /* grosor de la ola */
+  transform: rotate(90deg);
+  /* rotación para ponerla vertical */
 }
 
 @supports (-webkit-app-region: drag) {
-  .wave-left { right: -685px; } 
+  .wave-left {
+    right: -685px;
+  }
 }
 
 .hand-img {
@@ -122,6 +135,7 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   font-weight: 500;
   text-align: center;
 }
+
 .registerr-form {
   display: flex;
   flex-direction: column;
@@ -156,10 +170,13 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   font-family: 'Roboto', sans-serif;
   padding: 0.8rem;
   border: 1px solid #875858;
-  border-radius: 12px; /* más redondeado */
+  border-radius: 12px;
+  /* más redondeado */
   margin-top: 0.3rem;
-  background-color: #875858; /* color de fondo */
-  color: white; /* texto que escribes */
+  background-color: #875858;
+  /* color de fondo */
+  color: white;
+  /* texto que escribes */
   width: 100%;
 }
 
@@ -168,7 +185,8 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 .registerr-form input::placeholder,
 .registerr-form select::placeholder {
   color: white;
-  opacity: 1; /* asegúrate que sea completamente visible */
+  opacity: 1;
+  /* asegúrate que sea completamente visible */
 }
 
 .registerr-form input:focus,
@@ -189,19 +207,24 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   cursor: pointer;
   font-weight: bold;
   transition: background-position 0.5s, transform 0.2s;
-  background-size: 200% 100%; /* para animación */
+  background-size: 200% 100%;
+  /* para animación */
   background-position: left;
+  margin-top: -40px;
+  margin-bottom: 40px;
 }
 
 .registerr-form button:hover {
   background-position: right;
-  transform: scale(1.05); /* ligero zoom al pasar el cursor */
+  transform: scale(1.05);
+  /* ligero zoom al pasar el cursor */
 }
 
 
 
 .login-text {
-  margin-top: 0.5rem; /* justo debajo del botón */
+  margin-top: 0.5rem;
+  /* justo debajo del botón */
   font-size: 0.85rem;
   text-align: center;
   color: #372826;
@@ -221,13 +244,14 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 
 /* Responsive */
 @media (max-width: 768px) {
-      .form-row {
+  .form-row {
     flex-direction: column;
   }
 
   .register-section {
     flex-direction: column;
-    height: auto; /* altura automática en móvil */
+    height: auto;
+    /* altura automática en móvil */
   }
 
   .register-left,
@@ -241,13 +265,20 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   .wave-left {
     padding-bottom: 5rem;
     position: absolute;
-    bottom: -1px;     /* ahora se pega abajo */
-    top: auto;        /* neutraliza el top del desktop */
-    right: auto;      /* neutraliza el right del desktop */
-    left: 0;          /* se pega a la izquierda */
-    width: 100%;      /* resetea el ancho */
-    height: 100px;    /* resetea la altura */
-    transform: rotate(180deg); /* orientación horizontal */
+    bottom: -1px;
+    /* ahora se pega abajo */
+    top: auto;
+    /* neutraliza el top del desktop */
+    right: auto;
+    /* neutraliza el right del desktop */
+    left: 0;
+    /* se pega a la izquierda */
+    width: 100%;
+    /* resetea el ancho */
+    height: 100px;
+    /* resetea la altura */
+    transform: rotate(180deg);
+    /* orientación horizontal */
     z-index: 3;
   }
 }
@@ -257,18 +288,23 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 @keyframes slideInLeft {
   0% {
     opacity: 0;
-    transform: translateX(-50px); /* empieza desplazado a la izquierda */
+    transform: translateX(-50px);
+    /* empieza desplazado a la izquierda */
   }
+
   100% {
     opacity: 1;
-    transform: translateX(0);     /* termina en su posición original */
+    transform: translateX(0);
+    /* termina en su posición original */
   }
 }
-.register-left .wave-left{
-    opacity: 1;
+
+.register-left .wave-left {
+  opacity: 1;
 }
+
 /* Hacemos que los elementos partan invisibles */
-.register-left > * {
+.register-left>* {
   opacity: 0;
 }
 
@@ -290,7 +326,8 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 
 .register-left .hand-img {
   animation: slideInLeft 1s ease-out forwards, floatUpDown 3s ease-in-out infinite;
-  animation-delay: 0.8s, 1.8s; /* espera a que termine la entrada antes de flotar */
+  animation-delay: 0.8s, 1.8s;
+  /* espera a que termine la entrada antes de flotar */
   opacity: 0;
 }
 
@@ -299,6 +336,7 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
     transform: translateX(-100px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -306,7 +344,41 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 }
 
 @keyframes floatUpDown {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+.forgot-password {
+  margin-top: -20px;
+  text-align: right;
+  font-size: 14px;
+  margin-bottom: 2rem;
+}
+
+.forgot-password span {
+  color: #eebbbb;
+  /* azul típico de enlace */
+  text-decoration: none;
+}
+
+.forgot-password span:hover {
+  text-decoration: underline;
+}
+
+.icon-img {
+  width: 110px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: -10px;
 }
