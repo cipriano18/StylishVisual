@@ -178,7 +178,7 @@ function AdminSchedule() {
       try {
         setLoading(true);
         const res = await getAdminSchedule();
-        console.log("Respuesta de getAdminSchedule:", res); // 🔹 log para depuración
+        console.log("Respuesta de getAdminSchedule:", res);
         if (Array.isArray(res.appointments)) {
           const ordenadas = res.appointments.sort((a, b) => new Date(a.date) - new Date(b.date));
           setAppointments(ordenadas);
