@@ -1,11 +1,18 @@
 /* Títulos */
-h1, h2, h3, h4, .button {
+h1,
+h2,
+h3,
+h4,
+.button {
   font-family: "Yeseva One", serif;
   font-weight: 700;
 }
 
 /* Párrafos */
-p, li, input, textarea {
+p,
+li,
+input,
+textarea {
   font-family: "Josefin Sans", sans-serif;
   font-weight: 400;
 }
@@ -35,9 +42,12 @@ p, li, input, textarea {
   height: 400px;
   border-radius: 10px;
   display: flex;
-  flex-direction: column;       /* eje principal vertical */
-  justify-content: flex-end;    /* contenido al fondo (abajo) */
-  align-items: flex-start;      /* alineado a la izquierda */
+  flex-direction: column;
+  /* eje principal vertical */
+  justify-content: flex-end;
+  /* contenido al fondo (abajo) */
+  align-items: flex-start;
+  /* alineado a la izquierda */
   padding: 1rem;
   color: #fff;
   background-size: cover;
@@ -45,12 +55,12 @@ p, li, input, textarea {
   overflow: hidden;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s;
 }
 
 .portfolio-item:hover {
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -58,15 +68,13 @@ p, li, input, textarea {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 0.3) 40%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.3) 40%,
+      rgba(0, 0, 0, 0) 100%);
   border-radius: 10px;
-  opacity: 0.7; 
-  transition: opacity 0.3s ease; 
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
 }
 
 .portfolio-item:hover::before {
@@ -75,7 +83,8 @@ p, li, input, textarea {
 
 .portfolio-item p,
 .portfolio-item h2 {
-  position: relative; /* asegura que el texto quede encima del overlay */
+  position: relative;
+  /* asegura que el texto quede encima del overlay */
   z-index: 1;
   text-align: left;
   margin: 0.5rem 0;
@@ -124,39 +133,49 @@ p, li, input, textarea {
 /* Flechas de navegación */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #87585800 !important;   /* fuerza el color */
+  color: #87585800 !important;
+  /* fuerza el color */
 }
 
 /* Paginación bullets */
 .swiper-pagination-bullet {
-  background-color: #ccc !important; /* color base */
-  opacity: 1 !important;             /* que se vean siempre */
+  background-color: #ccc !important;
+  /* color base */
+  opacity: 1 !important;
+  /* que se vean siempre */
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #875858 !important; /* color del bullet activo */
+  background-color: #875858 !important;
+  /* color del bullet activo */
 }
 
 .swiper-pagination {
-  position: relative !important; /* en lugar de absolute */
+  position: relative !important;
+  /* en lugar de absolute */
   padding-right: 4rem;
-  margin-top: 1rem;              /* espacio debajo del carrusel */
-  text-align: left;            /* centrar las bolitas */
+  margin-top: 1rem;
+  /* espacio debajo del carrusel */
+  text-align: left;
+  /* centrar las bolitas */
 }
 
-.divider{
-  padding-left: 4rem;
-}
+
 
 .service-tag {
-  position: relative; /* asegura que el texto quede encima del overlay */
+  position: relative;
+  /* asegura que el texto quede encima del overlay */
   z-index: 1;
   display: inline-block;
   margin-top: 6px;
-  background-color: #d89998;   /* fondo blanco */
-  color: #ffffff;              /* texto negro */
-  font-size: 0.75rem;       /* más pequeño */
+  background-color: #d89998;
+  /* fondo blanco */
+  color: #ffffff;
+  /* texto negro */
+  font-size: 0.75rem;
+  /* más pequeño */
   padding: 2px 8px;
-  border-radius: 12px;      /* bordes redondeados */
+  border-radius: 12px;
+  /* bordes redondeados */
   font-weight: 500;
 }

@@ -10,8 +10,7 @@ import { login } from "../services/Serv_login";
 import { FaArrowLeft } from "react-icons/fa";
 
 function Register() {
-  //contador para reenvío de código
-  const [resendTimer, setResendTimer] = useState(120); // 2 minutos en segundos
+  const [resendTimer, setResendTimer] = useState(120); // 2 min
 
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -97,8 +96,9 @@ function Register() {
       }
 
       // 2️⃣ Verificar el código con la API
-      const res = await verifyCode(email, codigo);
 
+      const res = await verifyCode(email, codigo);
+      console.log("Respuesta de la verificacion: ", res);
       // La API devuelve un objeto con "message"
       if (res && res.message && res.message.includes("Correo verificado correctamente")) {
         toast.success(res.message);

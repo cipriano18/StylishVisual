@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 import { API_BASE } from "../services/config";
 
 // Íconos
-import { FaBookOpen, FaCalendarAlt, FaHome, FaUserCircle } from "react-icons/fa";
+import { FaBookOpen, FaCalendarAlt, FaHome, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
 export default function ClientLayout() {
   const [nombreUsuario, setNombreUsuario] = useState("Cargando...");
@@ -88,6 +88,23 @@ export default function ClientLayout() {
                   <FaBookOpen />
                 </span>
                 Mi Agenda
+              </NavLink>
+            </li>
+            {/* Opciones fantasma solo para móvil */}
+            <li className="sidebar-profile-mobile">
+              <NavLink
+                to="/client/profile"
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+              >
+                <span className="sidebar-icon">
+                  <FaUserCircle />
+                </span>
+                Perfil
+              </NavLink>
+              <NavLink to="/login" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                <span className="sidebar-icon">
+                  <FaSignOutAlt />
+                </span>
               </NavLink>
             </li>
           </ul>

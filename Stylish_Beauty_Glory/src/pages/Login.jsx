@@ -59,6 +59,7 @@ function Login() {
       }
 
       // Paso 1: verificar el código
+
       const verifyResponse = await verifyRecoveryCode(mail, verificationCode);
       console.log("Respuesta verificación:", verifyResponse);
 

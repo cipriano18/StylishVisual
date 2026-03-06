@@ -242,48 +242,6 @@
 }
 
 
-/* Responsive */
-@media (max-width: 768px) {
-  .form-row {
-    flex-direction: column;
-  }
-
-  .register-section {
-    flex-direction: column;
-    height: auto;
-    /* altura automática en móvil */
-  }
-
-  .register-left,
-  .register-right {
-    flex: unset;
-    width: 100%;
-    height: auto;
-    padding: 2rem;
-  }
-
-  .wave-left {
-    padding-bottom: 5rem;
-    position: absolute;
-    bottom: -1px;
-    /* ahora se pega abajo */
-    top: auto;
-    /* neutraliza el top del desktop */
-    right: auto;
-    /* neutraliza el right del desktop */
-    left: 0;
-    /* se pega a la izquierda */
-    width: 100%;
-    /* resetea el ancho */
-    height: 100px;
-    /* resetea la altura */
-    transform: rotate(180deg);
-    /* orientación horizontal */
-    z-index: 3;
-  }
-}
-
-
 /* Animación simple de fade-in y slide desde la izquierda */
 @keyframes slideInLeft {
   0% {
@@ -381,4 +339,95 @@
   display: block;
   margin: 0 auto;
   margin-bottom: -10px;
+}
+
+@media (max-width: 768px) {
+
+  .register-left {
+    display: none;
+  }
+
+  .register-section {
+    flex-direction: column;
+    background-color: #c58585;
+  }
+
+  .register-right {
+    flex: 1;
+    width: 100%;
+    padding: 3rem 2rem;
+    background: transparent;
+    justify-content: center;
+  }
+
+  .registerr-form {
+    width: 100%;
+    max-width: 100%;
+    background-color: rgba(135, 88, 88, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+  }
+
+  .logo-img-login {
+    width: 100%;
+    max-width: 260px;
+    padding: 0;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1180px) {
+
+  .register-left {
+    display: none;
+  }
+
+  .register-section {
+    flex-direction: column;
+    background-color: #c58585;
+  }
+
+  .register-right {
+    flex: 1;
+    width: 100%;
+    padding: 4rem 6rem;
+    background: transparent;
+    justify-content: center;
+  }
+
+  .registerr-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: rgba(135, 88, 88, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+  }
+
+  .registerr-form label {
+    font-size: 1.4rem;
+  }
+
+  .registerr-form input {
+    font-size: 1.1rem;
+    padding: 1rem;
+  }
+
+  .registerr-form button {
+    font-size: 1.1rem;
+    padding: 1rem;
+  }
+
+  .logo-img-login {
+    width: 100%;
+    max-width: 360px;
+    padding: 0;
+    margin: 0 auto;
+    display: block;
+  }
 }

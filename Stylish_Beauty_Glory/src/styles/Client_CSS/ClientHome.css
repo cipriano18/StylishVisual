@@ -10,36 +10,41 @@
   display: flex;
   gap: 2rem;
   justify-content: center;
-  background: transparent; /* solo organiza */
+  background: transparent;
+  /* solo organiza */
 }
 
 /* Caja de citas */
 .left-column {
   position: relative;
-  flex: 0 0 20%; /* ancho reducido */
+  flex: 0 0 20%;
+  /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   overflow: hidden;
   background: linear-gradient(to bottom, #875858, #d6a1a1);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   color: white;
 
 }
+
 .middle-column h2,
 .right-column h2,
-.left-column h2{
+.left-column h2 {
   font-size: 1rem;
   font-family: 'Poppins', sans-serif;
 }
+
 /* Caja de consejos */
 .right-column {
   position: relative;
-  flex: 0 0 40%; /* ancho reducido */
+  flex: 0 0 40%;
+  /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   overflow: hidden;
   background: #f4efef;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   color: #000;
 }
 
@@ -47,29 +52,33 @@
   font-size: 14px;
   margin-top: 0.7rem;
 }
+
 /* Caja de fechas */
 .middle-column {
   position: relative;
-  flex: 0 0 25%; /* ancho reducido */
+  flex: 0 0 25%;
+  /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   padding-top: 10px;
   overflow: hidden;
   background: #f4efef;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   color: #000;
 }
 
 /* Fecha de hoy alineada a la derecha y con color distinto */
 .middle-column p.hoy {
   text-align: right;
-  color: #ba838375; /* un tono diferente para destacarla */
+  color: #ba838375;
+  /* un tono diferente para destacarla */
   font-size: 12px;
 }
 
 /* Separación entre el título y la lista */
 .middle-column h2 {
-  margin-bottom: 0.5rem; /* espacio visible antes de la lista */
+  margin-bottom: 0.5rem;
+  /* espacio visible antes de la lista */
 }
 
 /* Lista de citas */
@@ -96,21 +105,24 @@
   width: 80px;
   height: 80px;
   object-fit: cover;
-  border-radius: 50%;   /* opcional: circular */
-  flex-shrink: 0;       /* evita que se deforme */
+  border-radius: 50%;
+  /* opcional: circular */
+  flex-shrink: 0;
+  /* evita que se deforme */
 }
 
 /* Texto */
 .right-content .text {
-  flex: 1;              /* ocupa el resto del espacio */
+  flex: 1;
+  /* ocupa el resto del espacio */
 }
 
 
 
 /* Encabezado citas */
-.appointments-header { 
-  display: flex; 
-  align-items: center; 
+.appointments-header {
+  display: flex;
+  align-items: center;
   gap: 2rem;
 }
 
@@ -146,21 +158,28 @@
 
 /* Sección inferior */
 .bottom-section {
-  text-align: center;   /* 🔹 centra todo el contenido de texto */
-  padding: 2rem 1rem;   /* 🔹 agrega espacio alrededor */
+  text-align: center;
+  /* 🔹 centra todo el contenido de texto */
+  padding: 2rem 1rem;
+  /* 🔹 agrega espacio alrededor */
 }
 
 .bottom-section h2 {
-  display: inline-flex; /* 🔹 permite ícono + texto alineados */
+  display: inline-flex;
+  /* 🔹 permite ícono + texto alineados */
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;          /* 🔹 espacio entre ícono y texto */
-  margin-bottom: 1rem;  /* 🔹 separación con la descripción */
+  gap: 0.5rem;
+  /* 🔹 espacio entre ícono y texto */
+  margin-bottom: 1rem;
+  /* 🔹 separación con la descripción */
 }
 
 .bottom-section p {
-  max-width: 600px;     /* 🔹 limita ancho para que se vea elegante */
-  margin: 0 auto 2rem;  /* 🔹 centra y agrega espacio debajo */
+  max-width: 600px;
+  /* 🔹 limita ancho para que se vea elegante */
+  margin: 0 auto 2rem;
+  /* 🔹 centra y agrega espacio debajo */
   font-size: 1rem;
   color: #444;
 }
@@ -175,14 +194,36 @@
   animation: float ease-in-out infinite;
 }
 
-.bubble.small { width: 15px; height: 15px; animation-duration: 5s; }
-.bubble.medium { width: 25px; height: 25px; animation-duration: 6s; }
-.bubble.large { width: 35px; height: 35px; animation-duration: 8s; }
+.bubble.small {
+  width: 15px;
+  height: 15px;
+  animation-duration: 5s;
+}
+
+.bubble.medium {
+  width: 25px;
+  height: 25px;
+  animation-duration: 6s;
+}
+
+.bubble.large {
+  width: 35px;
+  height: 35px;
+  animation-duration: 8s;
+}
 
 @keyframes float {
-  0% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-20px) translateX(15px); }
-  100% { transform: translateY(0) translateX(0); }
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+
+  50% {
+    transform: translateY(-20px) translateX(15px);
+  }
+
+  100% {
+    transform: translateY(0) translateX(0);
+  }
 }
 
 
@@ -216,7 +257,8 @@
 .client-portfolio-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.9); /* fondo oscuro */
+  background: rgba(0, 0, 0, 0.9);
+  /* fondo oscuro */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -234,3 +276,85 @@
   border-radius: 12px;
 }
 
+/*Movil*/
+@media (max-width: 768px) {
+
+  /*Pantalla general*/
+  .client-home {
+    padding: 0.2rem;
+    gap: 1rem;
+  }
+
+  .bottom-section {
+    padding: 1rem 0.2rem 3rem;
+  }
+
+  /*Superior*/
+  .top-section {
+    flex-direction: column;
+  }
+
+  .middle-column,
+  .right-column {
+    display: none;
+  }
+
+  .left-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 150px;
+  }
+
+  .appointments-header {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .appointments-header h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .appointments-count {
+    font-size: 4rem;
+    text-align: center;
+  }
+
+  /*Inferior*/
+  .bottom-section>p {
+    font-size: 0.85rem;
+  }
+
+  .bottom-section div[style] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .portfolio-card.tall {
+    height: 250px;
+  }
+}
+
+/*Tablet*/
+@media (min-width: 769px) and (max-width: 1180px) {
+  .right-column {
+    display: none;
+  }
+
+  .left-column {
+    flex: 0 0 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 150px;
+  }
+
+  .middle-column {
+    flex: 0 0 45%;
+  }
+}

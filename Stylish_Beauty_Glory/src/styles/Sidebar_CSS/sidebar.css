@@ -115,11 +115,6 @@
   transition: transform 0.3s ease;
 }
 
-.profile-link:hover .sidebar-icon {
-  transform: scale(1.2);
-  /* Agranda el ícono suavemente */
-}
-
 .sidebar-logo {
   display: flex;
   justify-content: center;
@@ -229,53 +224,6 @@
   /* Ícono crece suavemente */
 }
 
-/* Ajustes para pantallas pequeñas */
-
-@media (max-width: 1024px) and (min-width: 480px) {
-  .admin-layout {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    flex-direction: row;
-    overflow-x: auto;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .sidebar-nav ul {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    padding: 8px;
-    overflow-x: auto;
-    margin: 0;
-  }
-
-  .sidebar-nav li {
-    margin-bottom: 0;
-  }
-
-  .sidebar-nav a {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-
-  .sidebar-profile {
-    display: none;
-    /* Podemos moverlo a un menú si quieres */
-  }
-
-  .admin-content {
-    height: auto;
-    overflow-y: visible;
-    padding: 16px;
-  }
-}
-
 .sidebar-icon {
   margin-right: 12px;
   font-size: 1.2rem;
@@ -376,4 +324,350 @@
 
 .sidebar-toggle:hover .sidebar-arrow {
   transform: scale(1.2);
+}
+
+/* Desktop: mostrar perfil normal */
+.sidebar-profile-mobile {
+  display: none;
+}
+
+/* Tablet: barra superior horizontal */
+@media (min-width: 769px) and (max-width: 1180px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 87px;
+    background-color: #ba8282;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    overflow-x: auto;
+  }
+
+  /* Ocultar logo */
+  .sidebar-logo {
+    display: none;
+  }
+
+  /* Navegación horizontal */
+  .sidebar-nav {
+    flex: 1;
+    height: 100%;
+    overflow-y: scroll;
+    /* permite scroll vertical */
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+    border-top: 0px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Ocultar scrollbars en Firefox */
+  .sidebar-nav {
+    scrollbar-width: none;
+    /* oculta la barra */
+  }
+
+  /* Ocultar scrollbars en IE/Edge antiguo */
+  .sidebar-nav {
+    -ms-overflow-style: none;
+    /* oculta la barra */
+
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sidebar-nav li {
+    flex: 0;
+    /* evita que se estiren demasiado */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .sidebar-nav a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+    /* tamaño fijo más pequeño */
+    height: 50px;
+    /* cuadrado para icono */
+    margin-left: 5px;
+    margin-right: 5px;
+    /* quita márgenes que empujaban */
+    border-radius: 50px;
+    /* opcional: círculo */
+    background: none;
+  }
+
+
+  .sidebar-nav a .sidebar-icon {
+    font-size: 24px;
+    margin: 10px;
+  }
+
+  .sidebar-profile {
+    display: none;
+  }
+
+  .sidebar-profile-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar-leave-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar-profile-mobile a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+    height: 50px;
+    border-radius: 50px;
+  }
+
+  .sidebar-profile-mobile .sidebar-icon {
+    font-size: 24px;
+  }
+
+  .profile-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+    /* oculta texto */
+  }
+
+
+  .profile-text {
+    display: none;
+  }
+
+  .profile-link .sidebar-icon {
+    font-size: 24px;
+  }
+
+  /* Dejar espacio al contenido para la barra inferior */
+  .admin-content {
+    padding: 16px;
+    margin-top: 90px;
+  }
+
+  .admin-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .active-link {
+    background-color: #c89292;
+    color: #ffffff;
+    font-weight: bold;
+    border-right: 4px solid #875858;
+
+  }
+
+  .sidebar-nav a:hover {
+    transform: scale(1.00);
+  }
+}
+
+
+
+/* Móvil: barra inferior horizontal */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 87px;
+    background-color: #ba8282;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 50px;
+    margin-bottom: 5px;
+  }
+
+  /* Ocultar logo */
+  .sidebar-logo {
+    display: none;
+  }
+
+  /* Navegación horizontal */
+  .sidebar-nav {
+    flex: 1;
+    height: 100%;
+    overflow-y: scroll;
+    /* permite scroll vertical */
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-top: 0px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Ocultar scrollbars en Firefox */
+  .sidebar-nav {
+    scrollbar-width: none;
+    /* oculta la barra */
+  }
+
+  /* Ocultar scrollbars en IE/Edge antiguo */
+  .sidebar-nav {
+    -ms-overflow-style: none;
+    /* oculta la barra */
+
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sidebar-nav li {
+    flex: 0;
+    /* evita que se estiren demasiado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .sidebar-nav a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    /* tamaño fijo más pequeño */
+    height: 50px;
+    /* cuadrado para icono */
+    margin-left: 5px;
+    margin-right: 5px;
+    /* quita márgenes que empujaban */
+    border-radius: 50%;
+    /* opcional: círculo */
+    background: none;
+    font-size: 0;
+    /* oculta texto */
+  }
+
+
+  .sidebar-nav a .sidebar-icon {
+    font-size: 24px;
+    margin: 0;
+  }
+
+  .sidebar-profile {
+    display: none;
+  }
+
+  .sidebar-profile-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar-leave-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar-profile-mobile a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 0;
+    /* oculta texto */
+  }
+
+  .sidebar-profile-mobile .sidebar-icon {
+    font-size: 24px;
+  }
+
+  .profile-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+    /* oculta texto */
+  }
+
+
+  .profile-text {
+    display: none;
+  }
+
+  .profile-link .sidebar-icon {
+    font-size: 24px;
+  }
+
+  /* Dejar espacio al contenido para la barra inferior */
+  .admin-content {
+    padding-bottom: 70px;
+    padding: 16px;
+    margin-bottom: 40px;
+  }
+
+  .admin-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .active-link {
+    background-color: #c89292;
+    color: #ffffff;
+    font-weight: bold;
+    border-top: 4px solid #875858;
+    border-left: 0px;
+  }
+
+  .sidebar-nav a:hover {
+    transform: scale(1.00);
+  }
 }

@@ -59,27 +59,24 @@ function DashboardReports() {
       if (res?.message) {
         setTotals((prev) => ({ ...prev, sales: res.total_amount }));
 
-        // Agrupar ventas por cliente y sumar montos
-        const grouped = res.sales.reduce((acc, sale, idx) => {
-          if (sale.client && sale.client.name) {
-            const clientName = sale.client.name;
-            if (!acc[clientName]) {
-              acc[clientName] = 0;
-            }
+        const sales = Array.isArray(res.sales) ? res.sales : []; // ← FIX línea 63
 
-            const amount = Number(sale.amount) || 0;
-            acc[clientName] += amount;
+        const grouped = sales.reduce((acc, sale) => {
+          if (sale?.client?.name) {
+            const clientName = sale.client.name;
+            if (!acc[clientName]) acc[clientName] = 0;
+            acc[clientName] += Number(sale.amount) || 0;
           }
           return acc;
         }, {});
 
-        // Convertir a array y ordenar por total pagado
         const groupedArray = Object.entries(grouped)
           .map(([name, total]) => ({ name, total }))
           .sort((a, b) => b.total - a.total);
 
         setClientsData(groupedArray);
       } else {
+        setClientsData([]); // ← FIX: limpiar si no hay datos
         toast.error(res?.error || "Ocurrió un error al obtener el reporte de ventas.");
       }
     });
@@ -87,8 +84,9 @@ function DashboardReports() {
     // Ventas (gráfico)
     getSalesChart(start, end).then((res) => {
       if (res?.message) {
-        setSalesData(res.chart_data);
+        setSalesData(Array.isArray(res.chart_data) ? res.chart_data : []); // ← FIX
       } else {
+        setSalesData([]); // ← FIX: limpiar si no hay datos
         toast.error(res?.error || "Ocurrio un error al cargar los datos del grafico de ventas.");
       }
     });
@@ -96,9 +94,10 @@ function DashboardReports() {
     // Servicios más solicitados
     getMostRequestedServices(start, end).then((res) => {
       if (res?.message) {
-        setServicesData(res.chart_data);
+        setServicesData(Array.isArray(res.chart_data) ? res.chart_data : []); // ← FIX
         setTotals((prev) => ({ ...prev, services: res.total_services }));
       } else {
+        setServicesData([]); // ← FIX: limpiar si no hay datos
         toast.error(res?.error || "Ocurrio un error al cargar los servicios mas solicitados.");
       }
     });
@@ -106,17 +105,17 @@ function DashboardReports() {
     // Facturas pendientes
     getPendingInvoicesReport().then((res) => {
       if (res?.message) {
-        // Agrupar por proveedor
-        const grouped = res.invoices.reduce((acc, invoice) => {
-          const supplierName = invoice.supplier.name;
-          if (!acc[supplierName]) {
-            acc[supplierName] = 0;
+        const invoices = Array.isArray(res.invoices) ? res.invoices : []; // ← FIX línea 100
+
+        const grouped = invoices.reduce((acc, invoice) => {
+          const supplierName = invoice?.supplier?.name; // ← FIX: acceso seguro
+          if (supplierName) {
+            if (!acc[supplierName]) acc[supplierName] = 0;
+            acc[supplierName] += invoice.amount;
           }
-          acc[supplierName] += invoice.amount;
           return acc;
         }, {});
 
-        // Convertir a array para el BarChart
         const groupedArray = Object.entries(grouped).map(([name, total]) => ({
           supplier: name,
           amount: total,
@@ -129,6 +128,7 @@ function DashboardReports() {
           invoicesAmount: res.total_amount_pending,
         }));
       } else {
+        setInvoicesData([]); // ← FIX: limpiar si no hay datos
         toast.error(res?.error || "Ocurrió un error al obtener las facturas pendientes.");
       }
     });
@@ -198,26 +198,34 @@ function DashboardReports() {
         <div className="dashboard-left">
           <div className="chart-container">
             <h3>Ventas por período</h3>
-            <LineChart width={800} height={250} data={salesData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="total_sales" stroke="#f08080" />
-            </LineChart>
+            {salesData.length === 0 ? (
+              <p>Sin datos para el período seleccionado</p>
+            ) : (
+              <LineChart width={800} height={250} data={salesData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="total_sales" stroke="#f08080" />
+              </LineChart>
+            )}
           </div>
 
           <div className="chart-container">
             <h3>Deuda por proveedor</h3>
-            <BarChart width={800} height={314} data={invoicesData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="supplier" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="amount" fill="#875858" />
-            </BarChart>
+            {invoicesData.length === 0 ? (
+              <p>Sin datos para el período seleccionado</p>
+            ) : (
+              <BarChart width={800} height={314} data={invoicesData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="supplier" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="amount" fill="#875858" />
+              </BarChart>
+            )}
           </div>
         </div>
 
@@ -225,41 +233,49 @@ function DashboardReports() {
         <div className="dashboard-right">
           <div className="chart-container">
             <h3>Servicios más solicitados</h3>
-            <PieChart width={400} height={250}>
-              <Pie
-                data={servicesData.map((entry, index) => ({
-                  ...entry,
-                  fill: COLORS[index % COLORS.length], // asigna color aquí
-                }))}
-                dataKey="total_requests"
-                nameKey="service_name"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                label
-              />
-              <Tooltip />
-            </PieChart>
+            {servicesData.length === 0 ? (
+              <p>Sin datos para el período seleccionado</p>
+            ) : (
+              <PieChart width={400} height={250}>
+                <Pie
+                  data={servicesData.map((entry, index) => ({
+                    ...entry,
+                    fill: COLORS[index % COLORS.length],
+                  }))}
+                  dataKey="total_requests"
+                  nameKey="service_name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  label
+                />
+                <Tooltip />
+              </PieChart>
+            )}
           </div>
 
           <div className="chart-container">
             <h3>Top 5 en consumo</h3>
-            <table className="clients-table">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Monto</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clientsData.slice(0, 5).map((client, index) => (
-                  <tr key={index}>
-                    <td>{client.name}</td>
-                    <td>₡{client.total}</td>
+            {clientsData.length === 0 ? (
+              <p>Sin datos para el período seleccionado</p>
+            ) : (
+              <table className="clients-table">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Monto</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {clientsData.slice(0, 5).map((client, index) => (
+                    <tr key={index}>
+                      <td>{client.name}</td>
+                      <td>₡{client.total}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

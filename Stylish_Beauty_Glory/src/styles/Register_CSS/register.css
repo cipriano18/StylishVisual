@@ -1,16 +1,20 @@
 .register-section {
   display: flex;
   flex-direction: row;
-  height: 100vh;          /* altura completa de la ventana */
-  width: 100vw;            /* ancho completo de la ventana */
+  height: 100vh;
+  /* altura completa de la ventana */
+  width: 100vw;
+  /* ancho completo de la ventana */
   margin: 0;
   padding: 0;
-  overflow: hidden;       /* Elimina scroll vertical y horizontal */
-  height: 100vh;          /* Opcional: ocupa toda la altura de la ventana */
+  overflow: hidden;
+  /* Elimina scroll vertical y horizontal */
+  height: 100vh;
+  /* Opcional: ocupa toda la altura de la ventana */
 
 }
 
- .register-form .resend-container {
+.register-form .resend-container {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -20,7 +24,7 @@
   font-size: 15px;
 }
 
- .register-form .resend-btn {
+.register-form .resend-btn {
   border: none;
   padding: 6px 14px;
   border-radius: 8px;
@@ -44,8 +48,10 @@
 .registerr-left,
 .register-right {
   position: relative;
-  flex: 0 0 50%;           /* fuerza 50% de ancho */
-  height: 100%;            /* altura completa */
+  flex: 0 0 50%;
+  /* fuerza 50% de ancho */
+  height: 100%;
+  /* altura completa */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,7 +62,8 @@
 
 /* Lado izquierdo */
 .registerr-left {
-  background-color: transparent; /* color que se puede cambiar */
+  background-color: transparent;
+  /* color que se puede cambiar */
   color: #333;
   text-align: center;
 }
@@ -84,6 +91,7 @@
   max-width: 600px;
   text-align: left;
 }
+
 .registerr-left .tell {
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
@@ -93,6 +101,7 @@
   margin-top: 1rem;
   padding-left: 10px;
 }
+
 .register-form {
   display: flex;
   flex-direction: column;
@@ -110,18 +119,26 @@
 
 
 
-.wave-left { 
-position: absolute;
-top: 0;          /* empieza arriba */
-right: -670px;        /* pegada al borde derecho */
-height: 100px;    /* ocupa toda la altura del contenedor */
-width: 180.5%;     /* grosor de la ola */
-transform: rotate(90deg); /* rotación para ponerla vertical */
+.wave-left {
+  position: absolute;
+  top: 0;
+  /* empieza arriba */
+  right: -670px;
+  /* pegada al borde derecho */
+  height: 100px;
+  /* ocupa toda la altura del contenedor */
+  width: 180.5%;
+  /* grosor de la ola */
+  transform: rotate(90deg);
+  /* rotación para ponerla vertical */
 }
 
 @supports (-webkit-app-region: drag) {
-  .wave-left { right: -685px; } 
-} 
+  .wave-left {
+    right: -685px;
+  }
+}
+
 .handR-img {
   position: absolute;
   bottom: -6px;
@@ -130,7 +147,8 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   height: auto;
   z-index: 2;
   animation: slideInLeft 1s ease-out forwards, rotateSideToSide 3s ease-in-out infinite;
-  animation-delay: 0.8s, 1.8s; /* primero entra, luego flota */
+  animation-delay: 0.8s, 1.8s;
+  /* primero entra, luego flota */
   opacity: 0;
 }
 
@@ -143,6 +161,7 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   font-weight: 500;
   text-align: center;
 }
+
 .register-form {
   display: flex;
   flex-direction: column;
@@ -157,7 +176,8 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 }
 
 .form-row label {
-  flex: 1; /* divide el espacio equitativamente */
+  flex: 1;
+  /* divide el espacio equitativamente */
   display: flex;
   flex-direction: column;
 }
@@ -175,26 +195,35 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 
 .register-form input,
 .register-form select {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
   padding: 0.8rem;
   border: 1px solid #875858;
-  border-radius: 12px; /* más redondeado */
+  border-radius: 12px;
+  /* más redondeado */
   margin-top: 0.3rem;
-  background-color: #875858; /* color de fondo */
-  color: white; /* texto que escribes */
+  background-color: #875858;
+  /* color de fondo */
+  color: white;
+  /* texto que escribes */
   width: 100%;
 }
 
 .register-form select {
-  -webkit-appearance: none; /* Chrome/Safari */
-  -moz-appearance: none;    /* Firefox */
-  appearance: none;         /* estándar */
-  background-color: #875858; /* fondo */
-  color: white;              /* texto */
+  -webkit-appearance: none;
+  /* Chrome/Safari */
+  -moz-appearance: none;
+  /* Firefox */
+  appearance: none;
+  /* estándar */
+  background-color: #875858;
+  /* fondo */
+  color: white;
+  /* texto */
   border: 1px solid #875858;
   border-radius: 12px;
   padding: 0.8rem;
-  padding-right: 2.5rem;     /* espacio para la flecha */
+  padding-right: 2.5rem;
+  /* espacio para la flecha */
   width: 100%;
   cursor: pointer;
   font-family: 'Roboto', sans-serif;
@@ -217,7 +246,8 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 .register-form input::placeholder,
 .register-form select::placeholder {
   color: white;
-  opacity: 1; /* asegúrate que sea completamente visible */
+  opacity: 1;
+  /* asegúrate que sea completamente visible */
 }
 
 .register-form input:focus,
@@ -240,19 +270,22 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
   cursor: pointer;
   font-weight: bold;
   transition: background-position 0.5s, transform 0.2s;
-  background-size: 200% 100%; /* para animación */
+  background-size: 200% 100%;
+  /* para animación */
   background-position: left;
 }
 
 .register-form button:hover {
   background-position: right;
-  transform: scale(1.05); /* ligero zoom al pasar el cursor */
+  transform: scale(1.05);
+  /* ligero zoom al pasar el cursor */
 }
 
 
 
 .login-text {
-  margin-top: 0.5rem; /* justo debajo del botón */
+  margin-top: 0.5rem;
+  /* justo debajo del botón */
   font-size: 0.85rem;
   text-align: center;
   color: #372826;
@@ -270,58 +303,27 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 }
 
 
-/* Responsive */
-@media (max-width: 768px) {
-      .form-row {
-    flex-direction: column;
-  }
-
-  .register-section {
-    flex-direction: column;
-    height: auto; /* altura automática en móvil */
-  }
-
-  .registerr-left,
-  .register-right {
-    flex: unset;
-    width: 100%;
-    height: auto;
-    padding: 2rem;
-  }
-
-
-
-  .wave-left {
-    padding-bottom: 5rem;
-    position: absolute;
-    bottom: -1px;     /* ahora se pega abajo */
-    top: auto;        /* neutraliza el top del desktop */
-    right: auto;      /* neutraliza el right del desktop */
-    left: 0;          /* se pega a la izquierda */
-    width: 100%;      /* resetea el ancho */
-    height: 100px;    /* resetea la altura */
-    transform: rotate(180deg); /* orientación horizontal */
-    z-index: 3;
-  }
-}
-
-
 /* Animación simple de fade-in y slide desde la izquierda */
 @keyframes slideInLeft {
   0% {
     opacity: 0;
-    transform: translateX(-50px); /* empieza desplazado a la izquierda */
+    transform: translateX(-50px);
+    /* empieza desplazado a la izquierda */
   }
+
   100% {
     opacity: 1;
-    transform: translateX(0);     /* termina en su posición original */
+    transform: translateX(0);
+    /* termina en su posición original */
   }
 }
-.registerr-left .wave-left{
-    opacity: 1;
+
+.registerr-left .wave-left {
+  opacity: 1;
 }
+
 /* Hacemos que los elementos partan invisibles */
-.registerr-left > * {
+.registerr-left>* {
   opacity: 0;
 }
 
@@ -347,6 +349,7 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
     transform: translateX(-100px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -354,27 +357,40 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 }
 
 @keyframes rotateSideToSide {
-  0%   { transform: rotate(0deg); }
-  50%  { transform: rotate(-1.3deg); }
-  100%  { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(-1.3deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 
 .register-form .back-container {
-   display: flex; 
-   justify-content: flex-start; /* alinea a la izquierda */ 
+  display: flex;
+  justify-content: flex-start;
+  /* alinea a la izquierda */
 }
+
 .register-form .back-btn {
   all: unset;
-  display: inline-flex;          /* flex para alinear ícono y texto */
-  align-items: center;           /* centra verticalmente */
-  gap: 6px;                      /* espacio entre ícono y texto */
-  
+  display: inline-flex;
+  /* flex para alinear ícono y texto */
+  align-items: center;
+  /* centra verticalmente */
+  gap: 6px;
+  /* espacio entre ícono y texto */
+
   background: linear-gradient(90deg, #875858, #b18282);
   border-radius: 12px;
   cursor: pointer;
   padding: 6px 12px;
-  
+
   color: #ffffff;
   font-family: "Josefin Sans", sans-serif;
   font-size: 14px;
@@ -384,4 +400,108 @@ transform: rotate(90deg); /* rotación para ponerla vertical */
 
 .back-btn:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+
+  .registerr-left {
+    display: none;
+  }
+
+  .register-section {
+    flex-direction: column;
+    background-color: #c58585;
+  }
+
+  .register-right {
+    flex: 1;
+    width: 100%;
+    padding: 3rem 2rem;
+    background: transparent;
+    justify-content: center;
+  }
+
+  .register-form {
+    width: 100%;
+    max-width: 100%;
+    background-color: rgba(135, 88, 88, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+  }
+
+  .logo-img-login {
+    width: 100%;
+    max-width: 260px;
+    padding: 0;
+    margin: 0 auto 1rem;
+    display: block;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1180px) {
+
+  .registerr-left {
+    display: none;
+  }
+
+  .register-section {
+    flex-direction: column;
+    background-color: #c58585;
+  }
+
+  .register-right {
+    flex: 1;
+    width: 100%;
+    padding: 4rem 8rem;
+    background: transparent;
+    justify-content: center;
+  }
+
+  .register-form {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: rgba(135, 88, 88, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 3.5rem 3rem;
+    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+  }
+
+  .register-form label {
+    font-size: 1.4rem;
+  }
+
+  .register-form input,
+  .register-form select {
+    font-size: 1.2rem;
+    padding: 1.2rem;
+  }
+
+  .register-form button {
+    font-size: 1.2rem;
+    padding: 1.2rem;
+  }
+
+  .logo-img-login {
+    width: 100%;
+    max-width: 450px;
+    padding: 0;
+    margin: 0 auto 1.5rem;
+    display: block;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .login-text {
+    font-size: 30px;
+  }
 }

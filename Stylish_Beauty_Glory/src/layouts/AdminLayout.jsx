@@ -25,6 +25,7 @@ import {
   FaBookOpen,
   FaRegCalendarPlus,
   FaChartBar,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 export default function AdminLayout() {
@@ -197,6 +198,26 @@ export default function AdminLayout() {
               >
                 <FaChartBar className="sidebar-icon" />
                 Reportes & Gráficos
+              </NavLink>
+            </li>
+
+            {/* Opciones fantasma solo para móvil */}
+            <li className="sidebar-profile-mobile">
+              <NavLink
+                to="/admin/profile"
+                className={({ isActive }) => (isActive ? "active-link" : "")}
+              >
+                <span className="sidebar-icon">
+                  <FaUserCircle />
+                </span>
+              </NavLink>
+            </li>
+
+            <li className="sidebar-leave-mobile">
+              <NavLink to="/login" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                <span className="sidebar-icon">
+                  <FaSignOutAlt />
+                </span>
               </NavLink>
             </li>
           </ul>

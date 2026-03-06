@@ -186,7 +186,7 @@ function ManageProfile() {
       <div className="profile-wrapper">
         {loading && <LoaderOverlay message="Cargando tu información..." />}
         <h2 className="profile-greeting">
-          Hola de nuevo {profile.primary_name} {profile.first_surname}!
+          Hola de nuevo {profile.primary_name} {profile.second_surname}!
         </h2>
 
         {/* Cuenta */}
@@ -275,19 +275,19 @@ function ManageProfile() {
                   />
                   <input
                     className="contact-input"
-                    value={editedFirstSurname}
-                    onChange={(e) => setEditedFirstSurname(e.target.value)}
+                    value={editedSecondSurname}
+                    onChange={(e) => setEditedSecondSurname(e.target.value)}
                   />
                   <input
                     className="contact-input"
-                    value={editedSecondSurname}
-                    onChange={(e) => setEditedSecondSurname(e.target.value)}
+                    value={editedFirstSurname}
+                    onChange={(e) => setEditedFirstSurname(e.target.value)}
                   />
                 </div>
               ) : (
                 <span>
-                  {editedPrimaryName} {editedSecondaryName} {editedFirstSurname}{" "}
-                  {editedSecondSurname}
+                  {editedPrimaryName} {editedSecondaryName}
+                  {editedSecondSurname} {editedFirstSurname}
                 </span>
               )}
             </div>
