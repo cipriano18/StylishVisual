@@ -48,7 +48,7 @@ function App() {
       <header className="header">
         <img src={StylishLogo} alt="Stylish Logo" className="logo" />
 
-        <nav className="nav">
+        <nav className="nav nav-desktop">
           <a href="#home" className="link">
             Inicio
           </a>

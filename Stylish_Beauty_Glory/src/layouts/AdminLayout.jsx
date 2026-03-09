@@ -214,7 +214,7 @@ export default function AdminLayout() {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/login" onClick={() => setMenuOpen(false)}>
+                <NavLink to="/" onClick={() => setMenuOpen(false)}>
                   <FaSignOutAlt className="sidebar-icon" /> Cerrar sesión
                 </NavLink>
               </li>
