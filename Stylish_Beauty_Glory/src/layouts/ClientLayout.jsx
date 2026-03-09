@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Outlet, NavLink } from "react-router-dom";
 import axios from "axios";
 
@@ -14,7 +15,7 @@ import { FaBookOpen, FaCalendarAlt, FaHome, FaUserCircle, FaSignOutAlt } from "r
 export default function ClientLayout() {
   const [nombreUsuario, setNombreUsuario] = useState("Cargando...");
   const [loadingProfile, setLoadingProfile] = useState(true);
-
+  const [menuOpen, setMenuOpen] = useState(false); // 👈 nuevo estado
   useEffect(() => {
     const fetchClientProfile = async () => {
       try {
@@ -47,6 +48,78 @@ export default function ClientLayout() {
 
   return (
     <div className="admin-layout">
+      {/* ✅ BOTÓN HAMBURGUESA - solo visible en móvil/tablet */}
+      {createPortal(
+        <button
+          className={`hamburger-btn ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>,
+        document.body // 👈 se renderiza directo en el body, fuera del layout
+      )}
+
+      {/* ✅ OVERLAY - fondo oscuro al abrir */}
+      {menuOpen && <div className="hamburger-overlay" onClick={() => setMenuOpen(false)} />}
+
+      {/* ✅ Overlay y menú */}
+      {menuOpen &&
+        createPortal(
+          <>
+            <div className="hamburger-overlay" onClick={() => setMenuOpen(false)} />
+            <div className="hamburger-menu">
+              <nav>
+                <ul>
+                  <li>
+                    <NavLink
+                      to="/client/home"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) => (isActive ? "active-link" : "")}
+                    >
+                      <FaHome className="sidebar-icon" /> Inicio
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/client/appointments"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) => (isActive ? "active-link" : "")}
+                    >
+                      <FaCalendarAlt className="sidebar-icon" /> Citas
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/client/schedule"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) => (isActive ? "active-link" : "")}
+                    >
+                      <FaBookOpen className="sidebar-icon" /> Mi Agenda
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/client/profile"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) => (isActive ? "active-link" : "")}
+                    >
+                      <FaUserCircle className="sidebar-icon" /> Perfil
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/login" onClick={() => setMenuOpen(false)}>
+                      <FaSignOutAlt className="sidebar-icon" /> Cerrar sesión
+                    </NavLink>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </>,
+          document.body
+        )}
+
       {/* Sidebar */}
       <aside className="sidebar">
         {/* Logo */}
