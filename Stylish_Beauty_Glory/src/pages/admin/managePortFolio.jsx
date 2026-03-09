@@ -160,7 +160,9 @@ function ManagePortfolio() {
     if (!term) {
       setFilteredPortfolios(portfolios);
     } else {
-      setFilteredPortfolios(portfolios.filter((p) => p.service_name?.toLowerCase().includes(term)));
+      setFilteredPortfolios(
+        portfolios.filter((p) => p.service?.service_name?.toLowerCase().includes(term))
+      );
     }
   }, [searchTerm, portfolios]);
 
