@@ -3,7 +3,7 @@ import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Table_CSS/TableBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 
-import { FaEdit, FaTrash, FaEye, FaPlus } from "react-icons/fa";
+import { FaEdit, FaTrash, FaEye, FaPlus, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import {
   fetchServices,
@@ -16,7 +16,7 @@ function ManageServices() {
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [showFilters, setShowFilters] = useState(false);
   // Modal crear
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newServiceName, setNewServiceName] = useState("");
@@ -191,17 +191,47 @@ function ManageServices() {
       <div className="ui-toolbar">
         <h1 className="ui-toolbar-title">Gestión de servicios</h1>
         <div className="ui-toolbar-controls">
+          {/* Botón agregar - siempre visible */}
           <button className="ui-toolbar-btn" onClick={() => setShowCreateModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
             Nuevo servicio
           </button>
-          <div className="ui-toolbar-filter">
+
+          {/* Filtros desktop */}
+          <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+            <label>Nombre:</label>
             <input
               type="text"
               placeholder="Filtrar por nombre"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+          </div>
+
+          {/* Botón filtro - móvil/tablet */}
+          <div className="ui-toolbar-filter-wrapper">
+            <button
+              className="ui-toolbar-btn ui-toolbar-filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <FaFilter className="ui-toolbar-btn-icon" />
+              Filtros
+            </button>
+
+            {showFilters && (
+              <>
+                <div className="ui-toolbar-popover-overlay" onClick={() => setShowFilters(false)} />
+                <div className="ui-toolbar-popover">
+                  <label>Nombre:</label>
+                  <input
+                    type="text"
+                    placeholder="Filtrar por nombre"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

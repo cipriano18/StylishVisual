@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaPlus, FaPen, FaTrash } from "react-icons/fa";
+import { FaPlus, FaPen, FaTrash, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
 //CSS
@@ -67,6 +67,7 @@ function ManagePortfolio() {
   const [filteredPortfolios, setFilteredPortfolios] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [services, setServices] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
   //Modal editar
   const [showEditModal, setShowEditModal] = useState(false);
   const [editPortfolioData, setEditPortfolioData] = useState({
@@ -247,23 +248,59 @@ function ManagePortfolio() {
         {loading && <LoaderOverlay message="Cargando Portafolios..." />}
         <h1 className="ui-toolbar-title">Gestión de portafolio</h1>
         <div className="ui-toolbar-controls">
+          {/* Botón agregar - siempre visible */}
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
             Nuevo portafolio
           </button>
-          <div className="ui-toolbar-filter">
+
+          {/* Filtros desktop */}
+          <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+            <label>Servicio:</label>
             <select
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="ui-toolbar-select"
             >
-              <option value="">Filtrar por servicio</option>
+              <option value="">Todos</option>
               {services.map((s) => (
                 <option key={s.service_id} value={s.name}>
                   {s.name}
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Botón filtro - móvil/tablet */}
+          <div className="ui-toolbar-filter-wrapper">
+            <button
+              className="ui-toolbar-btn ui-toolbar-filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <FaFilter className="ui-toolbar-btn-icon" />
+              Filtros
+            </button>
+
+            {showFilters && (
+              <>
+                <div className="ui-toolbar-popover-overlay" onClick={() => setShowFilters(false)} />
+                <div className="ui-toolbar-popover">
+                  <label>Servicio:</label>
+                  <select
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="ui-toolbar-select"
+                  >
+                    <option value="">Todos</option>
+                    {services.map((s) => (
+                      <option key={s.service_id} value={s.name}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

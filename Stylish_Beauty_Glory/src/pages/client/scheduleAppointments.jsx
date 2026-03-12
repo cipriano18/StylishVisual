@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
-
+import { FaFilter } from "react-icons/fa";
 //Servicios & overlays
 import { getAvailableAppointments, bookAppointment } from "../../services/Serv_appointments";
 import { API_BASE } from "../../services/config";
@@ -31,7 +31,7 @@ function ClientAppointments() {
   //Filtros
   const [availableAppointments, setAvailableAppointments] = useState([]); // citas disponibles
   const [filteredAppointments, setFilteredAppointments] = useState([]); //filtradas por fecha
-
+  const [showFilters, setShowFilters] = useState(false);
   const handleAgendar = (cita) => {
     setSelectedAppointment(cita);
     setShowModal(true);
@@ -156,13 +156,42 @@ function ClientAppointments() {
         <div className="ui-toolbar">
           <div className="ui-toolbar-title">Citas disponibles</div>
           <div className="ui-toolbar-controls">
-            <div className="ui-toolbar-filter">
+            {/* Filtros desktop */}
+            <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
               <span className="filter-label">Filtrar:</span>
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
+            </div>
+
+            {/* Botón filtro - móvil/tablet */}
+            <div className="ui-toolbar-filter-wrapper">
+              <button
+                className="ui-toolbar-btn ui-toolbar-filter-btn"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <FaFilter className="ui-toolbar-btn-icon" />
+                Filtros
+              </button>
+
+              {showFilters && (
+                <>
+                  <div
+                    className="ui-toolbar-popover-overlay"
+                    onClick={() => setShowFilters(false)}
+                  />
+                  <div className="ui-toolbar-popover">
+                    <span className="filter-label">Filtrar:</span>
+                    <input
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

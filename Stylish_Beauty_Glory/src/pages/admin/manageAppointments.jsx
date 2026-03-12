@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaPlus, FaEdit, FaUserPlus } from "react-icons/fa";
+import { FaPlus, FaEdit, FaUserPlus, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import Select from "react-select";
 
@@ -42,6 +42,7 @@ function ManageAppointments() {
 
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   //clientes
   const [clients, setClients] = useState([]);
@@ -322,20 +323,54 @@ function ManageAppointments() {
         {loading && <LoaderOverlay message="Cargando Citas..." />}
         <h1 className="ui-toolbar-title">Gestión de Citas</h1>
         <div className="ui-toolbar-controls">
+          {/* Botón agregar - siempre visible */}
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
             Agregar cita
           </button>
 
-          <div className="ui-toolbar-filter">
-            {/* Filtro por fecha */}
+          {/* Filtros desktop */}
+          <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+            <label>Fecha:</label>
             <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} />
-
-            {/* Selector de irrelevantes */}
+            <label>Tipo:</label>
             <select value={filterIrrelevant} onChange={(e) => setFilterIrrelevant(e.target.value)}>
               <option value="">Relevantes</option>
               <option value="irrelevantes">Irrelevantes</option>
             </select>
+          </div>
+
+          {/* Botón filtro - móvil/tablet */}
+          <div className="ui-toolbar-filter-wrapper">
+            <button
+              className="ui-toolbar-btn ui-toolbar-filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <FaFilter className="ui-toolbar-btn-icon" />
+              Filtros
+            </button>
+
+            {showFilters && (
+              <>
+                <div className="ui-toolbar-popover-overlay" onClick={() => setShowFilters(false)} />
+                <div className="ui-toolbar-popover">
+                  <label>Fecha:</label>
+                  <input
+                    type="date"
+                    value={filterDate}
+                    onChange={(e) => setFilterDate(e.target.value)}
+                  />
+                  <label>Tipo:</label>
+                  <select
+                    value={filterIrrelevant}
+                    onChange={(e) => setFilterIrrelevant(e.target.value)}
+                  >
+                    <option value="">Relevantes</option>
+                    <option value="irrelevantes">Irrelevantes</option>
+                  </select>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

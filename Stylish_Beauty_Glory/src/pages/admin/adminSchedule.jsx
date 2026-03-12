@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE } from "../../services/config";
 import { toast } from "react-hot-toast";
+import { FaFilter } from "react-icons/fa";
 //CSS
 import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
@@ -34,7 +35,7 @@ function AdminSchedule() {
   const [cancelReason, setCancelReason] = useState("");
   const [showFinalizeModal, setShowFinalizeModal] = useState(false);
   const [finalizeAmount, setFinalizeAmount] = useState("");
-
+  const [showFilters, setShowFilters] = useState(false);
   //Modal para agendar
   const [showModal, setShowModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -217,13 +218,42 @@ function AdminSchedule() {
         <div className="ui-toolbar">
           <div className="ui-toolbar-title">Agenda</div>
           <div className="ui-toolbar-controls">
-            <div className="ui-toolbar-filter">
-              <span className="filter-label">Filtrar:</span>
+            {/* Filtro desktop */}
+            <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+              <span className="filter-label">Fecha:</span>
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
+            </div>
+
+            {/* Botón filtro - móvil/tablet */}
+            <div className="ui-toolbar-filter-wrapper">
+              <button
+                className="ui-toolbar-btn ui-toolbar-filter-btn"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <FaFilter className="ui-toolbar-btn-icon" />
+                Filtros
+              </button>
+
+              {showFilters && (
+                <>
+                  <div
+                    className="ui-toolbar-popover-overlay"
+                    onClick={() => setShowFilters(false)}
+                  />
+                  <div className="ui-toolbar-popover">
+                    <span className="filter-label">Fecha:</span>
+                    <input
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

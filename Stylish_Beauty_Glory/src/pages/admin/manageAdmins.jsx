@@ -9,8 +9,8 @@ import {
   FaBriefcase,
   FaEnvelope,
   FaLock,
+  FaFilter,
 } from "react-icons/fa";
-
 //CSS
 import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
@@ -26,7 +26,7 @@ function ManageAdmins() {
   const [admins, setAdmins] = useState([]);
   const [filteredAdmins, setFilteredAdmins] = useState([]);
   const [searchId, setSearchId] = useState("");
-
+  const [showFilters, setShowFilters] = useState(false);
   // --- CARGAR ADMINISTRADORES ---
   useEffect(() => {
     const cargarAdmins = async () => {
@@ -289,19 +289,48 @@ function ManageAdmins() {
     <>
       <div className="ui-toolbar">
         <div className="ui-toolbar-title">Gestión de Administradores</div>
-
         <div className="ui-toolbar-controls">
+          {/* Botón agregar - siempre visible */}
           <button className="ui-toolbar-btn" onClick={() => setShowCreateModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
             Nuevo administrador
           </button>
-          <div className="ui-toolbar-filter">
+
+          {/* Filtros desktop */}
+          <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+            <label>Cédula:</label>
             <input
               type="text"
               placeholder="Filtrar por cédula..."
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
             />
+          </div>
+
+          {/* Botón filtro - móvil/tablet */}
+          <div className="ui-toolbar-filter-wrapper">
+            <button
+              className="ui-toolbar-btn ui-toolbar-filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <FaFilter className="ui-toolbar-btn-icon" />
+              Filtros
+            </button>
+
+            {showFilters && (
+              <>
+                <div className="ui-toolbar-popover-overlay" onClick={() => setShowFilters(false)} />
+                <div className="ui-toolbar-popover">
+                  <label>Cédula:</label>
+                  <input
+                    type="text"
+                    placeholder="Filtrar por cédula..."
+                    value={searchId}
+                    onChange={(e) => setSearchId(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

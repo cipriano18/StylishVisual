@@ -13,7 +13,7 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
-import { FaMoneyBillWave, FaSpa, FaFileInvoiceDollar, FaCrown } from "react-icons/fa";
+import { FaMoneyBillWave, FaSpa, FaFileInvoiceDollar, FaCrown, FaFilter } from "react-icons/fa";
 import "../../styles/Admins_CSS/ShowReports.css";
 import {
   getSalesReport,
@@ -38,6 +38,7 @@ function getDefaultDates() {
 function DashboardReports() {
   //estado de overlay
   const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -150,15 +151,16 @@ function DashboardReports() {
       {loading && <LoaderOverlay message="Cargando Reportes..." />}
       {/* Toolbar */}
       <div className="ui-toolbar">
-        {/* Título */}
         <div className="ui-toolbar-title">
           <h4>Reportes & Gráficos</h4>
         </div>
 
-        {/* Controles */}
         <div className="ui-toolbar-controls">
-          <div className="ui-toolbar-filter">
+          {/* Filtros desktop */}
+          <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+            <label>Desde:</label>
             <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            <label>Hasta:</label>
             <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
             <button
               className="ui-toolbar-btn"
@@ -171,8 +173,49 @@ function DashboardReports() {
                 fetchReports(startDate, endDate);
               }}
             >
-              Actualizar
+              Aplicar
             </button>
+          </div>
+
+          {/* Botón filtro - móvil/tablet */}
+          <div className="ui-toolbar-filter-wrapper">
+            <button
+              className="ui-toolbar-btn ui-toolbar-filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <FaFilter className="ui-toolbar-btn-icon" />
+              Filtros
+            </button>
+
+            {showFilters && (
+              <>
+                <div className="ui-toolbar-popover-overlay" onClick={() => setShowFilters(false)} />
+                <div className="ui-toolbar-popover">
+                  <label>Desde:</label>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                  <label>Hasta:</label>
+                  <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                  <button
+                    className="ui-toolbar-btn"
+                    onClick={() => {
+                      const today = new Date().toISOString().split("T")[0];
+                      if (endDate > today) {
+                        toast.error("La fecha final no puede ser mayor a hoy.");
+                        return;
+                      }
+                      fetchReports(startDate, endDate);
+                      setShowFilters(false);
+                    }}
+                  >
+                    Aplicar
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

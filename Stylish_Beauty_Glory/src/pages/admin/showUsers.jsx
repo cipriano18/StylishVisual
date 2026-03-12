@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
+import { FaFilter } from "react-icons/fa";
 
 //CSS
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
@@ -10,6 +11,7 @@ import "../../styles/Modals_CSS/modalBase.css";
 import { fetchUsers } from "../../services/Serv_users";
 
 function ManageUsers() {
+  const [showFilters, setShowFilters] = useState(false);
   const [users, setUsers] = useState([]);
   const [filters, setFilters] = useState({
     user_id: "",
@@ -62,7 +64,8 @@ function ManageUsers() {
         <h1 className="ui-toolbar-title">Gestión de Usuarios</h1>
 
         <div className="ui-toolbar-controls">
-          <div className="ui-toolbar-filter">
+          {/* Filtros desktop */}
+          <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
             <input
               type="text"
               name="user_id"
@@ -70,8 +73,6 @@ function ManageUsers() {
               value={filters.user_id}
               onChange={handleFilterChange}
             />
-          </div>
-          <div className="ui-toolbar-filter">
             <input
               type="text"
               name="username"
@@ -79,8 +80,6 @@ function ManageUsers() {
               value={filters.username}
               onChange={handleFilterChange}
             />
-          </div>
-          <div className="ui-toolbar-filter">
             <input
               type="text"
               name="role_id"
@@ -88,8 +87,6 @@ function ManageUsers() {
               value={filters.role_id}
               onChange={handleFilterChange}
             />
-          </div>
-          <div className="ui-toolbar-filter">
             <input
               type="text"
               name="status"
@@ -97,6 +94,57 @@ function ManageUsers() {
               value={filters.status}
               onChange={handleFilterChange}
             />
+          </div>
+
+          {/* Botón filtro - móvil/tablet */}
+          <div className="ui-toolbar-filter-wrapper">
+            <button
+              className="ui-toolbar-btn ui-toolbar-filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <FaFilter className="ui-toolbar-btn-icon" />
+              Filtros
+            </button>
+
+            {showFilters && (
+              <>
+                <div className="ui-toolbar-popover-overlay" onClick={() => setShowFilters(false)} />
+                <div className="ui-toolbar-popover">
+                  <label>Id:</label>
+                  <input
+                    type="text"
+                    name="user_id"
+                    placeholder="Filtrar por ID"
+                    value={filters.user_id}
+                    onChange={handleFilterChange}
+                  />
+                  <label>Nombre:</label>
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Filtrar por nombre"
+                    value={filters.username}
+                    onChange={handleFilterChange}
+                  />
+                  <label>Rol:</label>
+                  <input
+                    type="text"
+                    name="role_id"
+                    placeholder="Filtrar por rol"
+                    value={filters.role_id}
+                    onChange={handleFilterChange}
+                  />
+                  <label>Estado:</label>
+                  <input
+                    type="text"
+                    name="status"
+                    placeholder="Filtrar por estado"
+                    value={filters.status}
+                    onChange={handleFilterChange}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

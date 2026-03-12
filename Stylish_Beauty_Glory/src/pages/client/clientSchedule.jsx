@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-
+import { FaFilter } from "react-icons/fa";
 //Servicios & overlays
 import {
   cancelAppointmentByClient,
@@ -23,6 +23,7 @@ import "swiper/css/pagination";
 function ClientSchedule() {
   //estado de overlay
   const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false); //filtros
 
   const [clientId, setClientId] = useState(null); //cliente
   const [selectedDate, setSelectedDate] = useState(""); //fecha de filtrado seleccionada
@@ -146,13 +147,42 @@ function ClientSchedule() {
         <div className="ui-toolbar">
           <div className="ui-toolbar-title">Mi agenda</div>
           <div className="ui-toolbar-controls">
-            <div className="ui-toolbar-filter">
-              <span className="filter-label">Filtrar:</span>
+            {/* Filtros desktop */}
+            <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+              <span className="filter-label">Fecha:</span>
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
+            </div>
+
+            {/* Botón filtro - móvil/tablet */}
+            <div className="ui-toolbar-filter-wrapper">
+              <button
+                className="ui-toolbar-btn ui-toolbar-filter-btn"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <FaFilter className="ui-toolbar-btn-icon" />
+                Filtros
+              </button>
+
+              {showFilters && (
+                <>
+                  <div
+                    className="ui-toolbar-popover-overlay"
+                    onClick={() => setShowFilters(false)}
+                  />
+                  <div className="ui-toolbar-popover">
+                    <span className="filter-label">Fecha:</span>
+                    <input
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

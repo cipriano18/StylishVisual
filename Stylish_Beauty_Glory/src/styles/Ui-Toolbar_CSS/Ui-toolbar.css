@@ -34,8 +34,10 @@
 .ui-toolbar-filter {
   display: flex;
   align-items: center;
-  gap: 16px; /* 🔹 Separación moderada entre elementos */
-  flex-wrap: wrap; /* 🔹 Permite que se acomoden en pantallas pequeñas */
+  gap: 16px;
+  /* 🔹 Separación moderada entre elementos */
+  flex-wrap: wrap;
+  /* 🔹 Permite que se acomoden en pantallas pequeñas */
 }
 
 /* 🔹 Input */
@@ -60,9 +62,17 @@
 
 /* 🔹 Keyframes para efecto de parpadeo */
 @keyframes typingGlow {
-  0% { box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3); }
-  50% { box-shadow: 0 0 0 1px rgba(186, 130, 130, 0.1); }
-  100% { box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3); }
+  0% {
+    box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 0 1px rgba(186, 130, 130, 0.1);
+  }
+
+  100% {
+    box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  }
 }
 
 
@@ -99,6 +109,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
   font-family: 'Poppins', sans-serif;
+  text-align: center;
 }
 
 .ui-toolbar-btn:hover {
@@ -115,6 +126,7 @@
   font-size: 1rem;
   transition: transform 0.4s ease;
 }
+
 .ui-toolbar-btn:hover .ui-toolbar-btn-icon {
   transform: rotate(360deg);
 }
@@ -156,7 +168,8 @@
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  appearance: none; /* 🔹 elimina estilos nativos */
+  appearance: none;
+  /* 🔹 elimina estilos nativos */
 }
 
 /* 🔹 Hover (igual que botón) */
@@ -179,3 +192,187 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* ==============================
+   🔹 FILTER POPOVER
+   ============================== */
+
+/* En desktop: ocultar botón de filtro, mostrar filtros normales */
+.ui-toolbar-filter-btn {
+  display: none;
+}
+
+.ui-toolbar-filter-desktop {
+  display: flex;
+}
+
+/* Contenedor relativo para anclar el popover */
+.ui-toolbar-filter-wrapper {
+  position: relative;
+  display: none;
+  /* oculto en desktop */
+}
+
+@media (max-width: 1180px) {
+
+  /* Ocultar filtros normales */
+  .ui-toolbar-filter-desktop {
+    display: none;
+  }
+
+  /* Mostrar botón y wrapper */
+  .ui-toolbar-filter-wrapper {
+    display: flex;
+  }
+
+  .ui-toolbar-filter-btn {
+    display: flex;
+  }
+
+  /* Toolbar más compacto */
+  .ui-toolbar {
+    border-radius: 20px;
+    padding: 1rem;
+  }
+
+  .ui-toolbar-title {
+    font-size: 1.2rem;
+  }
+
+  /* Fondo para cerrar al hacer click afuera */
+  .ui-toolbar-popover-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+  }
+
+  /* Ventanita de filtros */
+  .ui-toolbar-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    /* 👈 debajo del botón */
+    right: 0;
+    background-color: #fdf7f7;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 8px 24px rgba(186, 130, 130, 0.25);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 240px;
+    animation: popoverIn 0.2s ease;
+  }
+
+  @keyframes popoverIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Inputs y selects dentro del popover ocupan todo el ancho */
+  .ui-toolbar-popover input,
+  .ui-toolbar-popover select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 768px) {
+  .ui-toolbar {
+    flex-direction: row;
+    align-items: center;
+    /* 👈 centra verticalmente titulo y controles */
+    flex-wrap: wrap;
+    /* 👈 permite que los controles bajen de línea */
+    border-radius: 16px;
+    padding: 0.9rem 1rem;
+    justify-content: space-between;
+  }
+
+  .ui-toolbar-title {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    /* 👈 el título no se encoge */
+  }
+
+  .ui-toolbar-controls {
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ui-toolbar-btn {
+    flex: unset;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ui-toolbar-filter-wrapper {
+    flex-shrink: 0;
+  }
+}
+
+
+/* 🔹 Inputs dentro del popover - mismos estilos que .ui-toolbar-filter input */
+.ui-toolbar-popover input {
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #ba8282;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  transition: box-shadow 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  margin-top: -10px;
+}
+
+.ui-toolbar-popover input:focus {
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+.ui-toolbar-popover input::placeholder {
+  color: #ba8282;
+  opacity: 0.5;
+}
+
+/* 🔹 Selects dentro del popover */
+.ui-toolbar-popover select {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #cd9292;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.ui-toolbar-popover select:focus {
+  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  outline: none;
+}
+
+.ui-toolbar-popover select option {
+  color: #4a2e2e;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 🔹 Input date */
+.ui-toolbar-popover input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
+}

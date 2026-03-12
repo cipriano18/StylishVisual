@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { FaSearch, FaEdit, FaEye, FaPlus } from "react-icons/fa";
+import { FaSearch, FaEdit, FaEye, FaPlus, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
-
 //CSS
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Table_CSS/TableBase.css";
@@ -21,6 +20,7 @@ function ManageAccounts() {
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
   const [facturaEditando, setFacturaEditando] = useState(null);
   const [suppliers, setSuppliers] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const [consulta, setConsulta] = useState({
     fechaInicio: "",
@@ -193,12 +193,14 @@ function ManageAccounts() {
         <div className="ui-toolbar">
           <h1 className="ui-toolbar-title">Gestión de Cuentas por Pagar</h1>
           <div className="ui-toolbar-controls">
+            {/* Botón agregar - siempre visible */}
             <button className="ui-toolbar-btn" onClick={() => setShowAddModal(true)}>
               <FaPlus className="ui-toolbar-btn-icon" />
               Agregar cuenta
             </button>
 
-            <div className="ui-toolbar-filter">
+            {/* Filtros desktop */}
+            <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
               <label>Desde:</label>
               <input
                 type="date"
@@ -215,6 +217,50 @@ function ManageAccounts() {
                 <FaSearch className="ui-toolbar-btn-icon" />
                 Filtrar
               </button>
+            </div>
+
+            {/* Botón filtro - móvil/tablet */}
+            <div className="ui-toolbar-filter-wrapper">
+              <button
+                className="ui-toolbar-btn ui-toolbar-filter-btn"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <FaFilter className="ui-toolbar-btn-icon" />
+                Filtros
+              </button>
+
+              {showFilters && (
+                <>
+                  <div
+                    className="ui-toolbar-popover-overlay"
+                    onClick={() => setShowFilters(false)}
+                  />
+                  <div className="ui-toolbar-popover">
+                    <label>Desde:</label>
+                    <input
+                      type="date"
+                      value={consulta.fechaInicio}
+                      onChange={(e) => setConsulta({ ...consulta, fechaInicio: e.target.value })}
+                    />
+                    <label>Hasta:</label>
+                    <input
+                      type="date"
+                      value={consulta.fechaFin}
+                      onChange={(e) => setConsulta({ ...consulta, fechaFin: e.target.value })}
+                    />
+                    <button
+                      className="ui-toolbar-btn"
+                      onClick={() => {
+                        handleConsultar();
+                        setShowFilters(false);
+                      }}
+                    >
+                      <FaSearch className="ui-toolbar-btn-icon" />
+                      Filtrar
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

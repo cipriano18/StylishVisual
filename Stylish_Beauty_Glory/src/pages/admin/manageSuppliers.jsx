@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Table_CSS/TableBase.css";
 import "../../styles/Modals_CSS/modalBase.css";
-import { FaEdit, FaTrash, FaPlus, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus, FaCheckCircle, FaTimesCircle, FaFilter } from "react-icons/fa";
 import {
   fetchSuppliers,
   createSupplier,
@@ -17,6 +17,7 @@ function ManageVendors() {
   const [newVendor, setNewVendor] = useState({ name: "", phone: "", email: "" });
   const [editVendor, setEditVendor] = useState({ id: "", name: "", phone: "", email: "" });
   const [searchId, setSearchId] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
 
   // Configuración agregar proveedor
   const [showAddModal, setShowAddModal] = useState(false);
@@ -153,18 +154,52 @@ function ManageVendors() {
         {/* 🔹 Toolbar modular */}
         <div className="ui-toolbar">
           <h1 className="ui-toolbar-title">Gestión de Proveedores</h1>
+
           <div className="ui-toolbar-controls">
+            {/* Botón agregar - siempre visible */}
             <button className="ui-toolbar-btn" onClick={() => setShowAddModal(true)}>
               <FaPlus className="ui-toolbar-btn-icon" />
               Nuevo proveedor
             </button>
-            <div className="ui-toolbar-filter">
+
+            {/* Filtros normales - solo desktop */}
+            <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
               <input
                 type="text"
                 placeholder="Filtrar por ID"
                 value={searchId}
                 onChange={(e) => setSearchId(e.target.value)}
               />
+            </div>
+
+            {/* Botón filtro - solo móvil/tablet */}
+            <div className="ui-toolbar-filter-wrapper">
+              <button
+                className="ui-toolbar-btn ui-toolbar-filter-btn"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <FaFilter className="ui-toolbar-btn-icon" />
+                Filtros
+              </button>
+
+              {/* Popover */}
+              {showFilters && (
+                <>
+                  <div
+                    className="ui-toolbar-popover-overlay"
+                    onClick={() => setShowFilters(false)}
+                  />
+                  <div className="ui-toolbar-popover">
+                    <span className="filter-label">Nombre:</span>
+                    <input
+                      type="text"
+                      placeholder="Filtrar por ID"
+                      value={searchId}
+                      onChange={(e) => setSearchId(e.target.value)}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

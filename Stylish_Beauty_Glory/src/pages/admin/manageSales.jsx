@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
-import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
 //CSS
@@ -19,6 +19,7 @@ import { getClients } from "../../services/Serv_clients";
 import LoaderOverlay from "../overlay/UniversalOverlay";
 
 function ManageSales() {
+  const [showFilters, setShowFilters] = useState(false);
   //estado de overlay
   const [loading, setLoading] = useState(false);
 
@@ -236,11 +237,14 @@ function ManageSales() {
         {loading && <LoaderOverlay message="Cargando Ventas..." />}
         <h1 className="ui-toolbar-title">Gestión de Ventas</h1>
         <div className="ui-toolbar-controls">
+          {/* Botón agregar - siempre visible */}
           <button className="ui-toolbar-btn" onClick={() => setShowModal(true)}>
             <FaPlus className="ui-toolbar-btn-icon" />
             Agregar venta
           </button>
-          <div className="ui-toolbar-filter">
+
+          {/* Filtros desktop */}
+          <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
             <label>Desde:</label>
             <input
               type="date"
@@ -253,11 +257,52 @@ function ManageSales() {
               value={searchEndDate}
               onChange={(e) => setSearchEndDate(e.target.value)}
             />
+            <button className="ui-toolbar-btn" onClick={handleFilterSales}>
+              <FaSearch className="ui-toolbar-btn-icon" />
+              Filtrar
+            </button>
           </div>
-          <button className="ui-toolbar-btn" onClick={handleFilterSales}>
-            <FaSearch className="ui-toolbar-btn-icon" />
-            Filtrar
-          </button>
+
+          {/* Botón filtro - móvil/tablet */}
+          <div className="ui-toolbar-filter-wrapper">
+            <button
+              className="ui-toolbar-btn ui-toolbar-filter-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <FaFilter className="ui-toolbar-btn-icon" />
+              Filtros
+            </button>
+
+            {showFilters && (
+              <>
+                <div className="ui-toolbar-popover-overlay" onClick={() => setShowFilters(false)} />
+                <div className="ui-toolbar-popover">
+                  <label>Desde:</label>
+                  <input
+                    type="date"
+                    value={searchStartDate}
+                    onChange={(e) => setSearchStartDate(e.target.value)}
+                  />
+                  <label>Hasta:</label>
+                  <input
+                    type="date"
+                    value={searchEndDate}
+                    onChange={(e) => setSearchEndDate(e.target.value)}
+                  />
+                  <button
+                    className="ui-toolbar-btn"
+                    onClick={() => {
+                      handleFilterSales();
+                      setShowFilters(false);
+                    }}
+                  >
+                    <FaSearch className="ui-toolbar-btn-icon" />
+                    Filtrar
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
       {/* Tabla de ventas */}
