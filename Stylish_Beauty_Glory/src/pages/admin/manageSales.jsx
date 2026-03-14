@@ -170,7 +170,7 @@ function ManageSales() {
 
       const res = await createSale(newSaleData);
       console.log("Respuesta al agregar venta:", res);
-      if (res) {
+      if (res?.sale) {
         // Actualizar la tabla con la nueva venta
         setSales((prev) => [...prev, res.sale]);
         toast.success(res.message || "Factura agregada correctamente");
