@@ -133,15 +133,6 @@ export default function AdminLayout() {
               </li>
               <li>
                 <NavLink
-                  to="/admin/roles"
-                  onClick={() => setMenuOpen(false)}
-                  className={({ isActive }) => (isActive ? "active-link" : "")}
-                >
-                  <FaUserShield className="sidebar-icon" /> Gestión de Roles
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to="/admin/admins"
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
@@ -283,15 +274,6 @@ export default function AdminLayout() {
             </li>
             <li>
               <NavLink
-                to="/admin/roles"
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-              >
-                <FaUserShield className="sidebar-icon" />
-                Gestión de Roles de usuario
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
                 to="/admin/admins"
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
@@ -371,7 +353,7 @@ export default function AdminLayout() {
             </li>
 
             <li className="sidebar-leave-mobile">
-              <NavLink to="/login" className={({ isActive }) => (isActive ? "active-link" : "")}>
+              <NavLink to="/" className={({ isActive }) => (isActive ? "active-link" : "")}>
                 <span className="sidebar-icon">
                   <FaSignOutAlt />
                 </span>

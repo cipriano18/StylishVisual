@@ -4,6 +4,7 @@ import { FaPlus, FaEdit, FaUserPlus, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import Select from "react-select";
 
+import { getPageNumbers } from "../../utils/pagination.js";
 //CSS
 import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Table_CSS/TableBase.css";
@@ -42,6 +43,7 @@ function ManageAppointments() {
 
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
+
   const [showFilters, setShowFilters] = useState(false);
 
   //clientes
@@ -125,6 +127,16 @@ function ManageAppointments() {
   // Filtros
   const [filterDate, setFilterDate] = useState("");
   const [filterIrrelevant, setFilterIrrelevant] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
+
+  const totalPages =
+    filterIrrelevant === "irrelevantes" ? Math.ceil(filteredAppointments.length / itemsPerPage) : 1;
+
+  const currentItems =
+    filterIrrelevant === "irrelevantes"
+      ? filteredAppointments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+      : filteredAppointments;
 
   useEffect(() => {
     let filtered = appointments;
@@ -153,7 +165,7 @@ function ManageAppointments() {
         return citaFecha < hoy || c.status === "Cancelada";
       });
     }
-
+    setCurrentPage(1);
     setFilteredAppointments(filtered);
   }, [filterDate, filterIrrelevant, appointments]);
 
@@ -391,7 +403,7 @@ function ManageAppointments() {
               </tr>
             </thead>
             <tbody>
-              {filteredAppointments.map((cita) => {
+              {currentItems.map((cita) => {
                 const estadoMap = {
                   Disponible: { text: "Disponible", className: "status-disponible" },
                   Cancelada: { text: "Cancelada", className: "status-cancelada" },
@@ -448,6 +460,41 @@ function ManageAppointments() {
           <p className="no-info">No hay citas relevantes. Agrega citas para tus clientes!</p>
         )}
       </div>
+      {filterIrrelevant === "irrelevantes" && totalPages > 1 && (
+        <div className="ui-pagination">
+          <button
+            className="ui-pagination-btn"
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+
+          {getPageNumbers(currentPage, totalPages).map((page, index) =>
+            page === "..." ? (
+              <span key={`ellipsis-${index}`} className="ui-pagination-ellipsis">
+                ...
+              </span>
+            ) : (
+              <button
+                key={page}
+                className={`ui-pagination-btn ${currentPage === page ? "active" : ""}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            )
+          )}
+
+          <button
+            className="ui-pagination-btn"
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
 
       {/* Modal asignar cliente */}
       {showAssignModal && (

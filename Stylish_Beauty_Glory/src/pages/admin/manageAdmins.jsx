@@ -11,6 +11,8 @@ import {
   FaLock,
   FaFilter,
 } from "react-icons/fa";
+
+import { getPageNumbers } from "../../utils/pagination";
 //CSS
 import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
@@ -25,6 +27,13 @@ function ManageAdmins() {
   // --- ESTADOS PRINCIPALES ---
   const [admins, setAdmins] = useState([]);
   const [filteredAdmins, setFilteredAdmins] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(filteredAdmins.length / itemsPerPage);
+  const currentItems = filteredAdmins.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   const [searchId, setSearchId] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   // --- CARGAR ADMINISTRADORES ---
@@ -172,6 +181,7 @@ function ManageAdmins() {
         admins.filter((a) => a.identity_card.toLowerCase().includes(searchId.toLowerCase()))
       );
     }
+    setCurrentPage(1);
   }, [searchId, admins]);
 
   // --- DAR DE BAJA ADMINISTRADOR ---
@@ -346,7 +356,7 @@ function ManageAdmins() {
           </tr>
         </thead>
         <tbody>
-          {filteredAdmins.map((a, i) => (
+          {currentItems.map((a, i) => (
             <tr key={i}>
               <td>{a.identity_card}</td>
               <td>{`${a.primary_name} ${a.first_surname}`}</td>
@@ -375,6 +385,41 @@ function ManageAdmins() {
           ))}
         </tbody>
       </table>
+      {totalPages > 1 && (
+        <div className="ui-pagination">
+          <button
+            className="ui-pagination-btn"
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+
+          {getPageNumbers(currentPage, totalPages).map((page, index) =>
+            page === "..." ? (
+              <span key={`ellipsis-${index}`} className="ui-pagination-ellipsis">
+                ...
+              </span>
+            ) : (
+              <button
+                key={page}
+                className={`ui-pagination-btn ${currentPage === page ? "active" : ""}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            )
+          )}
+
+          <button
+            className="ui-pagination-btn"
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
       {/* Modales de ver*/}
       {showViewModal && selectedAdmin && (
         <div className="modal-overlay">

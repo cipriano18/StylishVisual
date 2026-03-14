@@ -5,7 +5,6 @@ import Login from "../pages/Login";
 
 // --- ADMIN ---
 import AdminLayout from "../layouts/AdminLayout";
-import ManageRoles from "../pages/admin/manageRoles";
 import ManageAdmins from "../pages/admin/manageAdmins";
 import ManageUsers from "../pages/admin/showUsers";
 import ManageSuppliers from "../pages/admin/manageSuppliers";
@@ -36,7 +35,6 @@ export default function AppRoutes() {
         {/* Redirección automática si solo entra a /admin */}
         <Route index element={<Navigate to="admins" replace />} />
 
-        <Route path="roles" element={<ManageRoles />} />
         <Route path="admins" element={<ManageAdmins />} />
         <Route path="users" element={<ManageUsers />} />
         <Route path="suppliers" element={<ManageSuppliers />} />

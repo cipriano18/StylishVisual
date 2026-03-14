@@ -13,7 +13,14 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
-import { FaMoneyBillWave, FaSpa, FaFileInvoiceDollar, FaCrown, FaFilter } from "react-icons/fa";
+import {
+  FaMoneyBillWave,
+  FaSpa,
+  FaFileInvoiceDollar,
+  FaCrown,
+  FaFilter,
+  FaSearch,
+} from "react-icons/fa";
 import "../../styles/Admins_CSS/ShowReports.css";
 import {
   getSalesReport,
@@ -173,6 +180,7 @@ function DashboardReports() {
                 fetchReports(startDate, endDate);
               }}
             >
+              <FaSearch className="ui-toolbar-btn-icon" />
               Aplicar
             </button>
           </div>
@@ -211,6 +219,7 @@ function DashboardReports() {
                       setShowFilters(false);
                     }}
                   >
+                    <FaSearch className="ui-toolbar-btn-icon" />
                     Aplicar
                   </button>
                 </div>

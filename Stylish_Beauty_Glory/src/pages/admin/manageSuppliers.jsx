@@ -9,14 +9,22 @@ import {
   inactivateSupplier,
   updateSupplier,
 } from "../../services/Serv_suppliers";
+import { getPageNumbers } from "../../utils/pagination.js";
 import { toast } from "react-hot-toast";
 
 function ManageVendors() {
   const [vendors, setVendors] = useState([]);
   const [filteredVendors, setFilteredVendors] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+  const totalPages = Math.ceil(filteredVendors.length / itemsPerPage);
+  const currentItems = filteredVendors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   const [newVendor, setNewVendor] = useState({ name: "", phone: "", email: "" });
   const [editVendor, setEditVendor] = useState({ id: "", name: "", phone: "", email: "" });
-  const [searchId, setSearchId] = useState("");
+  const [searchName, setSearchName] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
   // Configuración agregar proveedor
@@ -33,6 +41,7 @@ function ManageVendors() {
   useEffect(() => {
     const cargarProveedores = async () => {
       const data = await fetchSuppliers();
+      console.log(data);
       if (Array.isArray(data?.suppliers)) {
         const formatted = data.suppliers.map((p) => ({
           id: p.supplier_id,
@@ -50,12 +59,13 @@ function ManageVendors() {
     cargarProveedores();
   }, []);
 
-  // 🔹 Filtrar por ID
   useEffect(() => {
-    const id = parseInt(searchId);
-    if (isNaN(id)) setFilteredVendors(vendors);
-    else setFilteredVendors(vendors.filter((v) => v.id === id));
-  }, [searchId, vendors]);
+    const term = searchName.toLowerCase();
+    if (!term) setFilteredVendors(vendors);
+    else setFilteredVendors(vendors.filter((v) => v.name?.toLowerCase().includes(term)));
+    setCurrentPage(1);
+    setEditingId(null);
+  }, [searchName, vendors]);
 
   // 🔹 Crear proveedor
   const handleAddVendor = async () => {
@@ -164,11 +174,12 @@ function ManageVendors() {
 
             {/* Filtros normales - solo desktop */}
             <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
+              <label>Nombre:</label>
               <input
                 type="text"
-                placeholder="Filtrar por ID"
-                value={searchId}
-                onChange={(e) => setSearchId(e.target.value)}
+                placeholder="Filtrar por nombre"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
               />
             </div>
 
@@ -189,13 +200,14 @@ function ManageVendors() {
                     className="ui-toolbar-popover-overlay"
                     onClick={() => setShowFilters(false)}
                   />
+
                   <div className="ui-toolbar-popover">
-                    <span className="filter-label">Nombre:</span>
+                    <label>Nombre:</label>
                     <input
                       type="text"
-                      placeholder="Filtrar por ID"
-                      value={searchId}
-                      onChange={(e) => setSearchId(e.target.value)}
+                      placeholder="Filtrar por nombre"
+                      value={searchName}
+                      onChange={(e) => setSearchName(e.target.value)}
                     />
                   </div>
                 </>
@@ -218,7 +230,7 @@ function ManageVendors() {
                 </tr>
               </thead>
               <tbody>
-                {filteredVendors.map((v) => {
+                {currentItems.map((v) => {
                   const isEditing = editingId === v.id;
                   const telefono =
                     v.contacts.find((c) => c.contact_type === "TELEFONO")?.contact_value || "";
@@ -333,6 +345,47 @@ function ManageVendors() {
             <p className="no-info">No se encontraron proveedores</p>
           )}
         </div>
+        {totalPages > 1 && (
+          <div className="ui-pagination">
+            <button
+              className="ui-pagination-btn"
+              onClick={() => {
+                setCurrentPage((p) => Math.max(p - 1, 1));
+                setEditingId(null); // 👈
+              }}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+
+            {getPageNumbers(currentPage, totalPages).map((page, index) =>
+              page === "..." ? (
+                <span key={`ellipsis-${index}`} className="ui-pagination-ellipsis">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={page}
+                  className={`ui-pagination-btn ${currentPage === page ? "active" : ""}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              )
+            )}
+
+            <button
+              className="ui-pagination-btn"
+              onClick={() => {
+                setCurrentPage((p) => Math.min(p + 1, totalPages));
+                setEditingId(null); // 👈
+              }}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
       </div>
 
       {/*--- Modal Agregar Proveedor ---*/}

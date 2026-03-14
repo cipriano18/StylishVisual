@@ -1,6 +1,9 @@
-table, th, td {
+table,
+th,
+td {
   font-family: 'Poppins', sans-serif;
 }
+
 /* 🔹 Tabla base */
 table {
   width: 100%;
@@ -76,23 +79,30 @@ td input[type="text"] {
 
 /* Colores de estado */
 .status-disponible {
-  background-color: #d4f8d4; /* verde suave */
-  color: #2e7d32;           /* verde profundo */
+  background-color: #d4f8d4;
+  /* verde suave */
+  color: #2e7d32;
+  /* verde profundo */
 }
 
 .status-cancelada {
-background-color: #cdb5f6; /* rojo anaranjado suave */
+  background-color: #cdb5f6;
+  /* rojo anaranjado suave */
   color: #584776;
 }
 
 .status-agendada {
-  background-color: #ffe5b4; /* naranja suave */
-  color: #a86c00;            /* naranja oscuro */
+  background-color: #ffe5b4;
+  /* naranja suave */
+  color: #a86c00;
+  /* naranja oscuro */
 }
 
 .status-finalizada {
-  background-color: #d6f0ff; /* azul suave */
-  color: #0077b6;            /* azul profundo */
+  background-color: #d6f0ff;
+  /* azul suave */
+  color: #0077b6;
+  /* azul profundo */
 }
 
 
@@ -103,8 +113,10 @@ background-color: #cdb5f6; /* rojo anaranjado suave */
 }
 
 .status-cancelado {
-  background-color: #d6f0ff; /* azul cielo suave */
-  color: #0077b6;            /* azul profundo y confiable */
+  background-color: #d6f0ff;
+  /* azul cielo suave */
+  color: #0077b6;
+  /* azul profundo y confiable */
 }
 
 .status-activo {
@@ -137,11 +149,25 @@ background-color: #cdb5f6; /* rojo anaranjado suave */
 
 /* 🔹 Keyframes para el efecto de tambaleo */
 @keyframes shakeIcon {
-  0% { transform: rotate(0deg) scale(1.2); }
-  25% { transform: rotate(-10deg) scale(1.2); }
-  50% { transform: rotate(10deg) scale(1.2); }
-  75% { transform: rotate(-6deg) scale(1.2); }
-  100% { transform: rotate(0deg) scale(1.2); }
+  0% {
+    transform: rotate(0deg) scale(1.2);
+  }
+
+  25% {
+    transform: rotate(-10deg) scale(1.2);
+  }
+
+  50% {
+    transform: rotate(10deg) scale(1.2);
+  }
+
+  75% {
+    transform: rotate(-6deg) scale(1.2);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1.2);
+  }
 }
 
 /* 🔹 Paginación base */
@@ -173,4 +199,100 @@ background-color: #cdb5f6; /* rojo anaranjado suave */
   text-align: center;
   color: #8b5252;
   margin-top: 1rem;
+}
+
+
+.ui-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.ui-pagination-btn {
+  padding: 0.4rem 0.85rem;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #cd9292;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.ui-pagination-btn:hover:not(:disabled) {
+  background-color: #cd9292;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.ui-pagination-btn.active {
+  background-color: #ba8282;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.ui-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 🔹 icon-btn con texto */
+.icon-btn-text {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  font-family: 'Poppins', sans-serif;
+  color: #6b4c4c;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+
+  20% {
+    transform: scale(1.1);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+
+  60% {
+    transform: scale(1.05);
+  }
+
+  80% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.icon-btn-text:hover {
+  color: #ffffff;
+  background-color: #ba8282;
+  animation: heartbeat 0.6s ease;
+}
+
+.ui-pagination-ellipsis {
+  padding: 0.4rem 0.5rem;
+  color: #cd9292;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  user-select: none;
 }

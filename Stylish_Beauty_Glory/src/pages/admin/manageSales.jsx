@@ -3,6 +3,7 @@ import Select from "react-select";
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
+import { getPageNumbers } from "../../utils/pagination.js";
 //CSS
 import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Table_CSS/TableBase.css";
@@ -109,6 +110,7 @@ function ManageSales() {
       const res = await fetchSalesByDateRange(searchStartDate, searchEndDate);
       if (res && res.sales) {
         setSales(res.sales);
+        setCurrentPage(1);
         toast.success(res?.message || "Ventas filtradas correctamente");
       } else {
         toast.error(res?.error || "No se encontraron ventas en ese rango");
@@ -140,6 +142,16 @@ function ManageSales() {
     const end = searchEndDate ? new Date(searchEndDate) : null;
     return (!start || saleDate >= start) && (!end || saleDate <= end);
   });
+
+  // 👈 Agrega esto después
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+  const totalPages = Math.ceil(filteredSales.length / itemsPerPage);
+  const currentItems = filteredSales.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   //Agregar venta
   const handleAddSale = async () => {
     try {
@@ -319,7 +331,7 @@ function ManageSales() {
               </tr>
             </thead>
             <tbody>
-              {sales.map((sale) => (
+              {currentItems.map((sale) => (
                 <tr key={sale.sale_id}>
                   <td>{sale.client?.name || "No registrado"}</td>
                   <td>{sale.appointment?.appointment_id || "-"}</td>
@@ -358,6 +370,41 @@ function ManageSales() {
           <p className="no-info">No se encontraron ventas</p>
         )}
       </div>
+      {totalPages > 1 && (
+        <div className="ui-pagination">
+          <button
+            className="ui-pagination-btn"
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+
+          {getPageNumbers(currentPage, totalPages).map((page, index) =>
+            page === "..." ? (
+              <span key={`ellipsis-${index}`} className="ui-pagination-ellipsis">
+                ...
+              </span>
+            ) : (
+              <button
+                key={page}
+                className={`ui-pagination-btn ${currentPage === page ? "active" : ""}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            )
+          )}
+
+          <button
+            className="ui-pagination-btn"
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
       {/* Modal agregar */}
       {showModal && (
         <div className="modal-overlay">

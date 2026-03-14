@@ -118,8 +118,8 @@ function Register() {
           first_surname = parts[1];
         } else if (parts.length === 3) {
           primary_name = parts[0];
-          second_surname = parts[1];
-          first_surname = parts[2];
+          first_surname = parts[1];
+          second_surname = parts[2];
         } else if (parts.length >= 4) {
           primary_name = parts[0];
           secondary_name = parts[1];

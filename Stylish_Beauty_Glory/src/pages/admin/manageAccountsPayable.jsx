@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { FaSearch, FaEdit, FaEye, FaPlus, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+
+import { getPageNumbers } from "../../utils/pagination.js";
 //CSS
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Table_CSS/TableBase.css";
@@ -14,6 +16,13 @@ import LoaderOverlay from "../overlay/UniversalOverlay";
 function ManageAccounts() {
   const [cuentas, setCuentas] = useState([]);
   const [facturasFiltradas, setFacturasFiltradas] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+  const totalPages = Math.ceil(facturasFiltradas.length / itemsPerPage);
+  const currentItems = facturasFiltradas.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
@@ -84,6 +93,7 @@ function ManageAccounts() {
       const facturas = data.invoices || [];
       setCuentas(facturas);
       setFacturasFiltradas(facturas);
+      setCurrentPage(1);
     } catch (err) {
       const mensajeError = err.message || "No se pudieron cargar las facturas.";
       setError(mensajeError);
@@ -284,7 +294,7 @@ function ManageAccounts() {
                 </tr>
               </thead>
               <tbody>
-                {facturasFiltradas.map((factura) => (
+                {currentItems.map((factura) => (
                   <tr key={factura.invoice_id}>
                     <td>{factura.name || "—"}</td>
                     <td>{factura.type}</td>
@@ -335,6 +345,41 @@ function ManageAccounts() {
             <p className="no-info">No se encontraron cuentas en ese rango.</p>
           )}
         </div>
+        {totalPages > 1 && (
+          <div className="ui-pagination">
+            <button
+              className="ui-pagination-btn"
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+
+            {getPageNumbers(currentPage, totalPages).map((page, index) =>
+              page === "..." ? (
+                <span key={`ellipsis-${index}`} className="ui-pagination-ellipsis">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={page}
+                  className={`ui-pagination-btn ${currentPage === page ? "active" : ""}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              )
+            )}
+
+            <button
+              className="ui-pagination-btn"
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
       </div>
 
       {/*Modal de crear*/}

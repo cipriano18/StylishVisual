@@ -186,7 +186,7 @@ function ManageProfile() {
       <div className="profile-wrapper">
         {loading && <LoaderOverlay message="Cargando tu información..." />}
         <h2 className="profile-greeting">
-          Hola de nuevo {profile.primary_name} {profile.second_surname}!
+          Hola de nuevo {profile.primary_name} {profile.first_surname}!
         </h2>
 
         {/* Cuenta */}
@@ -287,7 +287,7 @@ function ManageProfile() {
               ) : (
                 <span>
                   {editedPrimaryName} {editedSecondaryName}
-                  {editedSecondSurname} {editedFirstSurname}
+                  {editedFirstSurname} {editedSecondSurname}
                 </span>
               )}
             </div>
