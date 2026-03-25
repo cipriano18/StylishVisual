@@ -7,6 +7,7 @@ import "../../styles/Modals_CSS/modalBase.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Portfolio_CSS/normalCard.css";
 import "../../styles/Portfolio_CSS/PortfolioModal.css";
+import "../../styles/Admins_CSS/ManagePortfolio.css";
 
 //Servicios & Overlays
 import {
@@ -306,14 +307,7 @@ function ManagePortfolio() {
       </div>
 
       {/* Grid de portafolios */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "1rem",
-          marginTop: "1.5rem",
-        }}
-      >
+      <div className="portfolio-admin-grid">
         {filteredPortfolios.map((p) => (
           <PortfolioCard
             key={p.portfolio_id}

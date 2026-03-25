@@ -296,16 +296,18 @@ function ManageAccounts() {
               <tbody>
                 {currentItems.map((factura) => (
                   <tr key={factura.invoice_id}>
-                    <td>{factura.name || "—"}</td>
-                    <td>{factura.type}</td>
-                    <td>₡{parseFloat(factura.amount).toFixed(2)}</td>
-                    <td>{factura.due_date ? factura.due_date.split("T")[0] : "—"}</td>
-                    <td>
+                    <td data-label="Nombre">{factura.name || "—"}</td>
+                    <td data-label="Tipo">{factura.type}</td>
+                    <td data-label="Monto">₡{parseFloat(factura.amount).toFixed(2)}</td>
+                    <td data-label="Vencimiento">
+                      {factura.due_date ? factura.due_date.split("T")[0] : "—"}
+                    </td>
+                    <td data-label="Estado">
                       <span className={`status-label status-${factura.status.toLowerCase()}`}>
                         {factura.status}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Acciones">
                       <button
                         className="icon-btn"
                         title="Ver detalles"
@@ -313,7 +315,6 @@ function ManageAccounts() {
                       >
                         <FaEye />
                       </button>
-
                       <button
                         className="icon-btn"
                         title="Editar"
@@ -324,7 +325,6 @@ function ManageAccounts() {
                               : factura.type === "Crédito"
                                 ? "Cr"
                                 : factura.type;
-
                           const limpiarFecha = (f) => f?.split("T")[0] || "";
                           setFacturaEditando({
                             ...factura,

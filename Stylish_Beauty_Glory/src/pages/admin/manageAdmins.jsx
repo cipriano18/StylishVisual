@@ -345,7 +345,7 @@ function ManageAdmins() {
         </div>
       </div>
 
-      <table>
+      <table className="ui-table">
         <thead>
           <tr>
             <th>Cédula</th>
@@ -358,10 +358,10 @@ function ManageAdmins() {
         <tbody>
           {currentItems.map((a, i) => (
             <tr key={i}>
-              <td>{a.identity_card}</td>
-              <td>{`${a.primary_name} ${a.first_surname}`}</td>
-              <td>{a.specialty}</td>
-              <td>
+              <td data-label="Cédula">{a.identity_card}</td>
+              <td data-label="Nombre">{`${a.primary_name} ${a.first_surname}`}</td>
+              <td data-label="Especialidad">{a.specialty}</td>
+              <td data-label="Estado">
                 <span
                   className={`status-label ${
                     a.user.status === "Activo" ? "status-activo" : "status-inactivo"
@@ -370,7 +370,7 @@ function ManageAdmins() {
                   {a.user.status}
                 </span>
               </td>
-              <td>
+              <td data-label="Acciones">
                 <button className="icon-btn" onClick={() => handleView(a)}>
                   <FaEye />
                 </button>

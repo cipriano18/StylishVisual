@@ -320,7 +320,7 @@ function ManageSales() {
       {/* Tabla de ventas */}
       <div className="table-list">
         {filteredSales.length > 0 ? (
-          <table>
+          <table className="ui-table">
             <thead>
               <tr>
                 <th>Cliente</th>
@@ -333,11 +333,11 @@ function ManageSales() {
             <tbody>
               {currentItems.map((sale) => (
                 <tr key={sale.sale_id}>
-                  <td>{sale.client?.name || "No registrado"}</td>
-                  <td>{sale.appointment?.appointment_id || "-"}</td>
-                  <td>{sale.amount}</td>
-                  <td>{sale.date.split("T")[0]}</td>
-                  <td>
+                  <td data-label="Cliente">{sale.client?.name || "No registrado"}</td>
+                  <td data-label="ID Cita">{sale.appointment?.appointment_id || "-"}</td>
+                  <td data-label="Monto">₡{sale.amount}</td>
+                  <td data-label="Fecha de venta">{sale.date.split("T")[0]}</td>
+                  <td data-label="Acciones">
                     <button
                       className="icon-btn edit"
                       title="Editar"

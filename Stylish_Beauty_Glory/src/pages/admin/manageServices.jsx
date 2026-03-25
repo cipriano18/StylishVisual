@@ -239,7 +239,7 @@ function ManageServices() {
       {/* Tabla */}
       <div className="table-list">
         {filteredServices.length > 0 ? (
-          <table>
+          <table className="ui-table">
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -249,8 +249,8 @@ function ManageServices() {
             <tbody>
               {filteredServices.map((service) => (
                 <tr key={service.service_id}>
-                  <td>{service.name}</td>
-                  <td>
+                  <td data-label="Nombre">{service.name}</td>
+                  <td data-label="Acciones">
                     <button
                       className="icon-btn view"
                       title="Ver"

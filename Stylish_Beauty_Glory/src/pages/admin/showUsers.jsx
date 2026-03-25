@@ -197,15 +197,15 @@ function ManageUsers() {
               <tbody>
                 {currentItems.map((user) => (
                   <tr key={user.user_id}>
-                    <td>{getFullName(user)}</td>
-                    <td>{user.username}</td>
-                    <td>{user.role}</td>
-                    <td>
+                    <td data-label="Nombre">{getFullName(user)}</td>
+                    <td data-label="Usuario">{user.username}</td>
+                    <td data-label="Rol">{user.role}</td>
+                    <td data-label="Estado">
                       <span className={`status-label status-${user.status.toLowerCase()}`}>
                         {user.status}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Acciones">
                       {user.status === "Inactivo" && (
                         <button
                           className="icon-btn-text"

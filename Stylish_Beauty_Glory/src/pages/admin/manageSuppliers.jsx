@@ -41,7 +41,6 @@ function ManageVendors() {
   useEffect(() => {
     const cargarProveedores = async () => {
       const data = await fetchSuppliers();
-      console.log(data);
       if (Array.isArray(data?.suppliers)) {
         const formatted = data.suppliers.map((p) => ({
           id: p.supplier_id,
@@ -239,8 +238,7 @@ function ManageVendors() {
 
                   return (
                     <tr key={v.id}>
-                      {/* Nombre */}
-                      <td>
+                      <td data-label="Nombre">
                         {isEditing ? (
                           <input
                             type="text"
@@ -251,8 +249,7 @@ function ManageVendors() {
                           v.name
                         )}
                       </td>
-                      {/* Teléfono */}
-                      <td>
+                      <td data-label="Teléfono">
                         {isEditing ? (
                           <input
                             type="text"
@@ -265,8 +262,7 @@ function ManageVendors() {
                           telefono
                         )}
                       </td>
-                      {/* Correo */}
-                      <td>
+                      <td data-label="Correo">
                         {isEditing ? (
                           <input
                             type="text"
@@ -279,14 +275,12 @@ function ManageVendors() {
                           correo
                         )}
                       </td>
-                      {/* Estado */}
-                      <td>
+                      <td data-label="Estado">
                         <span className={`status-label status-${v.status.toLowerCase()}`}>
                           {v.status}
                         </span>
                       </td>
-                      {/* Acciones */}
-                      <td>
+                      <td data-label="Acciones">
                         {isEditing ? (
                           <>
                             <button

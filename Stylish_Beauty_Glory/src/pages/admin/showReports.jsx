@@ -253,11 +253,16 @@ function DashboardReports() {
             {salesData.length === 0 ? (
               <p>Sin datos para el período seleccionado</p>
             ) : (
-              <LineChart width={800} height={250} data={salesData}>
+              <LineChart
+                width={800}
+                height={250}
+                data={salesData}
+                margin={{ left: 20, right: 10, top: 10, bottom: 10 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
+                <YAxis width={80} tickFormatter={(value) => `₡${value.toLocaleString()}`} />
+                <Tooltip formatter={(value) => [`₡${value.toLocaleString()}`, "Ventas"]} />
                 <Legend />
                 <Line type="monotone" dataKey="total_sales" stroke="#f08080" />
               </LineChart>
@@ -298,7 +303,7 @@ function DashboardReports() {
                   nameKey="service_name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={100}
+                  outerRadius={90}
                   label
                 />
                 <Tooltip />

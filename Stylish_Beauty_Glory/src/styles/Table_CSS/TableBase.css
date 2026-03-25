@@ -296,3 +296,51 @@ td input[type="text"] {
   font-size: 0.9rem;
   user-select: none;
 }
+
+@media (max-width: 768px) {
+  .ui-table thead {
+    display: none;
+    /* 👈 oculta el encabezado */
+  }
+
+  .ui-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(186, 130, 130, 0.15);
+    background-color: #fdf7f7;
+    padding: 0.5rem;
+  }
+
+  .ui-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f2d6d5;
+    font-size: 0.9rem;
+  }
+
+  .ui-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* Etiqueta generada desde data-label */
+  .ui-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #875858;
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+
+  table {
+    background-color: transparent;
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0);
+  }
+
+  tbody tr:hover {
+    background-color: rgb(250, 245, 245);
+    transform: scale(1.01);
+  }
+}
