@@ -136,6 +136,7 @@
   background-color: #ba8282;
   color: white;
 }
+
 .portfolio-modal-btn.confirm:hover {
   background-color: #a46a6a;
   transform: translateY(-2px);
@@ -149,4 +150,47 @@
 .portfolio-modal-btn.cancel:hover {
   background-color: #e0e0e0;
   transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .portfolio-modal-content {
+    padding: 1.25rem;
+    border-radius: 16px;
+    width: 95%;
+    margin-right: 7px;
+  }
+
+  .portfolio-modal-title {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+
+  /* 👈 Cambia de fila a columna */
+  .portfolio-modal-body {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .portfolio-modal-dropzone {
+    height: 160px;
+  }
+
+  .portfolio-modal-preview {
+    max-height: 140px;
+  }
+
+  .portfolio-modal-textarea {
+    height: 80px;
+  }
+
+  .portfolio-modal-actions {
+    justify-content: center;
+    /* 👈 botones centrados */
+  }
+
+  .portfolio-modal-btn {
+    flex: 1;
+    /* 👈 botones del mismo ancho */
+    text-align: center;
+  }
 }

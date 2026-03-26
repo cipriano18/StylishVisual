@@ -12,6 +12,7 @@ import {
   Tooltip,
   CartesianGrid,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 import {
   FaMoneyBillWave,
@@ -232,16 +233,16 @@ function DashboardReports() {
       {/* Fila superior: Cards */}
       <div className="dashboard-top">
         <div className="card">
-          <FaMoneyBillWave /> Ventas Totales: ₡{totals.sales}
+          <FaMoneyBillWave /> Ventas Totales: ₡{totals.sales || 0}
         </div>
         <div className="card">
-          <FaSpa /> Servicios Solicitados: {totals.services}
+          <FaSpa /> Servicios Solicitados: {totals.services || "Ninguno"}
         </div>
         <div className="card">
           <FaFileInvoiceDollar /> Facturas Pendientes: {totals.invoices} (₡{totals.invoicesAmount})
         </div>
         <div className="card">
-          <FaCrown /> Mejor Cliente: {clientsData[0]?.name}
+          <FaCrown /> Mejor Cliente: {clientsData[0]?.name || "Ninguno"}
         </div>
       </div>
       {/*Medio */}
@@ -249,39 +250,37 @@ function DashboardReports() {
         {/* Columna izquierda */}
         <div className="dashboard-left">
           <div className="chart-container">
-            <h3>Ventas por período</h3>
-            {salesData.length === 0 ? (
-              <p>Sin datos para el período seleccionado</p>
-            ) : (
-              <LineChart
-                width={800}
-                height={250}
-                data={salesData}
-                margin={{ left: 20, right: 10, top: 10, bottom: 10 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis width={80} tickFormatter={(value) => `₡${value.toLocaleString()}`} />
-                <Tooltip formatter={(value) => [`₡${value.toLocaleString()}`, "Ventas"]} />
-                <Legend />
-                <Line type="monotone" dataKey="total_sales" stroke="#f08080" />
-              </LineChart>
-            )}
-          </div>
-
-          <div className="chart-container">
             <h3>Deuda por proveedor</h3>
             {invoicesData.length === 0 ? (
               <p>Sin datos para el período seleccionado</p>
             ) : (
-              <BarChart width={800} height={314} data={invoicesData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="supplier" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="amount" fill="#875858" />
-              </BarChart>
+              <ResponsiveContainer width="100%" height={314}>
+                <BarChart data={invoicesData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="supplier" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="amount" fill="#875858" />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+          <div className="chart-container">
+            <h3>Ventas por período</h3>
+            {salesData.length === 0 ? (
+              <p>Sin datos para el período seleccionado</p>
+            ) : (
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={salesData} margin={{ left: 20, right: 10, top: 10, bottom: 10 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis width={80} tickFormatter={(value) => `₡${value.toLocaleString()}`} />
+                  <Tooltip formatter={(value) => [`₡${value.toLocaleString()}`, "Ventas"]} />
+                  <Legend />
+                  <Line type="monotone" dataKey="total_sales" stroke="#f08080" />
+                </LineChart>
+              </ResponsiveContainer>
             )}
           </div>
         </div>
@@ -293,21 +292,23 @@ function DashboardReports() {
             {servicesData.length === 0 ? (
               <p>Sin datos para el período seleccionado</p>
             ) : (
-              <PieChart width={400} height={250}>
-                <Pie
-                  data={servicesData.map((entry, index) => ({
-                    ...entry,
-                    fill: COLORS[index % COLORS.length],
-                  }))}
-                  dataKey="total_requests"
-                  nameKey="service_name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={90}
-                  label
-                />
-                <Tooltip />
-              </PieChart>
+              <ResponsiveContainer width="100%" height={280}>
+                <PieChart>
+                  <Pie
+                    data={servicesData.map((entry, index) => ({
+                      ...entry,
+                      fill: COLORS[index % COLORS.length],
+                    }))}
+                    dataKey="total_requests"
+                    nameKey="service_name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={90}
+                    label
+                  />
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
             )}
           </div>
 

@@ -390,7 +390,7 @@ function ManageAppointments() {
       {/* Tabla de citas */}
       <div className="table-list">
         {filteredAppointments.length > 0 ? (
-          <table>
+          <table className="ui-table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -415,15 +415,15 @@ function ManageAppointments() {
 
                 return (
                   <tr key={cita.appointment_id}>
-                    <td>{cita.appointment_id}</td>
-                    <td>{cita.date.split("T")[0]}</td>
-                    <td>{formatTo12Hour(cita.time)}</td>
-                    <td>{cita.duration}</td>
-                    <td>{cita.service?.name}</td>
-                    <td>
+                    <td data-label="ID">{cita.appointment_id}</td>
+                    <td data-label="Fecha">{cita.date.split("T")[0]}</td>
+                    <td data-label="Hora">{formatTo12Hour(cita.time)}</td>
+                    <td data-label="Duración">{cita.duration}</td>
+                    <td data-label="Servicio">{cita.service?.name}</td>
+                    <td data-label="Estado">
                       <span className={`status-label ${estado.className}`}>{estado.text}</span>
                     </td>
-                    <td>
+                    <td data-label="Acciones">
                       {(cita.status === "Disponible" || cita.status === "Agendada") && (
                         <button
                           className="icon-btn edit"
@@ -436,7 +436,6 @@ function ManageAppointments() {
                           <FaEdit />
                         </button>
                       )}
-
                       {cita.date.split("T")[0] >= new Date().toLocaleDateString("sv-SE") &&
                         cita.status === "Disponible" && (
                           <button

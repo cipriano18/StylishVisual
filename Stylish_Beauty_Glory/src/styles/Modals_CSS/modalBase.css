@@ -283,3 +283,78 @@
   filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    z-index: 1200;
+    /* 👈 cambia de 1000 a 1200 */
+  }
+
+  .modal-content {
+    padding: 1.25rem;
+    border-radius: 16px;
+    margin: 0 1rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    /* 👈 margen lateral para que no toque los bordes */
+  }
+
+  .modal-content.small {
+    max-width: 100%;
+  }
+
+  .modal-content.medium {
+    max-width: 100%;
+  }
+
+  .modal-content.large {
+    max-width: 100%;
+    max-height: 90vh;
+    /* 👈 limita altura para que no se salga */
+    overflow-y: auto;
+    /* 👈 scroll si el contenido es muy largo */
+  }
+
+  .modal-content.xlarge {
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* Grid de 4 columnas colapsa a 1 en móvil */
+  .modal-content [style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Grid de 3 columnas colapsa a 1 en móvil */
+  .modal-content [style*="grid-template-columns: repeat(3"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Grid de 2 columnas colapsa a 1 en móvil */
+  .modal-content [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modal-actions {
+    justify-content: center;
+  }
+
+  .modal-btn {
+    flex: 1;
+    text-align: center;
+  }
+
+  .modal-content::-webkit-scrollbar {
+    display: none;
+  }
+
+  .portfolio-modal-content::-webkit-scrollbar {
+    display: none;
+  }
+
+  .portfolio-modal-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
