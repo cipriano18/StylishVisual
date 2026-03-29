@@ -93,26 +93,6 @@ function Login() {
           Tu <strong>próxima</strong> experiencia de cuidado <strong>te espera</strong>.
         </p>
         <img src={IMG2} alt="Decoración" className="hand-img" />
-
-        <svg
-          className="wave-left"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 100"
-          preserveAspectRatio="none"
-        >
-          <path fill="#ba8282">
-            <animate
-              attributeName="d"
-              dur="12s"
-              repeatCount="indefinite"
-              values="
-                M0,50 C180,90 360,10 540,50 C720,90 900,10 1080,50 C1260,90 1440,10 1440,50 L1440,0 L0,0 Z;
-                M0,60 C180,40 360,90 540,40 C720,10 900,90 1080,40 C1260,0 1440,20 1440,60 L1440,0 L0,0 Z;
-                M0,50 C180,90 360,10 540,50 C720,90 900,10 1080,50 C1260,90 1440,10 1440,50 L1440,0 L0,0 Z
-              "
-            />
-          </path>
-        </svg>
       </section>
       <section className="register-right">
         {step === 1 && (

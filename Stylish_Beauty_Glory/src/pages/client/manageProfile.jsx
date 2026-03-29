@@ -47,6 +47,7 @@ function ManageProfile() {
       try {
         setLoading(true);
         const data = await fetchClientProfile(); //API
+        console.log(data);
         if (data?.client) {
           const client = data.client;
           setProfile(client);
@@ -241,7 +242,22 @@ function ManageProfile() {
                 </button>
                 <button
                   className="profile-btn profile-btn-edit"
-                  onClick={() => setIsEditingPersonal(false)}
+                  onClick={() => {
+                    setEditedPrimaryName(profile.primary_name || "");
+                    setEditedSecondaryName(profile.secondary_name || "");
+                    setEditedFirstSurname(profile.first_surname || "");
+                    setEditedSecondSurname(profile.second_surname || "");
+                    setEditedBirthDate(profile.birth_date ? profile.birth_date.slice(0, 10) : "");
+                    setEditedGender(profile.gender || "");
+                    setEditedPhone(
+                      profile.contacts?.find((c) => c.contact_type === "TELEFONO")?.contact_value ||
+                        ""
+                    );
+                    setEditedEmail(
+                      profile.contacts?.find((c) => c.contact_type === "EMAIL")?.contact_value || ""
+                    );
+                    setIsEditingPersonal(false);
+                  }}
                 >
                   Cancelar
                 </button>
@@ -302,9 +318,9 @@ function ManageProfile() {
                   onChange={(e) => setEditedGender(e.target.value)}
                 >
                   <option value="">Seleccione...</option>
-                  <option value="MASCULINO">Masculino</option>
-                  <option value="FEMENINO">Femenino</option>
-                  <option value="OTRO">Otro</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                  <option value="Otro">Otro</option>
                 </select>
               ) : (
                 <span>{editedGender}</span>

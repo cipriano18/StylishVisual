@@ -42,11 +42,11 @@
   text-align: center;
 }
 
-/* Lado derecho */
 .register-right {
   background-color: #ba8282;
   text-align: center;
   align-items: center;
+  border-radius: 20px 0 0 20px;
 }
 
 .register-left h2 {

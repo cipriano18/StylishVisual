@@ -255,7 +255,13 @@ function ManageProfile() {
                 </button>
                 <button
                   className="profile-btn profile-btn-edit"
-                  onClick={() => setIsEditingContacts(false)}
+                  onClick={() => {
+                    setEditedPhone(
+                      profile.contacts.find((c) => c.type === "TELEFONO")?.value || ""
+                    );
+                    setEditedEmail(profile.contacts.find((c) => c.type === "EMAIL")?.value || "");
+                    setIsEditingContacts(false);
+                  }}
                 >
                   Cancelar
                 </button>
@@ -316,7 +322,12 @@ function ManageProfile() {
                 </button>
                 <button
                   className="profile-btn profile-btn-edit"
-                  onClick={() => setIsEditingProfessional(false)}
+                  onClick={() => {
+                    setEditedSpecialty(profile.specialty || "");
+                    setEditedCertifications(profile.certifications || "");
+                    setEditedWorkingDays(profile.working_days || "");
+                    setIsEditingProfessional(false);
+                  }}
                 >
                   Cancelar
                 </button>

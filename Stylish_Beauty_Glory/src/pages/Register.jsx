@@ -8,6 +8,7 @@ import IMG1 from "../assets/IMGR.png";
 import Logo from "../assets/Stylish_Logo_White.png";
 import { login } from "../services/Serv_login";
 import { FaArrowLeft } from "react-icons/fa";
+import { parseName } from "../utils/nameParser.js";
 
 function Register() {
   const [resendTimer, setResendTimer] = useState(120); // 2 min
@@ -53,25 +54,66 @@ function Register() {
   const handleFirstSubmit = async () => {
     const { nombre, fechaNacimiento, genero, telefono, cedula, correo } = formData;
 
-    if (!nombre || !fechaNacimiento || !genero || !telefono || !cedula || !correo) {
-      toast.error("Todos los campos son obligatorios");
+    // Validaciones de formato (solo si el campo tiene algo escrito)
+
+    if (cedula && !/^[A-Za-z0-9]{9,20}$/.test(cedula.trim())) {
+      toast.error("La cédula debe contener entre 9 y 20 dígitos numéricos");
       return;
     }
 
+    if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.trim())) {
+      toast.error("El correo debe tener un formato válido (ejemplo: usuario@dominio.com)");
+      return;
+    }
+
+    if (telefono && !/^\d{8}$/.test(telefono.trim())) {
+      toast.error("El número de teléfono debe contener exactamente 8 dígitos");
+      return;
+    }
+
+    if (fechaNacimiento) {
+      const MIN = "1926-01-01";
+      const MAX = new Date().toISOString().split("T")[0];
+      const fecha = new Date(fechaNacimiento).toISOString().split("T")[0];
+      if (fecha < MIN || fecha > MAX) {
+        toast.error("La fecha de ingreso no puede ser menor al límite permitido");
+        return;
+      }
+    }
+
+    // Validación de campos obligatorios vacíos
+    const { primary_name, first_surname, second_surname } = parseName(nombre || "");
+    const camposRequeridos = {
+      identity_card: cedula,
+      primary_name: primary_name,
+      first_surname: first_surname,
+      second_surname: second_surname,
+      phone: telefono,
+      gender: genero,
+    };
+
+    const faltantes = Object.entries(camposRequeridos)
+      .filter(([_, value]) => !value)
+      .map(([key]) => key);
+
+    if (faltantes.length > 0) {
+      toast.error(`Faltan campos obligatorios: ${faltantes.join(", ")}`);
+      return;
+    }
+
+    // Enviar
     try {
       localStorage.setItem("registerData", JSON.stringify(formData));
-
       const res = await requestVerificationCode(correo);
-
       if (res && res.message) {
         toast.success(res.message);
         setStep(2);
       } else {
-        toast.error(res.error || "No se pudo enviar el código, intenta de nuevo");
+        toast.error(res?.error || "No se pudo enviar el código, intenta de nuevo");
       }
     } catch (err) {
       console.error(err);
-      toast.error("Error al solicitar el código de verificación");
+      toast.error(res?.error || "Error al solicitar el código de verificación");
     }
   };
 
@@ -80,10 +122,6 @@ function Register() {
     const { usuario, contrasena, codigo } = secondStepData;
 
     // 1️⃣ Validar que todos los campos estén llenos
-    if (!usuario || !contrasena || !codigo) {
-      toast.error("Todos los campos son obligatorios");
-      return;
-    }
 
     try {
       // Recuperar datos del primer paso
@@ -98,34 +136,14 @@ function Register() {
       // 2️⃣ Verificar el código con la API
 
       const res = await verifyCode(email, codigo);
-      console.log("Respuesta de la verificacion: ", res);
       // La API devuelve un objeto con "message"
       if (res && res.message && res.message.includes("Correo verificado correctamente")) {
         toast.success(res.message);
 
         // 3️⃣ Preparar datos finales con la estructura que espera la API
-        const parts = initialData.nombre.trim().split(" ");
-
-        let primary_name = "";
-        let secondary_name = "";
-        let first_surname = "";
-        let second_surname = "";
-
-        if (parts.length === 1) {
-          primary_name = parts[0];
-        } else if (parts.length === 2) {
-          primary_name = parts[0];
-          first_surname = parts[1];
-        } else if (parts.length === 3) {
-          primary_name = parts[0];
-          first_surname = parts[1];
-          second_surname = parts[2];
-        } else if (parts.length >= 4) {
-          primary_name = parts[0];
-          secondary_name = parts[1];
-          first_surname = parts[2];
-          second_surname = parts[3];
-        }
+        const { primary_name, secondary_name, first_surname, second_surname } = parseName(
+          initialData.nombre
+        );
 
         const finalData = {
           username: usuario,
@@ -192,25 +210,6 @@ function Register() {
           +506 7133-8429
         </p>
         <img src={IMG1} alt="Decoración" className="handR-img" />
-        <svg
-          className="wave-left"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 100"
-          preserveAspectRatio="none"
-        >
-          <path fill="#ba8282">
-            <animate
-              attributeName="d"
-              dur="12s"
-              repeatCount="indefinite"
-              values="
-                M0,50 C180,90 360,10 540,50 C720,90 900,10 1080,50 C1260,90 1440,10 1440,50 L1440,0 L0,0 Z;
-                M0,60 C180,40 360,90 540,40 C720,10 900,90 1080,40 C1260,0 1440,20 1440,60 L1440,0 L0,0 Z;
-                M0,50 C180,90 360,10 540,50 C720,90 900,10 1080,50 C1260,90 1440,10 1440,50 L1440,0 L0,0 Z
-              "
-            />
-          </path>
-        </svg>
       </section>
 
       <section className="register-right">
