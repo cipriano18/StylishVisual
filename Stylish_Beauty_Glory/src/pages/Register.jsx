@@ -119,7 +119,9 @@ function Register() {
 
   // Enviar segundo formulario
   const handleSecondSubmit = async () => {
-    const { usuario, contrasena, codigo } = secondStepData;
+    const usuarioTrim = secondStepData.usuario?.trim();
+    const contrasenaTrim = secondStepData.contrasena?.trim();
+    const codigo = secondStepData.codigo;
 
     // 1️⃣ Validar que todos los campos estén llenos
 
@@ -146,8 +148,8 @@ function Register() {
         );
 
         const finalData = {
-          username: usuario,
-          password: contrasena,
+          username: usuarioTrim,
+          password: contrasenaTrim,
           role_id: 2,
           identity_card: initialData.cedula,
           primary_name,
@@ -167,7 +169,7 @@ function Register() {
 
           try {
             // Hacer login automático con los datos recién creados
-            const { user } = await login(finalData.username, finalData.password);
+            const { user } = await login(usuarioTrim, contrasenaTrim);
 
             // Si el login funciona, limpiar datos de registro
             localStorage.removeItem("registerData");
