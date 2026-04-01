@@ -96,68 +96,79 @@ function AdminSchedule() {
     }
   };
 
-  //Finalizar cita y registrar venta
-  const handleFinalizeAppointment = async (cita, amount) => {
-    try {
-      setLoading(true);
-      const today = new Date();
-      const citaDate = new Date(cita.date);
+ // Finalizar cita y registrar venta
+const handleFinalizeAppointment = async (cita, amount) => {
+  try {
+    setLoading(true);
 
-      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
-      const citaStr = citaDate.toISOString().split("T")[0]; // YYYY-MM-DD
-      console.log("HOY:", todayStr, "- CITA:", citaStr);
-      if (citaStr > todayStr) {
-        toast.error("No se pueden finalizar citas de fechas futuras.");
-        setLoading(false);
-        return;
-      }
+    const today = new Date();
+    const citaDate = new Date(cita.date);
 
-      // 1. Finalizar cita en backend
-      const res = await finalizeAppointment(cita.appointment_id);
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    const citaStr = citaDate.toISOString().split("T")[0];
 
-      if (res && !res.error) {
-        toast.success(res.message || "¡Cita finalizada con éxito!");
+    console.log("HOY:", todayStr, "- CITA:", citaStr);
 
-        // 2. Crear venta asociada
-
-        const newSaleData = {
-          amount: parseFloat(amount),
-          date: new Date(cita.date).toISOString(),
-          appointment_id: cita.appointment_id,
-        };
-        if (cita.client?.client_id) {
-          newSaleData.client_id = cita.client.client_id;
-        }
-        const saleRes = await createSale(newSaleData);
-
-        if (saleRes && !saleRes.error) {
-          toast.success(saleRes.message || "Venta registrada correctamente");
-          // Aquí podrías actualizar un estado de ventas si lo tienes
-        } else {
-          toast.error(saleRes?.error || "No se pudo registrar la venta.");
-        }
-
-        // 3. Actualizar estado en la interfaz
-        setFilteredAppointments((prev) =>
-          prev.map((item) =>
-            item.appointment_id === cita.appointment_id
-              ? { ...item, status: "Finalizada", amount }
-              : item
-          )
-        );
-      } else {
-        toast.error(res?.error || "No se pudo finalizar la cita.");
-      }
-    } catch (error) {
-      console.error("Error finalizando cita:", error);
-      toast.error("Error al finalizar la cita. Intenta de nuevo más tarde.");
-    } finally {
+    if (citaStr > todayStr) {
+      toast.error("No se pueden finalizar citas de fechas futuras.");
       setLoading(false);
-      setShowFinalizeModal(false);
-      setSelectedAppointment(null);
-      setFinalizeAmount("");
+      return;
     }
-  };
+
+    const numericAmount = parseFloat(amount);
+
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+      toast.error("El monto debe ser un número positivo mayor que cero.");
+      setLoading(false);
+      return;
+    }
+
+    // 1. Finalizar cita en backend
+    const res = await finalizeAppointment(cita.appointment_id);
+
+    if (res && !res.error) {
+      toast.success(res.message || "¡Cita finalizada con éxito!");
+
+      // 2. Crear venta asociada
+      const newSaleData = {
+        amount: numericAmount,
+        date: new Date(cita.date).toISOString(),
+        appointment_id: cita.appointment_id,
+      };
+
+      if (cita.client?.client_id) {
+        newSaleData.client_id = cita.client.client_id;
+      }
+
+      const saleRes = await createSale(newSaleData);
+
+      if (saleRes && !saleRes.error) {
+        toast.success(saleRes.message || "Venta registrada correctamente");
+      } else {
+        toast.error(saleRes?.error || "No se pudo registrar la venta.");
+      }
+
+      // 3. Actualizar estado en la interfaz
+      setFilteredAppointments((prev) =>
+        prev.map((item) =>
+          item.appointment_id === cita.appointment_id
+            ? { ...item, status: "Finalizada", amount: numericAmount }
+            : item
+        )
+      );
+    } else {
+      toast.error(res?.error || "No se pudo finalizar la cita.");
+    }
+  } catch (error) {
+    console.error("Error finalizando cita:", error);
+    toast.error("Error al finalizar la cita. Intenta de nuevo más tarde.");
+  } finally {
+    setLoading(false);
+    setShowFinalizeModal(false);
+    setSelectedAppointment(null);
+    setFinalizeAmount("");
+  }
+};
 
   const handleCancelDeletion = () => {
     setSelectedAppointment(null);
