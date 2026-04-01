@@ -390,8 +390,13 @@ function AdminSchedule() {
             <div className="modal-actions">
               <button
                 className="modal-btn confirm"
-                onClick={() => handleFinalizeAppointment(selectedAppointment, finalizeAmount)}
-                disabled={!finalizeAmount.trim()}
+                onClick={() => {
+                  if (!finalizeAmount.trim()) {
+                    toast.error("Faltan campos obligatorios");
+                    return;
+                  }
+                  handleFinalizeAppointment(selectedAppointment, finalizeAmount);
+                }}
               >
                 Confirmar
               </button>
