@@ -113,8 +113,8 @@ function ManageVendors() {
           v.id === id
             ? {
                 ...v,
-                name: data.supplier.name,
-                status: data.supplier.status === "A" ? "Activo" : "Inactivo",
+                 name: data.supplier.name,
+                status: v.status,
                 contacts: data.contacts || [
                   { contact_type: "TELEFONO", contact_value: payload.phone },
                   { contact_type: "EMAIL", contact_value: payload.email },
