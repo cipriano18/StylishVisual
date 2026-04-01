@@ -103,11 +103,11 @@ function AdminSchedule() {
       const today = new Date();
       const citaDate = new Date(cita.date);
 
-      const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
       const citaStr = citaDate.toISOString().split("T")[0]; // YYYY-MM-DD
-
-      if (todayStr !== citaStr) {
-        toast.error("Solo se pueden finalizar citas en la fecha programada.");
+      console.log("HOY:", todayStr, "- CITA:", citaStr);
+      if (citaStr > todayStr) {
+        toast.error("No se pueden finalizar citas de fechas futuras.");
         setLoading(false);
         return;
       }

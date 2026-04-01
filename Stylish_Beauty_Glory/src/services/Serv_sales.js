@@ -8,7 +8,6 @@ export async function createSale(data) {
       body: JSON.stringify(data),
     });
 
-    // La API devuelve un objeto con "message" y "sale"
     return await res.json();
   } catch (error) {
     console.error("createSale error:", error);
