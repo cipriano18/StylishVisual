@@ -500,13 +500,41 @@ function ManageSales() {
         <div className="modal-overlay">
           <div className="modal-content small">
             <h2>Editar venta</h2>
-            <p>ID Cliente</p>
-            <input
-              type="text"
-              placeholder="ID Cliente"
-              value={editClientId}
-              onChange={(e) => setEditClientId(e.target.value)}
+            <p>Cliente</p>
+            <Select
+              options={clientOptions}
+              placeholder="Selecciona o escribe..."
+              isClearable
+              isSearchable
+              value={clientOptions.find((opt) => opt.value === editClientId) || null}
+              onChange={(selected) => setEditClientId(selected ? selected.value : "")}
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  borderRadius: "999px",
+                  backgroundColor: state.isFocused ? "#fff1f1" : "#fef6f6",
+                  boxShadow: state.isFocused
+                    ? "0 0 0 3px rgba(186, 130, 130, 0.3)"
+                    : "0 2px 6px rgba(186, 130, 130, 0.2)",
+                  border: "none",
+                  padding: "6px",
+                  fontFamily: "Poppins, sans-serif",
+                  fontSize: "0.95rem",
+                  color: "#ba8282",
+                }),
+                option: (base, state) => ({
+                  ...base,
+                  fontSize: "0.9rem",
+                  color: state.isSelected ? "#fff" : "#4a2e2e",
+                  backgroundColor: state.isSelected
+                    ? "#ba8282"
+                    : state.isFocused
+                      ? "#fef6f6"
+                      : "white",
+                }),
+              }}
             />
+
             <p>Monto</p>
             <input
               type="number"
