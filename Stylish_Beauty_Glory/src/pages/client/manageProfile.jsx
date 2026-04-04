@@ -291,13 +291,13 @@ function ManageProfile() {
                   />
                   <input
                     className="contact-input"
-                    value={editedSecondSurname}
-                    onChange={(e) => setEditedSecondSurname(e.target.value)}
+                    value={editedFirstSurname}
+                    onChange={(e) => setEditedFirstSurname(e.target.value)}
                   />
                   <input
                     className="contact-input"
-                    value={editedFirstSurname}
-                    onChange={(e) => setEditedFirstSurname(e.target.value)}
+                    value={editedSecondSurname}
+                    onChange={(e) => setEditedSecondSurname(e.target.value)}
                   />
                 </div>
               ) : (
