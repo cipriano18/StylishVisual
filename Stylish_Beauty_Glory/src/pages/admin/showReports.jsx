@@ -35,7 +35,12 @@ function getDefaultDates() {
   const today = new Date();
   const start = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  const format = (date) => date.toISOString().split("T")[0];
+  const format = (date) => {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  };
 
   return {
     startDate: format(start),
