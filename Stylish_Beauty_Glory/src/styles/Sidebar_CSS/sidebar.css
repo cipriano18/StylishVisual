@@ -14,7 +14,7 @@
   overflow-y: auto;
   /* activa scroll vertical */
   overflow-x: hidden;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #af7777;
   padding-top: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -66,7 +66,7 @@
   width: 100%;
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #af7777;
 }
 
 /* 🔹 Estilo del enlace de perfil */
@@ -120,15 +120,15 @@
   justify-content: center;
   align-items: center;
   height: 80px;
-  padding-bottom: 2rem;
-  padding-top: 2rem;
+  padding-top: 2.5rem;
+  padding-bottom: 3.5rem;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 .logo-sidebar {
-  width: 270px;
-  max-width: 470px;
+  width: 160px;
+  max-width: 160px;
   /* Tamaño máximo */
   height: auto;
   object-fit: contain;

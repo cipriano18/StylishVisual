@@ -27,12 +27,12 @@ body {
   justify-content: space-between;
   background: transparent;
   backdrop-filter: blur(15px);
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
   z-index: 1000;
 }
 
 .logo {
-  height: 60px;
+  height: 70px;
 }
 
 .nav {
@@ -43,13 +43,21 @@ body {
 
 .link {
   text-decoration: none;
-  color: #333;
+  color: #ffffff;
   font-weight: 600;
   transition: color 0.3s;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  transition: color 0.3s, transform 0.3s;
 }
 
 .link:hover {
-  color: #f08080;
+  color: #fe9999;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  transform: scale(1.1);
 }
 
 .header-buttons {
@@ -100,21 +108,19 @@ body {
   width: 100%;
   text-align: left;
 
-  /* Imagen de fondo */
-  background-image: url('../../assets/test.jpg');
+  /* Imagen + overlay oscuro */
+  background: linear-gradient(to right,
+      rgba(0, 0, 0, 0.497) 0%,
+      rgba(0, 0, 0, 0.448) 40%,
+      rgba(153, 119, 119, 0) 60%,
+      rgba(152, 107, 107, 0) 100%),
+    url('../../assets/test.png');
 
-  /* Ajustes visuales */
   background-size: cover;
-  /* La imagen cubre todo el área */
   background-position: center;
-  /* Centrada */
   background-repeat: no-repeat;
-  /* No se repite */
 
-  /* Opcional: si quieres que el contenido se vea mejor */
-  position: relative;
   z-index: 1;
-
 }
 
 .main p {
@@ -122,7 +128,7 @@ body {
   font-family: "Josefin Sans", sans-serif;
   font-size: 18px;
   line-height: 1.6;
-  color: #2a0e0e;
+  color: #ffffff;
   z-index: 1;
   margin-right: 50px;
 }
@@ -131,8 +137,7 @@ body {
   font-family: "Yeseva One", serif;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #f6c8c7;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
 }
 
 /* Texto a la izquierda y imagen a la derecha */

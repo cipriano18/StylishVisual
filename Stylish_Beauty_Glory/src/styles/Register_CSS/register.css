@@ -14,6 +14,15 @@
 
 }
 
+.logo-img-register {
+  width: 300px;
+  height: auto;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+
+}
+
 .register-form .resend-container {
   display: flex;
   align-items: center;
@@ -432,7 +441,7 @@
     box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
   }
 
-  .logo-img-login {
+  .logo-img-register {
     width: 100%;
     max-width: 260px;
     padding: 0;
@@ -490,7 +499,7 @@
     padding: 1.2rem;
   }
 
-  .logo-img-login {
+  .logo-img-register {
     width: 100%;
     max-width: 450px;
     padding: 0;

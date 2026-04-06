@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import StylishLogo from "../assets/Stylish_Logo_Black.png";
+import StylishLogo from "../assets/Stylish_Logo_White.png";
 import IMG2 from "../assets/Glori.png";
 import "../styles/Home_CSS/App.css";
 import "../styles/Home_CSS/wave.css";

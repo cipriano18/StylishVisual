@@ -215,7 +215,7 @@ function Register() {
       </section>
 
       <section className="register-right">
-        <img src={Logo} alt="Logo" className="logo-img-login" />
+        <img src={Logo} alt="Logo" className="logo-img-register" />
         {step === 1 && (
           <form className="register-form">
             <label>

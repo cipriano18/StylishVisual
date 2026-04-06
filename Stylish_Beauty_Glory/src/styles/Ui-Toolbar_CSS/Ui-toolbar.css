@@ -322,11 +322,13 @@
   }
 }
 
+.ui-toolbar label {
+  color: #aa7676;
+}
 
 /* Labels */
 .ui-toolbar-popover label {
   color: #f5e6e6;
-  /* 👈 texto claro */
   font-family: 'Poppins', sans-serif;
   font-size: 0.9rem;
 }
