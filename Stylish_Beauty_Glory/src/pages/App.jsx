@@ -296,10 +296,10 @@ function App() {
         <div className="footer-container">
           {/* Redes sociales */}
           <div className="footer-socials">
-            <a href="https://instagram.com/stylishbeautyglori" target="_blank" rel="noreferrer">
+            <a href="https://www.instagram.com/dondeglori.bc" target="_blank" rel="noreferrer">
               <i className="fab fa-instagram"></i>
             </a>
-            <a href="https://www.tiktok.com/@stylishbeautyglori" target="_blank" rel="noreferrer">
+            <a href="https://www.tiktok.com/@dondeglori.bc" target="_blank" rel="noreferrer">
               <i className="fab fa-tiktok"></i>
             </a>
             <a href="https://wa.me/50671338429" target="_blank" rel="noreferrer">

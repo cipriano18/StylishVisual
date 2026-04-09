@@ -110,8 +110,8 @@ body {
 
   /* Imagen + overlay oscuro */
   background: linear-gradient(to right,
-      rgba(0, 0, 0, 0.497) 0%,
-      rgba(0, 0, 0, 0.448) 40%,
+      rgba(42, 24, 24, 0.497) 0%,
+      rgba(54, 32, 32, 0.448) 40%,
       rgba(153, 119, 119, 0) 60%,
       rgba(152, 107, 107, 0) 100%),
     url('../../assets/test.png');
@@ -191,6 +191,27 @@ body {
 }
 
 @media (max-width: 992px) {
+  .main {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10rem;
+    width: 100%;
+    text-align: left;
+
+    /* Overlay oscuro completo */
+    background: linear-gradient(rgba(45, 31, 31, 0.55),
+        rgba(43, 28, 28, 0.55)),
+      url('../../assets/test.png');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    z-index: 1;
+  }
+
   .main-content {
     flex-direction: column-reverse;
     /* primero imagen, luego texto */
@@ -215,6 +236,27 @@ body {
 }
 
 @media (max-width: 768px) {
+  .main {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10rem;
+    width: 100%;
+    text-align: left;
+
+    /* Overlay oscuro completo */
+    background: linear-gradient(rgba(45, 31, 31, 0.55),
+        rgba(43, 28, 28, 0.55)),
+      url('../../assets/test.png');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    z-index: 1;
+  }
+
   .main h1 {
     font-size: 2rem;
     text-align: center;

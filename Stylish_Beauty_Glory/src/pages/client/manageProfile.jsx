@@ -139,7 +139,7 @@ function ManageProfile() {
         secondary_name: editedSecondaryName,
         first_surname: editedFirstSurname,
         second_surname: editedSecondSurname,
-        gender: editedGender,
+        gender: editedGender?.trim().charAt(0).toUpperCase(),
         birth_date: editedBirthDate,
         phone: editedPhone,
         email: editedEmail,

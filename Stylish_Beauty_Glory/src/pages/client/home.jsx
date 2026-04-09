@@ -238,15 +238,11 @@ function ClientHome() {
             nuestras redes:{" "}
           </p>
           <div className="social-icons">
-            <a
-              href="https://instagram.com/stylishbeautyglori"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://instagram.com/dondeglori.bc" target="_blank" rel="noopener noreferrer">
               <FaInstagram size={28} style={{ color: "#000000" }} />
             </a>
             <a
-              href="https://www.tiktok.com/@stylishbeautyglori"
+              href="https://www.tiktok.com/@dondeglori.bc"
               target="_blank"
               rel="noopener noreferrer"
             >
