@@ -143,7 +143,6 @@ function ManageSales() {
     return (!start || saleDate >= start) && (!end || saleDate <= end);
   });
 
-  // 👈 Agrega esto después
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const totalPages = Math.ceil(filteredSales.length / itemsPerPage);
@@ -155,28 +154,19 @@ function ManageSales() {
   //Agregar venta
   const handleAddSale = async () => {
     try {
-      if (!newAmount || !newDate) {
-        toast.error("Todos los campos son obligatorios");
-        return;
-      }
-
       const newSaleData = {
-        amount: parseFloat(newAmount),
-        date: new Date(newDate).toISOString(),
+        amount: newAmount !== "" ? parseFloat(newAmount) : undefined,
+        date: newDate !== "" ? new Date(newDate).toISOString() : undefined,
       };
       if (newClientId) {
         newSaleData.client_id = parseInt(newClientId, 10);
       }
 
       const res = await createSale(newSaleData);
-      console.log("Respuesta al agregar venta:", res);
       if (res?.sale) {
-        // Actualizar la tabla con la nueva venta
         setSales((prev) => [...prev, res.sale]);
         toast.success(res.message || "Factura agregada correctamente");
         setShowModal(false);
-
-        // limpiar inputs
         setNewClientId("");
         setNewAmount("");
         setNewDate("");

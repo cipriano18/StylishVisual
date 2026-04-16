@@ -67,11 +67,6 @@ function ManageServices() {
     const nombreLimpio = newServiceName.trim();
     const descripcionLimpia = newServiceDescription.trim();
 
-    if (!nombreLimpio) {
-      toast.error("Por favor escribe un nombre válido");
-      return;
-    }
-
     try {
       const data = await createService({
         name: nombreLimpio,
@@ -121,11 +116,6 @@ function ManageServices() {
 
     const nombreLimpio = editName.trim();
     const descripcionLimpia = editDescription.trim();
-
-    if (!nombreLimpio) {
-      toast.error("Por favor escribe un nombre válido");
-      return;
-    }
 
     try {
       const data = await updateService(serviceToEdit.service_id, {

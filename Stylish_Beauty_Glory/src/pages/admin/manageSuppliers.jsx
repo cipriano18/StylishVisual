@@ -22,6 +22,7 @@ function ManageVendors() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const [showEditModal, setShowEditModal] = useState(false);
   const [newVendor, setNewVendor] = useState({ name: "", phone: "", email: "" });
   const [editVendor, setEditVendor] = useState({ id: "", name: "", phone: "", email: "" });
   const [searchName, setSearchName] = useState("");
@@ -66,10 +67,7 @@ function ManageVendors() {
     setEditingId(null);
   }, [searchName, vendors]);
 
-  // 🔹 Crear proveedor
   const handleAddVendor = async () => {
-    if (!newVendor.name.trim() || !newVendor.phone.trim() || !newVendor.email.trim()) return;
-
     const payload = {
       name: newVendor.name.trim(),
       phone: newVendor.phone.trim(),
@@ -89,12 +87,14 @@ function ManageVendors() {
       setFilteredVendors((prev) => [...prev, nuevo]);
       setNewVendor({ name: "", phone: "", email: "" });
       toast.success(data.message || "Proveedor creado correctamente");
+      setShowAddModal(false); // <-- aquí
     } else {
       toast.error(data?.error || "No se pudo crear el proveedor");
+      // modal se queda abierto automáticamente
     }
   };
 
-  // 🔹 Editar proveedor
+  // Editar proveedor
   const handleEditVendor = async () => {
     const id = parseInt(editVendor.id);
     if (isNaN(id)) return;
@@ -113,7 +113,7 @@ function ManageVendors() {
           v.id === id
             ? {
                 ...v,
-                 name: data.supplier.name,
+                name: data.supplier.name,
                 status: v.status,
                 contacts: data.contacts || [
                   { contact_type: "TELEFONO", contact_value: payload.phone },
@@ -126,6 +126,7 @@ function ManageVendors() {
         setVendors(updated);
         setFilteredVendors(updated);
         toast.success(data.message || "Proveedor actualizado correctamente");
+        setShowEditModal(false);
       } else {
         toast.error(data?.error || "No se pudo actualizar el proveedor");
       }
@@ -230,7 +231,6 @@ function ManageVendors() {
               </thead>
               <tbody>
                 {currentItems.map((v) => {
-                  const isEditing = editingId === v.id;
                   const telefono =
                     v.contacts.find((c) => c.contact_type === "TELEFONO")?.contact_value || "";
                   const correo =
@@ -238,97 +238,38 @@ function ManageVendors() {
 
                   return (
                     <tr key={v.id}>
-                      <td data-label="Nombre">
-                        {isEditing ? (
-                          <input
-                            type="text"
-                            value={editVendor.name}
-                            onChange={(e) => setEditVendor({ ...editVendor, name: e.target.value })}
-                          />
-                        ) : (
-                          v.name
-                        )}
-                      </td>
-                      <td data-label="Teléfono">
-                        {isEditing ? (
-                          <input
-                            type="text"
-                            value={editVendor.phone}
-                            onChange={(e) =>
-                              setEditVendor({ ...editVendor, phone: e.target.value })
-                            }
-                          />
-                        ) : (
-                          telefono
-                        )}
-                      </td>
-                      <td data-label="Correo">
-                        {isEditing ? (
-                          <input
-                            type="text"
-                            value={editVendor.email}
-                            onChange={(e) =>
-                              setEditVendor({ ...editVendor, email: e.target.value })
-                            }
-                          />
-                        ) : (
-                          correo
-                        )}
-                      </td>
+                      <td data-label="Nombre">{v.name}</td>
+                      <td data-label="Teléfono">{telefono}</td>
+                      <td data-label="Correo">{correo}</td>
                       <td data-label="Estado">
                         <span className={`status-label status-${v.status.toLowerCase()}`}>
                           {v.status}
                         </span>
                       </td>
                       <td data-label="Acciones">
-                        {isEditing ? (
-                          <>
-                            <button
-                              className="icon-btn"
-                              onClick={() => {
-                                handleEditVendor();
-                                setEditingId(null);
-                              }}
-                            >
-                              <FaCheckCircle />
-                            </button>
-                            <button
-                              className="icon-btn"
-                              onClick={() => {
-                                setEditingId(null);
-                                setEditVendor({ id: "", name: "", phone: "", email: "" });
-                              }}
-                            >
-                              <FaTimesCircle />
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              className="icon-btn"
-                              onClick={() => {
-                                setEditingId(v.id);
-                                setEditVendor({
-                                  id: v.id,
-                                  name: v.name,
-                                  phone: telefono,
-                                  email: correo,
-                                });
-                              }}
-                            >
-                              <FaEdit />
-                            </button>
-                            <button
-                              className="icon-btn"
-                              onClick={() => {
-                                setVendorToDelete(v);
-                                setShowDeleteModal(true);
-                              }}
-                            >
-                              <FaTrash />
-                            </button>
-                          </>
-                        )}
+                        <button
+                          className="icon-btn"
+                          onClick={() => {
+                            setEditVendor({
+                              id: v.id,
+                              name: v.name,
+                              phone: telefono,
+                              email: correo,
+                            });
+                            setShowEditModal(true);
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="icon-btn"
+                          onClick={() => {
+                            setVendorToDelete(v);
+                            setShowDeleteModal(true);
+                          }}
+                        >
+                          <FaTrash />
+                        </button>
                       </td>
                     </tr>
                   );
@@ -413,7 +354,6 @@ function ManageVendors() {
                 className="modal-btn confirm"
                 onClick={() => {
                   handleAddVendor();
-                  setShowAddModal(false);
                 }}
               >
                 Agregar
@@ -440,6 +380,44 @@ function ManageVendors() {
                 Sí, dar de baja
               </button>
               <button className="modal-btn cancel" onClick={() => setShowDeleteModal(false)}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/*--- Modal Editar Proveedor ---*/}
+      {showEditModal && (
+        <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+          <div className="modal-content medium" onClick={(e) => e.stopPropagation()}>
+            <h2>Editar Proveedor</h2>
+            <p>Nombre</p>
+            <input
+              type="text"
+              placeholder="Nombre"
+              value={editVendor.name}
+              onChange={(e) => setEditVendor({ ...editVendor, name: e.target.value })}
+            />
+            <p>Teléfono</p>
+            <input
+              type="text"
+              placeholder="Teléfono"
+              value={editVendor.phone}
+              onChange={(e) => setEditVendor({ ...editVendor, phone: e.target.value })}
+            />
+            <p>Correo</p>
+            <input
+              type="text"
+              placeholder="Correo"
+              value={editVendor.email}
+              onChange={(e) => setEditVendor({ ...editVendor, email: e.target.value })}
+            />
+            <div className="modal-actions">
+              <button className="modal-btn confirm" onClick={handleEditVendor}>
+                Guardar cambios
+              </button>
+              <button className="modal-btn cancel" onClick={() => setShowEditModal(false)}>
                 Cancelar
               </button>
             </div>
