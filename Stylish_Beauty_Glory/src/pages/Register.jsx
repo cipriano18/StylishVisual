@@ -100,6 +100,7 @@ function Register() {
       username: "Nombre de usuario",
       password: "Contraseña",
       phone: "Teléfono",
+      gender: "Género",
     };
 
     const faltantes = Object.entries(camposRequeridos)
