@@ -55,7 +55,6 @@ function Register() {
     const { nombre, fechaNacimiento, genero, telefono, cedula, correo } = formData;
 
     // Validaciones de formato (solo si el campo tiene algo escrito)
-
     if (cedula && !/^[A-Za-z0-9]{9,20}$/.test(cedula.trim())) {
       toast.error("La cédula debe contener entre 9 y 20 dígitos numéricos");
       return;
@@ -83,21 +82,35 @@ function Register() {
 
     // Validación de campos obligatorios vacíos
     const { primary_name, first_surname, second_surname } = parseName(nombre || "");
+
     const camposRequeridos = {
+      primary_name,
+      first_surname,
+      second_surname,
       identity_card: cedula,
-      primary_name: primary_name,
-      first_surname: first_surname,
-      second_surname: second_surname,
       phone: telefono,
       gender: genero,
     };
 
+    const fieldLabels = {
+      primary_name: "Nombre",
+      first_surname: "Primer apellido",
+      second_surname: "Segundo apellido",
+      identity_card: "Cédula",
+      username: "Nombre de usuario",
+      password: "Contraseña",
+      phone: "Teléfono",
+    };
+
     const faltantes = Object.entries(camposRequeridos)
-      .filter(([_, value]) => !value)
+      .filter(([_, value]) => !value || String(value).trim() === "")
       .map(([key]) => key);
 
     if (faltantes.length > 0) {
-      toast.error(`Faltan campos obligatorios: ${faltantes.join(", ")}`);
+      const missingLabels = faltantes.map((field) => fieldLabels[field] || field);
+      toast.error(
+        `No se puede continuar. Debe completar los siguientes campos obligatorios: ${missingLabels.join(", ")}`
+      );
       return;
     }
 
@@ -105,6 +118,7 @@ function Register() {
     try {
       localStorage.setItem("registerData", JSON.stringify(formData));
       const res = await requestVerificationCode(correo);
+
       if (res && res.message) {
         toast.success(res.message);
         setStep(2);
@@ -113,7 +127,7 @@ function Register() {
       }
     } catch (err) {
       console.error(err);
-      toast.error(res?.error || "Error al solicitar el código de verificación");
+      toast.error("Error al solicitar el código de verificación");
     }
   };
 
@@ -122,8 +136,6 @@ function Register() {
     const usuarioTrim = secondStepData.usuario?.trim();
     const contrasenaTrim = secondStepData.contrasena?.trim();
     const codigo = secondStepData.codigo;
-
-    // 1️⃣ Validar que todos los campos estén llenos
 
     try {
       // Recuperar datos del primer paso
@@ -135,14 +147,11 @@ function Register() {
         return;
       }
 
-      // 2️⃣ Verificar el código con la API
-
       const res = await verifyCode(email, codigo);
-      // La API devuelve un objeto con "message"
+
       if (res && res.message && res.message.includes("Correo verificado correctamente")) {
         toast.success(res.message);
 
-        // 3️⃣ Preparar datos finales con la estructura que espera la API
         const { primary_name, secondary_name, first_surname, second_surname } = parseName(
           initialData.nombre
         );
@@ -162,33 +171,26 @@ function Register() {
           phone: initialData.telefono,
         };
 
-        // 4️⃣ Enviar datos a la API de clientes
         const clientRes = await createClient(finalData);
+
         if (clientRes && clientRes.message) {
           toast.success(clientRes.message);
 
           try {
-            // Hacer login automático con los datos recién creados
             const { user } = await login(usuarioTrim, contrasenaTrim);
 
-            // Si el login funciona, limpiar datos de registro
             localStorage.removeItem("registerData");
 
-            // Redirigir siempre al cliente
             if (user.role?.toLowerCase() === "cliente") {
               navigate("/client");
             }
           } catch (err) {
             toast.error("Error al iniciar sesión automáticamente");
-            // Si falla el login automático, limpiar igual y mandar al login manual
             localStorage.removeItem("registerData");
             navigate("/login");
           }
         } else {
           toast.error(clientRes?.error || "Error al crear el cliente, intenta de nuevo");
-          if (clientRes.missing_fields) {
-            toast.error(`Campos faltantes: ${clientRes.missing_fields.join(", ")}`);
-          }
         }
       } else {
         toast.error(res.error || "El código de verificación no es válido");
@@ -201,6 +203,7 @@ function Register() {
 
   return (
     <div className="register-section">
+      <Toaster />
       <section className="registerr-left">
         <h2>Estamos aquí para ayudarte!</h2>
         <p>
@@ -216,6 +219,7 @@ function Register() {
 
       <section className="register-right">
         <img src={Logo} alt="Logo" className="logo-img-register" />
+
         {step === 1 && (
           <form className="register-form">
             <label>
@@ -239,6 +243,7 @@ function Register() {
                   onChange={handleChange}
                 />
               </label>
+
               <label>
                 Género
                 <select name="genero" value={formData.genero} onChange={handleChange}>
@@ -258,9 +263,9 @@ function Register() {
                   name="telefono"
                   value={formData.telefono}
                   onChange={handleChange}
-                  placeholder="Ingresa tu teléfono"
                 />
               </label>
+
               <label>
                 Cédula
                 <input
@@ -268,81 +273,52 @@ function Register() {
                   name="cedula"
                   value={formData.cedula}
                   onChange={handleChange}
-                  placeholder="Ingresa tu cédula"
                 />
               </label>
             </div>
 
             <label>
-              Correo Electrónico
+              Correo electrónico
               <input
                 type="email"
                 name="correo"
                 value={formData.correo}
                 onChange={handleChange}
-                placeholder="Ingresa tu correo electrónico"
               />
             </label>
-            <button type="button" onClick={handleFirstSubmit}>
-              Obtener Código de Verificación
-            </button>
 
-            {/* Texto final */}
-            <p className="login-text">
-              ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
-            </p>
+            <button type="button" onClick={handleFirstSubmit}>
+              Continuar
+            </button>
           </form>
         )}
 
         {step === 2 && (
           <form className="register-form">
-            <div className="back-container">
-              {/* Botón para volver al Step 1 */}
-              <button
-                type="button"
-                className="back-btn"
-                onClick={() => {
-                  const savedData = JSON.parse(localStorage.getItem("registerData"));
-                  if (savedData) {
-                    setFormData(savedData); // 👈 restaura los datos previos al Step 1
-                  }
-                  setStep(1); // 👈 vuelve al Step 1
-                }}
-              >
-                <FaArrowLeft />
-                Paso anterior
-              </button>
-            </div>
-            {/* Usuario y contraseña en una sola fila */}
-            <div className="form-row">
-              <label>
-                Nombre de usuario
-                <input
-                  type="text"
-                  name="usuario"
-                  value={secondStepData.usuario}
-                  onChange={handleSecondChange}
-                  placeholder="Ingresa tu usuario"
-                />
-              </label>
+            <button type="button" className="back-btn" onClick={() => setStep(1)}>
+              <FaArrowLeft />
+            </button>
 
-              <label>
-                Contraseña
-                <input
-                  type="password"
-                  name="contrasena"
-                  value={secondStepData.contrasena}
-                  onChange={handleSecondChange}
-                  placeholder="Ingresa tu contraseña"
-                />
-              </label>
-            </div>
+            <label>
+              Nombre de usuario
+              <input
+                type="text"
+                name="usuario"
+                value={secondStepData.usuario}
+                onChange={handleSecondChange}
+              />
+            </label>
 
-            {/* Mini leyenda */}
-            <small className="legend-text">
-              No olvides estos datos, serán necesarios para iniciar sesión cada vez que entres a la
-              página.
-            </small>
+            <label>
+              Contraseña
+              <input
+                type="password"
+                name="contrasena"
+                value={secondStepData.contrasena}
+                onChange={handleSecondChange}
+              />
+            </label>
+
             <label>
               Código de verificación
               <input
@@ -350,57 +326,15 @@ function Register() {
                 name="codigo"
                 value={secondStepData.codigo}
                 onChange={handleSecondChange}
-                placeholder="Ingresa el código enviado"
               />
             </label>
-            <div className="resend-container">
-              <span>¿Aún no te llega el código?</span>
-              <button
-                type="button"
-                className="resend-btn"
-                disabled={resendTimer > 0}
-                onClick={async () => {
-                  try {
-                    const res = await requestVerificationCode(formData.correo);
-                    if (res && res.message) {
-                      toast.success(res.message);
-                      setResendTimer(120); // reiniciar contador
-                    }
-                  } catch (err) {
-                    toast.error("Error al solicitar nuevamente el código");
-                  }
-                }}
-              >
-                {resendTimer > 0
-                  ? `Solicitar de nuevo (${Math.floor(resendTimer / 60)}:${(resendTimer % 60)
-                      .toString()
-                      .padStart(2, "0")})`
-                  : "Solicitar de nuevo"}
-              </button>
-            </div>
-            <button type="button" onClick={handleSecondSubmit}>
-              Confirmar Registro
-            </button>
 
-            {/* Texto final */}
-            <p className="login-text">
-              ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
-            </p>
+            <button type="button" onClick={handleSecondSubmit}>
+              Registrarse
+            </button>
           </form>
         )}
       </section>
-      <Toaster
-        position="center-top"
-        toastOptions={{
-          style: {
-            background: "#875858",
-            color: "#fff",
-            borderRadius: "12px",
-            fontFamily: "Poppins, sans-serif",
-            zIndex: 9999,
-          },
-        }}
-      />
     </div>
   );
 }
