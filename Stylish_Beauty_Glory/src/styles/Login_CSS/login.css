@@ -1,4 +1,4 @@
-.register-section {
+﻿.register-section {
   display: flex;
   flex-direction: row;
   height: 100vh;
@@ -22,7 +22,6 @@
   justify-content: center;
   align-items: flex-start;
   padding: 3rem;
-
 }
 
 .logo-img-login {
@@ -37,12 +36,12 @@
 .register-left {
   background-color: transparent;
   /* color que se puede cambiar */
-  color: #333;
+  color: var(--color-text-dark-soft, #333333);
   text-align: center;
 }
 
 .register-right {
-  background-color: #ba8282;
+  background-color: var(--color-primary, #ba8282);
   text-align: center;
   align-items: center;
   border-radius: 20px 0 0 20px;
@@ -50,7 +49,7 @@
 
 .register-left h2 {
   padding-top: 11rem;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 1.5rem;
   margin-bottom: 1px;
@@ -58,7 +57,7 @@
 }
 
 .register-left p {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 4.2rem;
   line-height: 1.1;
   max-width: 600px;
@@ -76,14 +75,14 @@
 .registerr-form input {
   padding: 0.8rem 1rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-input, #cccccc);
   border-radius: 8px;
 }
 
 .registerr-form button {
   font-family: "Josefin Sans", sans-serif;
   padding: 0.8rem 1rem;
-  background-color: #eebbbb;
+  background-color: var(--color-primary-light, #eebbbb);
   color: white;
   border: none;
   border-radius: 8px;
@@ -93,27 +92,7 @@
 }
 
 .registerr-form button:hover {
-  background-color: #ba8282;
-}
-
-.wave-left {
-  position: absolute;
-  top: 0;
-  /* empieza arriba */
-  right: -670px;
-  /* pegada al borde derecho */
-  height: 100px;
-  /* ocupa toda la altura del contenedor */
-  width: 180.5%;
-  /* grosor de la ola */
-  transform: rotate(90deg);
-  /* rotación para ponerla vertical */
-}
-
-@supports (-webkit-app-region: drag) {
-  .wave-left {
-    right: -685px;
-  }
+  background-color: var(--color-primary, #ba8282);
 }
 
 .hand-img {
@@ -126,10 +105,10 @@
   animation: floatUpDown 3s ease-in-out infinite;
 }
 
-/*Registro de datos*/
+/* Registro de datos */
 
 .register-right h2 {
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   font-family: "Josefin Sans", sans-serif;
   font-weight: 500;
   text-align: center;
@@ -159,55 +138,111 @@
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  font-size: 1.20rem;
+  font-size: 1.2rem;
   text-align: left;
   color: white;
   width: 100%;
 }
 
 .registerr-form input {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   padding: 0.8rem;
-  border: 1px solid #875858;
+  border: 1px solid var(--color-primary-dark, #875858);
   border-radius: 12px;
-  /* más redondeado */
+  /* mas redondeado */
   margin-top: 0.3rem;
-  background-color: #875858;
+  background-color: var(--color-primary-dark, #875858);
   /* color de fondo */
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   /* texto que escribes */
   width: 100%;
 }
 
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.password-input-wrapper input {
+  margin-top: 0;
+  padding-right: 2.9rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 0.9rem;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-primary-light, #eebbbb);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  box-shadow: none;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+  z-index: 1;
+}
+
+.password-toggle-btn:hover {
+  color: var(--color-text-inverse, #ffffff);
+  background: transparent;
+  transform: translateY(-50%);
+}
+
+.registerr-form .password-toggle-btn,
+.registerr-form .password-toggle-btn:hover {
+  background: transparent;
+  box-shadow: none;
+  margin: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.registerr-form .password-toggle-btn:hover {
+  transform: translateY(-50%);
+}
 
 /* Placeholder en blanco */
 .registerr-form input::placeholder,
 .registerr-form select::placeholder {
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   opacity: 1;
-  /* asegúrate que sea completamente visible */
+  /* asegA rate que sea completamente visible */
 }
 
 .registerr-form input:focus,
 .registerr-form select:focus {
   outline: none;
-  border-color: #eebbbb;
-  box-shadow: 0 0 10px rgba(238, 187, 187, 0.5);
+  border-color: var(--color-primary-light, #eebbbb);
+  box-shadow: var(--focus-glow-brand, 0 0 10px rgba(238, 187, 187, 0.5));
   transition: all 0.3s;
 }
 
-
-
 .registerr-form button {
   border: none;
-  background: linear-gradient(90deg, #875858, #eebbbb);
-  color: white;
+  background: var(--gradient-button-primary, linear-gradient(90deg, #875858, #eebbbb));
+  color: var(--color-text-inverse, #ffffff);
   border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-position 0.5s, transform 0.2s;
+  transition:
+    background-position 0.5s,
+    transform 0.2s;
   background-size: 200% 100%;
-  /* para animación */
+  /* para animaciA n */
   background-position: left;
   margin-top: -40px;
   margin-bottom: 40px;
@@ -219,29 +254,26 @@
   /* ligero zoom al pasar el cursor */
 }
 
-
-
 .login-text {
   margin-top: 0.5rem;
-  /* justo debajo del botón */
+  /* justo debajo del boton */
   font-size: 0.85rem;
   text-align: center;
-  color: #372826;
+  color: var(--color-text-subtle, #372826);
 }
 
 .login-text a {
-  color: #eebbbb;
+  color: var(--color-primary-light, #eebbbb);
   text-decoration: none;
   font-weight: 500;
 }
 
 .login-text a:hover {
-  color: #eebbbb;
+  color: var(--color-primary-light, #eebbbb);
   text-decoration: underline;
 }
 
-
-/* Animación simple de fade-in y slide desde la izquierda */
+/* AnimaciA n simple de fade-in y slide desde la izquierda */
 @keyframes slideInLeft {
   0% {
     opacity: 0;
@@ -252,12 +284,8 @@
   100% {
     opacity: 1;
     transform: translateX(0);
-    /* termina en su posición original */
+    /* termina en su posiciA n original */
   }
-}
-
-.register-left .wave-left {
-  opacity: 1;
 }
 
 /* Hacemos que los elementos partan invisibles */
@@ -282,7 +310,9 @@
 }
 
 .register-left .hand-img {
-  animation: slideInLeft 1s ease-out forwards, floatUpDown 3s ease-in-out infinite;
+  animation:
+    slideInLeft 1s ease-out forwards,
+    floatUpDown 3s ease-in-out infinite;
   animation-delay: 0.8s, 1.8s;
   /* espera a que termine la entrada antes de flotar */
   opacity: 0;
@@ -314,7 +344,6 @@
   }
 }
 
-
 .forgot-password {
   margin-top: -20px;
   text-align: right;
@@ -323,8 +352,8 @@
 }
 
 .forgot-password span {
-  color: #eebbbb;
-  /* azul típico de enlace */
+  color: var(--color-primary-light, #eebbbb);
+  /* azul tA pico de enlace */
   text-decoration: none;
 }
 
@@ -341,14 +370,13 @@
 }
 
 @media (max-width: 768px) {
-
   .register-left {
     display: none;
   }
 
   .register-section {
     flex-direction: column;
-    background-color: #c58585;
+    background-color: var(--color-primary-panel, #c58585);
   }
 
   .register-right {
@@ -362,11 +390,11 @@
   .registerr-form {
     width: 100%;
     max-width: 100%;
-    background-color: rgba(135, 88, 88, 0.3);
+    background-color: var(--glass-brand, rgba(135, 88, 88, 0.3));
     backdrop-filter: blur(8px);
     border-radius: 20px;
     padding: 2rem 1.5rem;
-    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+    box-shadow: var(--shadow-glass-brand, 0 8px 24px rgba(135, 88, 88, 0.4));
   }
 
   .logo-img-login {
@@ -379,14 +407,13 @@
 }
 
 @media (min-width: 769px) and (max-width: 1180px) {
-
   .register-left {
     display: none;
   }
 
   .register-section {
     flex-direction: column;
-    background-color: #c58585;
+    background-color: var(--color-primary-panel, #c58585);
   }
 
   .register-right {
@@ -401,11 +428,11 @@
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    background-color: rgba(135, 88, 88, 0.3);
+    background-color: var(--glass-brand, rgba(135, 88, 88, 0.3));
     backdrop-filter: blur(8px);
     border-radius: 20px;
     padding: 3rem 2.5rem;
-    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+    box-shadow: var(--shadow-glass-brand, 0 8px 24px rgba(135, 88, 88, 0.4));
   }
 
   .registerr-form label {

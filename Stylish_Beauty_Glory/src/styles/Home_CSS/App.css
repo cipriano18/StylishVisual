@@ -1,4 +1,4 @@
-/* Reset básico */
+﻿/* Reset basico */
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +7,7 @@
 
 body {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background: linear-gradient(to bottom, #f6c8c7, #fffdfd);
+  background: var(--gradient-page, linear-gradient(to bottom, #f6c8c7, #fffdfd));
 }
 
 .divider {
@@ -43,19 +43,21 @@ body {
 
 .link {
   text-decoration: none;
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
   font-weight: 600;
   transition: color 0.3s;
   padding-left: 5px;
   padding-right: 5px;
   padding-bottom: 2px;
   padding-top: 2px;
-  transition: color 0.3s, transform 0.3s;
+  transition:
+    color 0.3s,
+    transform 0.3s;
 }
 
 .link:hover {
-  color: #fe9999;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  color: var(--color-primary-light, #eebbbb);
+  box-shadow: var(--shadow-dark-soft, 0 2px 6px rgba(0, 0, 0, 0.1));
   border-radius: 15px;
   transform: scale(1.1);
 }
@@ -84,16 +86,16 @@ body {
 .register-btn {
   font-family: "Josefin Sans", sans-serif;
   padding: 0.5rem 1rem;
-  background-color: #d5afaf;
-  color: white;
-  border: 2px solid #d5afaf;
+  background-color: var(--color-primary-muted, #d5afaf);
+  color: var(--color-text-inverse, #ffffff);
+  border: 2px solid var(--color-primary-muted, #d5afaf);
   border-radius: 100px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .register-btn:hover {
-  color: #d5afaf;
+  color: var(--color-primary-muted, #d5afaf);
   background-color: white;
   border-color: white;
 }
@@ -109,12 +111,17 @@ body {
   text-align: left;
 
   /* Imagen + overlay oscuro */
-  background: linear-gradient(to right,
-      rgba(42, 24, 24, 0.497) 0%,
-      rgba(54, 32, 32, 0.448) 40%,
-      rgba(153, 119, 119, 0) 60%,
-      rgba(152, 107, 107, 0) 100%),
-    url('../../assets/test.png');
+  background: var(
+      --gradient-hero-overlay,
+      linear-gradient(
+        to right,
+        rgba(42, 24, 24, 0.497) 0%,
+        rgba(54, 32, 32, 0.448) 40%,
+        rgba(153, 119, 119, 0) 60%,
+        rgba(152, 107, 107, 0) 100%
+      )
+    ),
+    url("../../assets/test.png");
 
   background-size: cover;
   background-position: center;
@@ -128,7 +135,7 @@ body {
   font-family: "Josefin Sans", sans-serif;
   font-size: 18px;
   line-height: 1.6;
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
   z-index: 1;
   margin-right: 50px;
 }
@@ -137,7 +144,7 @@ body {
   font-family: "Yeseva One", serif;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
 }
 
 /* Texto a la izquierda y imagen a la derecha */
@@ -156,32 +163,16 @@ body {
   padding-bottom: 4.5rem;
 }
 
-.image-container {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 0;
-}
-
-.main-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-
-
 /* Ola animada inferior */
 .main .wave-bottom {
   position: absolute;
   bottom: -1px;
-  /* pegada al final de la sección */
+  /* pegada al final de la secciA n */
   left: 0;
   width: 100%;
   height: 100px;
   transform: rotate(180deg);
 }
-
 
 /* Responsive */
 @media (max-width: 1200px) {
@@ -201,9 +192,11 @@ body {
     text-align: left;
 
     /* Overlay oscuro completo */
-    background: linear-gradient(rgba(45, 31, 31, 0.55),
-        rgba(43, 28, 28, 0.55)),
-      url('../../assets/test.png');
+    background: var(
+        --gradient-hero-overlay-mobile,
+        linear-gradient(rgba(45, 31, 31, 0.55), rgba(43, 28, 28, 0.55))
+      ),
+      url("../../assets/test.png");
 
     background-size: cover;
     background-position: center;
@@ -218,20 +211,9 @@ body {
     text-align: center;
   }
 
-  .text,
-  .image-container {
+  .text {
     flex: unset;
     padding: 0;
-  }
-
-  .image-container {
-    padding-top: 6rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-
-  .main-img {
-    max-width: 80%;
   }
 }
 
@@ -246,9 +228,11 @@ body {
     text-align: left;
 
     /* Overlay oscuro completo */
-    background: linear-gradient(rgba(45, 31, 31, 0.55),
-        rgba(43, 28, 28, 0.55)),
-      url('../../assets/test.png');
+    background: var(
+        --gradient-hero-overlay-mobile,
+        linear-gradient(rgba(45, 31, 31, 0.55), rgba(43, 28, 28, 0.55))
+      ),
+      url("../../assets/test.png");
 
     background-size: cover;
     background-position: center;
@@ -272,55 +256,11 @@ body {
 @media (max-width: 480px) {
   .main h1 {
     font-size: 1.5rem;
-
   }
 
-  .main-img {
-    max-width: 100%;
-  }
 }
 
-/* Responsive Header */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    /* apila los elementos */
-    align-items: center;
-    /* centra horizontalmente */
-    padding: 1rem;
-    gap: 0.5rem;
-    /* espacio entre filas */
-  }
-
-  .header .logo {
-    margin-bottom: 0.5rem;
-    /* separa el logo de los botones */
-  }
-
-  .header-buttons {
-    order: 2;
-    /* se mantiene al mismo nivel que el logo */
-    margin-bottom: 0.5rem;
-  }
-
-  .nav {
-    display: flex;
-    flex-wrap: wrap;
-    /* permite que los links bajen de línea si hace falta */
-    justify-content: center;
-    /* centra los links */
-    gap: 1rem;
-    margin: 0;
-  }
-
-  .link {
-    font-size: 0.9rem;
-    /* opcional, ajusta tamaño de texto */
-  }
-}
-
-
-/* ANIMACIONES*/
+/* ANIMACIONES */
 
 /* Animaciones para main */
 @keyframes fadeUp {
@@ -337,33 +277,25 @@ body {
 
 /* Ocultamos inicialmente los elementos */
 .main h1,
-.main p,
-.image-container {
+.main p {
   opacity: 0;
 }
 
-/* Animación del h1 */
+/* AnimaciA n del h1 */
 .main h1 {
   animation: fadeUp 1s forwards;
   animation-delay: 0.2s;
 }
 
-/* Animación del párrafo */
+/* AnimaciA n del pA rrafo */
 .main p {
   animation: fadeUp 1s forwards;
   animation-delay: 0.6s;
 }
 
-/* Animación de la imagen */
-.image-container {
-  animation: fadeUp 1s forwards;
-  animation-delay: 1s;
-}
-
-
 @media (max-width: 768px) {
 
-  /* Ocultar navegación en móvil */
+  /* Ocultar navegacion en mobile */
   .nav-desktop {
     display: none;
   }
@@ -394,7 +326,6 @@ body {
   .text {
     padding: 5rem 1.5rem 0 1.5rem;
     margin-bottom: -80px;
-
   }
 
   .main h1 {
@@ -407,12 +338,10 @@ body {
     padding: 0;
     text-align: left;
     margin-right: 0;
-
   }
 }
 
 @media (min-width: 769px) and (max-width: 1180px) {
-
   .nav-desktop {
     display: flex;
     gap: 1rem;

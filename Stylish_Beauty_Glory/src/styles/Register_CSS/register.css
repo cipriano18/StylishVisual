@@ -1,4 +1,4 @@
-.register-section {
+﻿.register-section {
   display: flex;
   flex-direction: row;
   height: 100vh;
@@ -11,7 +11,6 @@
   /* Elimina scroll vertical y horizontal */
   height: 100vh;
   /* Opcional: ocupa toda la altura de la ventana */
-
 }
 
 .logo-img-register {
@@ -20,7 +19,6 @@
   margin-bottom: 2rem;
   padding-left: 1rem;
   padding-bottom: 1rem;
-
 }
 
 .register-form .resend-container {
@@ -29,7 +27,7 @@
   gap: 12px;
   margin-bottom: 20px;
   font-family: "Josefin Sans", sans-serif;
-  color: rgb(119, 70, 70);
+  color: var(--color-text-main, #4a2e2e);
   font-size: 15px;
 }
 
@@ -42,12 +40,12 @@
 }
 
 .register-form .resend-btn:disabled {
-  background-color: #ffffff;
+  background-color: var(--color-surface, #ffffff);
   cursor: not-allowed;
 }
 
 .legend-text {
-  color: rgb(119, 70, 70);
+  color: var(--color-text-main, #4a2e2e);
   font-family: "Josefin Sans", sans-serif;
   font-size: 14px;
   padding-bottom: 1rem;
@@ -68,26 +66,24 @@
   padding: 3rem;
 }
 
-
 /* Lado izquierdo */
 .registerr-left {
   background-color: transparent;
   /* color que se puede cambiar */
-  color: #333;
+  color: var(--color-text-dark-soft, #333333);
   text-align: center;
 }
 
 /* Lado derecho */
 .register-right {
-  background-color: #ba8282;
+  background-color: var(--color-primary, #ba8282);
   text-align: center;
   align-items: center;
   border-radius: 20px 0 0 20px;
 }
 
-
 .registerr-left h2 {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 1.5rem;
   margin-bottom: 1px;
@@ -95,7 +91,7 @@
 }
 
 .registerr-left p {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 4.2rem;
   line-height: 1.1;
   max-width: 600px;
@@ -103,7 +99,7 @@
 }
 
 .registerr-left .tell {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 15px;
   line-height: 1.5;
   max-width: 600px;
@@ -123,30 +119,8 @@
 .register-form input {
   padding: 0.8rem 1rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-input, #cccccc);
   border-radius: 8px;
-}
-
-
-
-.wave-left {
-  position: absolute;
-  top: 0;
-  /* empieza arriba */
-  right: -670px;
-  /* pegada al borde derecho */
-  height: 100px;
-  /* ocupa toda la altura del contenedor */
-  width: 180.5%;
-  /* grosor de la ola */
-  transform: rotate(90deg);
-  /* rotación para ponerla vertical */
-}
-
-@supports (-webkit-app-region: drag) {
-  .wave-left {
-    right: -685px;
-  }
 }
 
 .handR-img {
@@ -156,18 +130,19 @@
   width: 470px;
   height: auto;
   z-index: 2;
-  animation: slideInLeft 1s ease-out forwards, rotateSideToSide 3s ease-in-out infinite;
+  animation:
+    slideInLeft 1s ease-out forwards,
+    rotateSideToSide 3s ease-in-out infinite;
   animation-delay: 0.8s, 1.8s;
   /* primero entra, luego flota */
   opacity: 0;
 }
 
-
-/*Registro de datos*/
+/* Registro de datos */
 
 .register-right h2 {
-  color: white;
-  font-family: 'Roboto', sans-serif;
+  color: var(--color-text-inverse, #ffffff);
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
   text-align: center;
 }
@@ -205,15 +180,15 @@
 
 .register-form input,
 .register-form select {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   padding: 0.8rem;
-  border: 1px solid #875858;
+  border: 1px solid var(--color-primary-dark, #875858);
   border-radius: 12px;
-  /* más redondeado */
+  /* mas redondeado */
   margin-top: 0.3rem;
-  background-color: #875858;
+  background-color: var(--color-primary-dark, #875858);
   /* color de fondo */
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   /* texto que escribes */
   width: 100%;
 }
@@ -224,19 +199,19 @@
   -moz-appearance: none;
   /* Firefox */
   appearance: none;
-  /* estándar */
-  background-color: #875858;
+  /* estA ndar */
+  background-color: var(--color-primary-dark, #875858);
   /* fondo */
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   /* texto */
-  border: 1px solid #875858;
+  border: 1px solid var(--color-primary-dark, #875858);
   border-radius: 12px;
   padding: 0.8rem;
   padding-right: 2.5rem;
   /* espacio para la flecha */
   width: 100%;
   cursor: pointer;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .register-form select {
@@ -248,40 +223,39 @@
 }
 
 .register-form select option:hover {
-  background-color: #ba8282;
+  background-color: var(--color-primary, #ba8282);
 }
-
 
 /* Placeholder en blanco */
 .register-form input::placeholder,
 .register-form select::placeholder {
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   opacity: 1;
-  /* asegúrate que sea completamente visible */
+  /* asegA rate que sea completamente visible */
 }
 
 .register-form input:focus,
 .register-form select:focus {
   outline: none;
-  border-color: #eebbbb;
-  box-shadow: 0 0 10px rgba(238, 187, 187, 0.5);
+  border-color: var(--color-primary-light, #eebbbb);
+  box-shadow: var(--focus-glow-brand, 0 0 10px rgba(238, 187, 187, 0.5));
   transition: all 0.3s;
 }
-
-
 
 .register-form button {
   font-family: "Josefin Sans", sans-serif;
   padding: 0.8rem;
   border: none;
-  background: linear-gradient(90deg, #875858, #eebbbb);
-  color: white;
+  background: var(--gradient-button-primary, linear-gradient(90deg, #875858, #eebbbb));
+  color: var(--color-text-inverse, #ffffff);
   border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-position 0.5s, transform 0.2s;
+  transition:
+    background-position 0.5s,
+    transform 0.2s;
   background-size: 200% 100%;
-  /* para animación */
+  /* para animaciA n */
   background-position: left;
 }
 
@@ -291,29 +265,26 @@
   /* ligero zoom al pasar el cursor */
 }
 
-
-
 .login-text {
   margin-top: 0.5rem;
-  /* justo debajo del botón */
+  /* justo debajo del boton */
   font-size: 0.85rem;
   text-align: center;
-  color: #372826;
+  color: var(--color-text-subtle, #372826);
 }
 
 .login-text a {
-  color: #eebbbb;
+  color: var(--color-primary-light, #eebbbb);
   text-decoration: none;
   font-weight: 500;
 }
 
 .login-text a:hover {
-  color: #eebbbb;
+  color: var(--color-primary-light, #eebbbb);
   text-decoration: underline;
 }
 
-
-/* Animación simple de fade-in y slide desde la izquierda */
+/* AnimaciA n simple de fade-in y slide desde la izquierda */
 @keyframes slideInLeft {
   0% {
     opacity: 0;
@@ -324,12 +295,8 @@
   100% {
     opacity: 1;
     transform: translateX(0);
-    /* termina en su posición original */
+    /* termina en su posiciA n original */
   }
-}
-
-.registerr-left .wave-left {
-  opacity: 1;
 }
 
 /* Hacemos que los elementos partan invisibles */
@@ -353,7 +320,7 @@
   animation-delay: 0.6s;
 }
 
-/* 🔹 Entrada desde la izquierda */
+/* Entrada desde la izquierda */
 @keyframes slideInLeft {
   from {
     transform: translateX(-100px);
@@ -380,7 +347,6 @@
   }
 }
 
-
 .register-form .back-container {
   display: flex;
   justify-content: flex-start;
@@ -390,22 +356,24 @@
 .register-form .back-btn {
   all: unset;
   display: inline-flex;
-  /* flex para alinear ícono y texto */
+  /* flex para alinear Icono y texto */
   align-items: center;
   /* centra verticalmente */
   gap: 6px;
-  /* espacio entre ícono y texto */
+  /* espacio entre Icono y texto */
 
-  background: linear-gradient(90deg, #875858, #b18282);
+  background: linear-gradient(90deg, var(--color-primary-dark, #875858), #b18282);
   border-radius: 12px;
   cursor: pointer;
   padding: 6px 12px;
 
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
   font-family: "Josefin Sans", sans-serif;
   font-size: 14px;
   margin-bottom: 12px;
-  transition: background-position 0.5s, transform 0.2s;
+  transition:
+    background-position 0.5s,
+    transform 0.2s;
 }
 
 .back-btn:hover {
@@ -413,14 +381,13 @@
 }
 
 @media (max-width: 768px) {
-
   .registerr-left {
     display: none;
   }
 
   .register-section {
     flex-direction: column;
-    background-color: #c58585;
+    background-color: var(--color-primary-panel, #c58585);
   }
 
   .register-right {
@@ -434,11 +401,11 @@
   .register-form {
     width: 100%;
     max-width: 100%;
-    background-color: rgba(135, 88, 88, 0.3);
+    background-color: var(--glass-brand, rgba(135, 88, 88, 0.3));
     backdrop-filter: blur(8px);
     border-radius: 20px;
     padding: 2rem 1.5rem;
-    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+    box-shadow: var(--shadow-glass-brand, 0 8px 24px rgba(135, 88, 88, 0.4));
   }
 
   .logo-img-register {
@@ -455,14 +422,13 @@
 }
 
 @media (min-width: 769px) and (max-width: 1180px) {
-
   .registerr-left {
     display: none;
   }
 
   .register-section {
     flex-direction: column;
-    background-color: #c58585;
+    background-color: var(--color-primary-panel, #c58585);
   }
 
   .register-right {
@@ -477,11 +443,11 @@
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
-    background-color: rgba(135, 88, 88, 0.3);
+    background-color: var(--glass-brand, rgba(135, 88, 88, 0.3));
     backdrop-filter: blur(8px);
     border-radius: 20px;
     padding: 3.5rem 3rem;
-    box-shadow: 0 8px 24px rgba(135, 88, 88, 0.4);
+    box-shadow: var(--shadow-glass-brand, 0 8px 24px rgba(135, 88, 88, 0.4));
   }
 
   .register-form label {

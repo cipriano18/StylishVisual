@@ -1,6 +1,6 @@
 .footer {
-  background-color: #875858;
-  color: white;
+  background-color: var(--color-primary-dark, #875858);
+  color: var(--color-text-inverse, #ffffff);
   padding: 40px 20px;
   text-align: center;
 }
@@ -18,13 +18,13 @@
 }
 
 .footer-socials a {
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   font-size: 1.5rem;
   transition: color 0.3s;
 }
 
 .footer-socials a:hover {
-  color: #f0c0c0;
+  color: var(--color-text-accent, #f0c0c0);
 }
 
 .footer-info p {
@@ -34,5 +34,5 @@
 .footer-copy p {
   margin-top: 15px;
   font-size: 0.9rem;
-  color: #f1e5e5;
+  color: var(--color-text-faint, #f1e5e5);
 }

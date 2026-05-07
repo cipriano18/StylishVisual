@@ -34,9 +34,9 @@ function ManageVendors() {
   // Configuración eliminar proveedor
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [vendorToDelete, setVendorToDelete] = useState(null);
+  const setEditingId = () => {};
 
   // Configuración editar proveedor
-  const [editingId, setEditingId] = useState(null);
 
   // 🔹 Cargar proveedores desde la API
   useEffect(() => {
@@ -53,7 +53,7 @@ function ManageVendors() {
         setFilteredVendors(formatted);
       } else {
         console.error("No se pudo cargar la lista de proveedores");
-        toast.error(data.error);
+        toast.error(data?.error || "No se pudo cargar la lista de proveedores");
       }
     };
     cargarProveedores();
@@ -64,7 +64,6 @@ function ManageVendors() {
     if (!term) setFilteredVendors(vendors);
     else setFilteredVendors(vendors.filter((v) => v.name?.toLowerCase().includes(term)));
     setCurrentPage(1);
-    setEditingId(null);
   }, [searchName, vendors]);
 
   const handleAddVendor = async () => {
@@ -130,8 +129,8 @@ function ManageVendors() {
       } else {
         toast.error(data?.error || "No se pudo actualizar el proveedor");
       }
-    } catch (error) {
-      toast.error(data.error || "Error de red al actualizar el proveedor");
+    } catch {
+      toast.error("Error de red al actualizar el proveedor");
     }
 
     setEditVendor({ id: "", name: "", phone: "", email: "" });
@@ -151,10 +150,10 @@ function ManageVendors() {
         setShowDeleteModal(false);
         toast.success(data.message || "Proveedor inactivado correctamente");
       } else {
-        toast.error(data.error || "No se pudo inactivar el proveedor");
+        toast.error(data?.error || "No se pudo inactivar el proveedor");
       }
-    } catch (error) {
-      toast.error(data.error || "Error de red al inactivar el proveedor");
+    } catch {
+      toast.error("Error de red al inactivar el proveedor");
     }
   };
 

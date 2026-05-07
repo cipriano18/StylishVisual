@@ -5,6 +5,7 @@ import {
   FaEdit,
   FaTrash,
   FaEye,
+  FaEyeSlash,
   FaUser,
   FaBriefcase,
   FaEnvelope,
@@ -240,6 +241,7 @@ function ManageAdmins() {
   };
   //Controles de modal de agregar
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCreatePassword, setShowCreatePassword] = useState(false);
   const [newAdmin, setNewAdmin] = useState({
     username: "",
     password: "",
@@ -426,7 +428,7 @@ function ManageAdmins() {
           <div className="modal-content xlarge">
             <h2 style={{ marginBottom: "1.5rem", color: "#4a2e2e" }}>Detalles del Administrador</h2>
 
-            {/* 🧍 Información personal */}
+            {/* Información personal */}
             <div
               style={{ marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}
             >
@@ -454,7 +456,7 @@ function ManageAdmins() {
                 <p>{`${selectedAdmin.primary_name} ${selectedAdmin.secondary_name || ""} ${selectedAdmin.first_surname} ${selectedAdmin.second_surname || ""}`}</p>
               </div>
             </div>
-            {/* 🧠 Información profesional */}
+            {/* Información profesional */}
             <div
               style={{ marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}
             >
@@ -487,7 +489,7 @@ function ManageAdmins() {
                 <p>{selectedAdmin.working_days || "—"}</p>
               </div>
             </div>
-            {/* 📞 Contacto */}
+            {/* Contacto */}
             <div
               style={{ marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}
             >
@@ -518,7 +520,7 @@ function ManageAdmins() {
                 </p>
               </div>
             </div>
-            {/* 🔐 Datos de usuario */}
+            {/* Datos de usuario */}
             <div
               style={{ marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}
             >
@@ -575,7 +577,7 @@ function ManageAdmins() {
                 gap: "2rem",
               }}
             >
-              {/* 🧍 Datos personales */}
+              {/* Datos personales */}
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}
@@ -625,7 +627,7 @@ function ManageAdmins() {
                 </div>
               </div>
 
-              {/* 🧠 Datos profesionales */}
+              {/* Datos profesionales */}
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}
@@ -674,7 +676,7 @@ function ManageAdmins() {
                 </div>
               </div>
 
-              {/* 📞 Contacto */}
+              {/* Contacto */}
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}
@@ -700,7 +702,7 @@ function ManageAdmins() {
                 </div>
               </div>
 
-              {/* 🔐 Usuario */}
+              {/* Usuario */}
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}
@@ -718,11 +720,23 @@ function ManageAdmins() {
                 </div>
                 <div>
                   <label>Contraseña *</label>
-                  <input
-                    type="password"
-                    value={newAdmin.password}
-                    onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
-                  />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showCreatePassword ? "text" : "password"}
+                      value={newAdmin.password}
+                      onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowCreatePassword((previousValue) => !previousValue)}
+                      aria-label={
+                        showCreatePassword ? "Ocultar contrasena" : "Mostrar contrasena"
+                      }
+                    >
+                      {showCreatePassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -758,7 +772,7 @@ function ManageAdmins() {
                 gap: "2rem",
               }}
             >
-              {/* 🧍 Datos personales */}
+              {/* Datos personales */}
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}
@@ -800,7 +814,7 @@ function ManageAdmins() {
                 </div>
               </div>
 
-              {/* 🧠 Datos profesionales */}
+              {/* Datos profesionales */}
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}
@@ -843,7 +857,7 @@ function ManageAdmins() {
                 </div>
               </div>
 
-              {/* 📞 Contacto */}
+              {/* Contacto */}
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}

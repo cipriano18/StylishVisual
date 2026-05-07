@@ -1,5 +1,11 @@
 import { API_BASE } from "./config"; //"https://stylish-8dn8.vercel.app/api"
 
+/**
+ * Performs authenticated API requests and retries once after refreshing the access token.
+ * @param {string} endpoint
+ * @param {RequestInit} [options={}]
+ * @returns {Promise<Response>}
+ */
 export async function apiFetch(endpoint, options = {}) {
   let token = localStorage.getItem("access_token");
   const refreshToken = localStorage.getItem("refresh_token");

@@ -1,30 +1,30 @@
-/* 🔹 Contenedor principal */
+﻿/* Contenedor principal */
 .ui-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 1.5rem;
-  background-color: #fdf7f7;
+  background-color: var(--color-surface-soft, #fdf7f7);
   border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(186, 130, 130, 0.15);
+  box-shadow: var(--shadow-brand-mobile, 0 4px 12px rgba(186, 130, 130, 0.15));
   margin-bottom: 1rem;
   flex-wrap: wrap;
   gap: 1rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-/* 🔹 Título */
+/* Titulo */
 .ui-toolbar-title {
   font-family: "Yeseva One", serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-/* 🔹 Controles */
+/* Controles */
 .ui-toolbar-controls {
   display: flex;
   align-items: center;
@@ -35,51 +35,52 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  /* 🔹 Separación moderada entre elementos */
+  /* Separacion moderada entre elementos */
   flex-wrap: wrap;
-  /* 🔹 Permite que se acomoden en pantallas pequeñas */
+  /* Permite que se acomoden en pantallas pequenas */
 }
 
-/* 🔹 Input */
+/* Input */
 .ui-toolbar-filter input {
   padding: 0.6rem 1rem;
   font-size: 0.95rem;
   font-weight: 500;
   border: none;
   border-radius: 999px;
-  background-color: #ffffff;
-  color: #ba8282;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary, #ba8282);
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
   transition: box-shadow 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-/* 🔹 Simulación de cursor parpadeando */
+/* Simulacion de cursor parpadeando */
 .ui-toolbar-filter input:hover {
-  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  box-shadow: var(--focus-ring-brand, 0 0 0 3px rgba(186, 130, 130, 0.3));
   animation: typingGlow 1.2s infinite;
 }
 
-/* 🔹 Keyframes para efecto de parpadeo */
+/* Keyframes para efecto de parpadeo */
 @keyframes typingGlow {
   0% {
-    box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+    box-shadow: var(--focus-ring-brand, 0 0 0 3px rgba(186, 130, 130, 0.3));
   }
 
   50% {
-    box-shadow: 0 0 0 1px rgba(186, 130, 130, 0.1);
+    box-shadow: var(--focus-ring-brand-soft, 0 0 0 1px rgba(186, 130, 130, 0.1));
   }
 
   100% {
-    box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+    box-shadow: var(--focus-ring-brand, 0 0 0 3px rgba(186, 130, 130, 0.3));
   }
 }
 
-
 .ui-toolbar-filter input::placeholder {
-  color: #ba8282;
+  color: var(--color-primary, #ba8282);
   opacity: 0.5;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .ui-toolbar-filter input:hover::placeholder {
@@ -87,13 +88,12 @@
   opacity: 0.7;
 }
 
-
 .ui-toolbar-filter input:focus {
-  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  box-shadow: var(--focus-ring-brand, 0 0 0 3px rgba(186, 130, 130, 0.3));
   outline: none;
 }
 
-/* 🔹 Botón */
+/* Boton */
 .ui-toolbar-btn {
   display: flex;
   align-items: center;
@@ -101,20 +101,22 @@
   padding: 0.6rem 1.2rem;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #cd9292;
-  background-color: #ffffff;
+  color: var(--color-primary-soft, #cd9292);
+  background-color: var(--color-surface, #ffffff);
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
-  font-family: 'Poppins', sans-serif;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
+  font-family: "Poppins", sans-serif;
   text-align: center;
 }
 
 .ui-toolbar-btn:hover {
-  background-color: #cd9292;
-  color: #ffffff;
+  background-color: var(--color-primary-soft, #cd9292);
+  color: var(--color-text-inverse, #ffffff);
   transform: translateY(-2px);
 }
 
@@ -131,72 +133,73 @@
   transform: rotate(360deg);
 }
 
-/* 🔹 Personalización del ícono del calendario */
+/* Personalizacion del Icono del calendario */
 .ui-toolbar-filter input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(40%) sepia(20%) saturate(500%) hue-rotate(310deg);
 }
 
-
 .ui-toolbar-select {
   padding: 10px;
   border-radius: 999px;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--color-surface, #ffffff);
   font-size: 0.95rem;
-  background-color: #ffffff;
-  color: #ba8282;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary, #ba8282);
   border: none;
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
+  transition:
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
 }
 
 .ui-toolbar-select:focus {
-  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  box-shadow: var(--focus-ring-brand, 0 0 0 3px rgba(186, 130, 130, 0.3));
   outline: none;
 }
 
-/* 🔹 Select en la toolbar */
+/* Select en la toolbar */
 .ui-toolbar-filter select {
   padding: 0.6rem 1.2rem;
   font-size: 0.95rem;
   font-weight: 500;
   border: none;
   border-radius: 999px;
-  background-color: #ffffff;
-  color: #cd9292;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
-  font-family: 'Poppins', sans-serif;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary-soft, #cd9292);
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
+  font-family: "Poppins", sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
   appearance: none;
-  /* 🔹 elimina estilos nativos */
+  /* elimina estilos nativos */
 }
 
-/* 🔹 Hover (igual que botón) */
+/* Hover (igual que boton) */
 .ui-toolbar-filter select:hover {
-  background-color: #cd9292;
-  color: #ffffff;
+  background-color: var(--color-primary-soft, #cd9292);
+  color: var(--color-text-inverse, #ffffff);
   transform: translateY(-2px);
 }
 
-/* 🔹 Focus */
+/* Focus */
 .ui-toolbar-filter select:focus {
-  box-shadow: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  box-shadow: var(--focus-ring-brand, 0 0 0 3px rgba(186, 130, 130, 0.3));
   outline: none;
 }
 
-/* 🔹 Opciones internas */
+/* Opciones internas */
 .ui-toolbar-filter select option {
-  color: #4a2e2e;
-  background-color: #ffffff;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-text-main, #4a2e2e);
+  background-color: var(--color-surface, #ffffff);
+  font-family: "Poppins", sans-serif;
 }
 
-/* ==============================
-   🔹 FILTER POPOVER
-   ============================== */
+/* ============================== Y FILTER POPOVER ============================== */
 
-/* En desktop: ocultar botón de filtro, mostrar filtros normales */
+/* En desktop: ocultar boton de filtro, mostrar filtros normales */
 .ui-toolbar-filter-btn {
   display: none;
 }
@@ -213,13 +216,12 @@
 }
 
 @media (max-width: 1180px) {
-
   /* Ocultar filtros normales */
   .ui-toolbar-filter-desktop {
     display: none;
   }
 
-  /* Mostrar botón y wrapper */
+  /* Mostrar boton y wrapper */
   .ui-toolbar-filter-wrapper {
     display: flex;
   }
@@ -228,7 +230,7 @@
     display: flex;
   }
 
-  /* Toolbar más compacto */
+  /* Toolbar mas compacto */
   .ui-toolbar {
     border-radius: 20px;
     padding: 1rem;
@@ -253,11 +255,11 @@
     width: 100%;
     min-width: unset;
     transform: none;
-    background-color: #ba8282;
-    /* 👈 fondo oscuro cálido */
+    background-color: var(--color-primary, #ba8282);
+    /* fondo oscuro calido */
     border-radius: 0 0 16px 16px;
     padding: 1rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-dark-strong, 0 8px 24px rgba(0, 0, 0, 0.3));
     z-index: 1200;
     display: flex;
     flex-direction: column;
@@ -286,13 +288,12 @@
 }
 
 @media (max-width: 768px) {
-
   .ui-toolbar {
     flex-direction: row;
     align-items: center;
-    /* 👈 centra verticalmente titulo y controles */
+    /* centra verticalmente titulo y controles */
     flex-wrap: wrap;
-    /* 👈 permite que los controles bajen de línea */
+    /* permite que los controles bajen de llinea */
     border-radius: 16px;
     padding: 0.9rem 1rem;
     justify-content: space-between;
@@ -301,7 +302,7 @@
   .ui-toolbar-title {
     font-size: 1.1rem;
     flex-shrink: 0;
-    /* 👈 el título no se encoge */
+    /* el titulo no se encoge */
   }
 
   .ui-toolbar-controls {
@@ -323,13 +324,13 @@
 }
 
 .ui-toolbar label {
-  color: #aa7676;
+  color: var(--color-primary-accent, #aa7676);
 }
 
 /* Labels */
 .ui-toolbar-popover label {
-  color: #f5e6e6;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-surface-panel, #fbeaea);
+  font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
 }
 
@@ -340,22 +341,22 @@
   font-weight: 500;
   border: none;
   border-radius: 999px;
-  background-color: #aa7676;
-  /* 👈 input oscuro */
-  color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-primary-accent, #aa7676);
+  /* input oscuro */
+  color: var(--color-text-inverse, #ffffff);
+  box-shadow: var(--shadow-dark-medium, 0 4px 8px rgba(0, 0, 0, 0.2));
   transition: box-shadow 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin-top: -10px;
 }
 
 .ui-toolbar-popover input:focus {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+  box-shadow: var(--focus-ring-light, 0 0 0 3px rgba(255, 255, 255, 0.2));
   outline: none;
 }
 
 .ui-toolbar-popover input::placeholder {
-  color: #f5e6e6;
+  color: var(--color-surface-panel, #fbeaea);
   opacity: 0.6;
 }
 
@@ -366,38 +367,38 @@
   font-weight: 500;
   border: none;
   border-radius: 999px;
-  background-color: #aa7676;
-  /* 👈 select oscuro */
-  color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  font-family: 'Poppins', sans-serif;
+  background-color: var(--color-primary-accent, #aa7676);
+  /* select oscuro */
+  color: var(--color-text-inverse, #ffffff);
+  box-shadow: var(--shadow-dark-medium, 0 4px 8px rgba(0, 0, 0, 0.2));
+  font-family: "Poppins", sans-serif;
   cursor: pointer;
   appearance: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .ui-toolbar-popover select:focus {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+  box-shadow: var(--focus-ring-light, 0 0 0 3px rgba(255, 255, 255, 0.2));
   outline: none;
 }
 
 .ui-toolbar-popover select option {
-  color: #4a2e2e;
-  background-color: #ffffff;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-text-main, #4a2e2e);
+  background-color: var(--color-surface, #ffffff);
+  font-family: "Poppins", sans-serif;
 }
 
-
-
-/* 🔹 Botón dentro del popover */
+/* Boton dentro del popover */
 .ui-toolbar-popover .ui-toolbar-btn {
-  background-color: #aa7676;
-  color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-primary-accent, #aa7676);
+  color: var(--color-text-inverse, #ffffff);
+  box-shadow: var(--shadow-dark-medium, 0 4px 8px rgba(0, 0, 0, 0.2));
   justify-content: center;
 }
 
 .ui-toolbar-popover .ui-toolbar-btn:hover {
-  background-color: #7a4f4f;
+  background-color: var(--color-primary-dark, #875858);
   transform: translateY(-2px);
 }

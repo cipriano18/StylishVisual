@@ -89,7 +89,8 @@ function ManageSales() {
         } else {
           toast.error(res.error || "Error al cargar ventas del mes");
         }
-      } catch (err) {
+      } catch (error) {
+        console.error("Error cargando ventas del mes:", error);
         toast.error("Error al cargar ventas del mes");
       } finally {
         setLoading(false);
@@ -115,7 +116,8 @@ function ManageSales() {
       } else {
         toast.error(res?.error || "No se encontraron ventas en ese rango");
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Error al filtrar ventas:", error);
       toast.error("Error al filtrar ventas");
     }
   };
@@ -173,7 +175,8 @@ function ManageSales() {
       } else {
         toast.error(res.error || "Error al agregar la factura");
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Error agregando venta:", error);
       toast.error("Error inesperado al agregar");
     }
   };
@@ -203,7 +206,8 @@ function ManageSales() {
       } else {
         toast.error(res?.error || "Error al actualizar la factura");
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Error actualizando venta:", error);
       toast.error("Error inesperado al actualizar");
     }
   };
@@ -227,7 +231,8 @@ function ManageSales() {
       } else {
         toast.error(res?.error || "Error al eliminar la venta");
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Error eliminando venta:", error);
       toast.error("Error inesperado al eliminar");
     }
   };

@@ -1,40 +1,29 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Outlet, NavLink } from "react-router-dom";
-import axios from "axios";
+import { Toaster } from "react-hot-toast";
+import { FaBookOpen, FaCalendarAlt, FaHome, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
 import "../styles/Sidebar_CSS/sidebar.css";
 import Logo from "../assets/Stylish_Logo_White.png";
-
-import { Toaster } from "react-hot-toast";
-import { API_BASE } from "../services/config";
-
-// Íconos
-import { FaBookOpen, FaCalendarAlt, FaHome, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { fetchClientProfile } from "../services/Serv_profiles";
+import { buildDisplayName } from "../utils/profile";
 
 export default function ClientLayout() {
   const [nombreUsuario, setNombreUsuario] = useState("Cargando...");
   const [loadingProfile, setLoadingProfile] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false); // 👈 nuevo estado
-  useEffect(() => {
-    const fetchClientProfile = async () => {
-      try {
-        const token = localStorage.getItem("access_token");
+  const [menuOpen, setMenuOpen] = useState(false);
 
-        if (!token) {
+  useEffect(() => {
+    const loadClientProfile = async () => {
+      try {
+        const response = await fetchClientProfile();
+        if (!response?.client) {
           setNombreUsuario("Cliente");
           return;
         }
 
-        const res = await axios.get(`${API_BASE}/profile/client`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const client = res.data.client;
-
-        setNombreUsuario(`${client.primary_name} ${client.first_surname}`);
+        setNombreUsuario(buildDisplayName(response.client, "Cliente"));
       } catch (error) {
         console.error("Error cargando perfil cliente:", error);
         setNombreUsuario("Cliente");
@@ -43,39 +32,39 @@ export default function ClientLayout() {
       }
     };
 
-    fetchClientProfile();
+    loadClientProfile();
   }, []);
+
+  const handleToggleMenu = () => {
+    setMenuOpen((currentValue) => !currentValue);
+  };
+
+  const handleCloseMenu = () => {
+    setMenuOpen(false);
+  };
 
   return (
     <div className="admin-layout">
-      {/* ✅ BOTÓN HAMBURGUESA - solo visible en móvil/tablet */}
       {createPortal(
-        <button
-          className={`hamburger-btn ${menuOpen ? "open" : ""}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <button className={`hamburger-btn ${menuOpen ? "open" : ""}`} onClick={handleToggleMenu}>
           <span></span>
           <span></span>
           <span></span>
         </button>,
-        document.body // 👈 se renderiza directo en el body, fuera del layout
+        document.body
       )}
 
-      {/* ✅ OVERLAY - fondo oscuro al abrir */}
-      {menuOpen && <div className="hamburger-overlay" onClick={() => setMenuOpen(false)} />}
-
-      {/* ✅ Overlay y menú */}
       {menuOpen &&
         createPortal(
           <>
-            <div className="hamburger-overlay" onClick={() => setMenuOpen(false)} />
+            <div className="hamburger-overlay" onClick={handleCloseMenu} />
             <div className="hamburger-menu">
               <nav>
                 <ul>
                   <li>
                     <NavLink
                       to="/client/home"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={handleCloseMenu}
                       className={({ isActive }) => (isActive ? "active-link" : "")}
                     >
                       <FaHome className="sidebar-icon" /> Inicio
@@ -84,7 +73,7 @@ export default function ClientLayout() {
                   <li>
                     <NavLink
                       to="/client/appointments"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={handleCloseMenu}
                       className={({ isActive }) => (isActive ? "active-link" : "")}
                     >
                       <FaCalendarAlt className="sidebar-icon" /> Citas
@@ -93,7 +82,7 @@ export default function ClientLayout() {
                   <li>
                     <NavLink
                       to="/client/schedule"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={handleCloseMenu}
                       className={({ isActive }) => (isActive ? "active-link" : "")}
                     >
                       <FaBookOpen className="sidebar-icon" /> Mi Agenda
@@ -102,15 +91,15 @@ export default function ClientLayout() {
                   <li>
                     <NavLink
                       to="/client/profile"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={handleCloseMenu}
                       className={({ isActive }) => (isActive ? "active-link" : "")}
                     >
                       <FaUserCircle className="sidebar-icon" /> Perfil
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/login" onClick={() => setMenuOpen(false)}>
-                      <FaSignOutAlt className="sidebar-icon" /> Cerrar sesión
+                    <NavLink to="/login" onClick={handleCloseMenu}>
+                      <FaSignOutAlt className="sidebar-icon" /> Cerrar sesiÃ³n
                     </NavLink>
                   </li>
                 </ul>
@@ -120,16 +109,13 @@ export default function ClientLayout() {
           document.body
         )}
 
-      {/* Sidebar */}
       <aside className="sidebar">
-        {/* Logo */}
         <div className="sidebar-logo">
           <NavLink to="/">
             <img src={Logo} alt="Logo" className="logo-sidebar" />
           </NavLink>
         </div>
 
-        {/* Navegación */}
         <nav className="sidebar-nav">
           <ul>
             <li>
@@ -163,7 +149,6 @@ export default function ClientLayout() {
                 Mi Agenda
               </NavLink>
             </li>
-            {/* Opciones fantasma solo para móvil */}
             <li className="sidebar-profile-mobile">
               <NavLink
                 to="/client/profile"
@@ -183,7 +168,6 @@ export default function ClientLayout() {
           </ul>
         </nav>
 
-        {/* Perfil */}
         <div className="sidebar-profile">
           <NavLink to="/client/profile" className="profile-link">
             <FaUserCircle className="sidebar-icon" />
@@ -195,7 +179,6 @@ export default function ClientLayout() {
         </div>
       </aside>
 
-      {/* Contenido */}
       <main className="admin-content">
         <Toaster
           position="bottom-right"

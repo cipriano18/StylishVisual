@@ -1,11 +1,157 @@
-:root {
+:root,
+[data-theme="default"] {
+  /* Color tokens live here. Reuse these before adding new hex values.
+     Name tokens by function, not by tone, unless the color is purely decorative. */
+  /* Brand */
+  --color-primary: #ba8282;
+  --color-primary-dark: #875858;
+  --color-primary-soft: #cd9292;
+  --color-primary-muted: #d5afaf;
+  --color-primary-light: #eebbbb;
+  --color-primary-accent: #aa7676;
+  --color-primary-accent-soft: #d89998;
+  --color-primary-gradient-soft: #d6a1a1;
+  --color-primary-gradient-start: #d2a0a0;
+  --color-primary-gradient-mid: #c38a8a;
+  --color-primary-gradient-end: #885959;
+  --color-primary-panel: #c58585;
+  --color-primary-active: #c89292;
+  --color-primary-hover: #a46a6a;
+  --color-primary-deep: #4a2e2e;
+  --color-primary-extra-deep: #2a0e0e;
+
+  /* Text */
+  --color-text-main: #4a2e2e;
+  --color-text-soft: #9f9090;
+  --color-text-muted: #8b5252;
+  --color-text-subtle: #372826;
+  --color-text-inverse: #ffffff;
+  --color-text-faint: #f1e5e5;
+  --color-text-accent: #f0c0c0;
+  --color-text-dark: #000000;
+  --color-text-dark-soft: #333333;
+  --color-text-medium: #444444;
+
+  /* Surface */
+  --color-surface: #ffffff;
+  --color-surface-soft: #fdf7f7;
+  --color-surface-muted: #fef6f6;
+  --color-surface-focus: #fff1f1;
+  --color-surface-panel: #fbeaea;
+  --color-surface-subtle: #f4efef;
+  --color-surface-card: #fff6f6;
+  --color-surface-disabled: #f0f0f0;
+  --color-surface-disabled-hover: #e0e0e0;
+  --color-surface-lilac: #cdb5f6;
+  --color-surface-bubble: #e4bcbcba;
+  --color-page-start: #f6c8c7;
+  --color-page-end: #fffdfd;
+
+  /* Border */
+  --color-border-soft: #dddddd;
+  --color-border-input: #cccccc;
+  --color-border-strong: #a46a6a;
+  --color-border-light: #f2d6d5;
+  --color-border-accent: #af7777;
+
+  /* State */
+  --color-success-bg: #d4f8d4;
+  --color-success-text: #2e7d32;
+  --color-success-text-strong: #2ecc71;
+  --color-warning-bg: #ffe5b4;
+  --color-warning-text: #a86c00;
+  --color-info-bg: #d6f0ff;
+  --color-info-text: #0077b6;
+  --color-info-muted: #584776;
+  --color-danger-bg: #f8d4d4;
+  --color-danger-soft: #f69292;
+  --color-danger-accent: #e15c5c;
+  --color-danger-deep: #761e1e;
+  --color-danger-text: #c62828;
+  --color-danger-text-strong: #e74c3c;
+  --color-disabled-text: #ddb7b7;
+  --color-neutral-strong: #2e2e2e;
+  --color-neutral-strong-soft: #2f2f2f;
+  --color-date-fade: #ba838375;
+
+  /* Overlay and shadow */
+  --overlay-dark: rgba(0, 0, 0, 0.4);
+  --overlay-medium: rgba(0, 0, 0, 0.5);
+  --overlay-soft: rgba(0, 0, 0, 0.45);
+  --overlay-strong: rgba(0, 0, 0, 0.9);
+  --shadow-soft: 0 4px 8px rgba(186, 130, 130, 0.2);
+  --shadow-medium: 0 8px 24px rgba(186, 130, 130, 0.25);
+  --shadow-brand-large: 0 6px 16px rgba(186, 130, 130, 0.2);
+  --shadow-brand-mobile: 0 4px 12px rgba(186, 130, 130, 0.15);
+  --shadow-dark-soft: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --shadow-dark-surface: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-dark-hover: 0 5px 20px rgba(0, 0, 0, 0.2);
+  --shadow-dark-medium: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-dark-strong: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-dark-xstrong: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --focus-ring-brand: 0 0 0 3px rgba(186, 130, 130, 0.3);
+  --focus-ring-brand-soft: 0 0 0 1px rgba(186, 130, 130, 0.1);
+  --focus-glow-brand: 0 0 10px rgba(238, 187, 187, 0.5);
+  --focus-ring-light: 0 0 0 3px rgba(255, 255, 255, 0.2);
+  --glass-brand: rgba(135, 88, 88, 0.3);
+  --shadow-glass-brand: 0 8px 24px rgba(135, 88, 88, 0.4);
+
+  /* Shared gradients */
+  --gradient-page: linear-gradient(to bottom, var(--color-page-start), var(--color-page-end));
+  --gradient-button-primary: linear-gradient(
+    90deg,
+    var(--color-primary-dark),
+    var(--color-primary-light)
+  );
+  --gradient-card-brand: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
+  --gradient-card-brand-soft: linear-gradient(
+    135deg,
+    var(--color-primary-gradient-start),
+    var(--color-primary-gradient-end)
+  );
+  --gradient-card-cta: linear-gradient(
+    135deg,
+    var(--color-primary-gradient-start),
+    var(--color-primary-gradient-mid)
+  );
+  --gradient-card-neutral: linear-gradient(
+    135deg,
+    #e2e2e2,
+    var(--color-neutral-strong)
+  );
+  --gradient-card-danger: linear-gradient(
+    135deg,
+    var(--color-danger-soft),
+    var(--color-danger-deep)
+  );
+  --gradient-card-overlay: linear-gradient(
+    to top,
+    var(--overlay-medium) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  --gradient-hero-overlay: linear-gradient(
+    to right,
+    rgba(42, 24, 24, 0.497) 0%,
+    rgba(54, 32, 32, 0.448) 40%,
+    rgba(153, 119, 119, 0) 60%,
+    rgba(152, 107, 107, 0) 100%
+  );
+  --gradient-hero-overlay-mobile: linear-gradient(
+    rgba(45, 31, 31, 0.55),
+    rgba(43, 28, 28, 0.55)
+  );
+
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(0, 0, 0, 0.87);
-  background: linear-gradient(to bottom, #f6c8c7, #fffdfd);
-
+  background: var(--gradient-page);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,7 +164,7 @@ body {
   display: block;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #f6c8c7, #fffdfd);
+  background: var(--gradient-page);
 }
 
 h1 {
@@ -31,17 +177,15 @@ button {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;              /* ancho de la barra vertical */
-  height: 8px;             /* alto de la barra horizontal */
-  
+  width: 10px; /* ancho de la barra vertical */
+  height: 8px; /* alto de la barra horizontal */
 }
 
 ::-webkit-scrollbar-track {
-  background: #facece;     /* color del track */
+  background: var(--color-surface-panel); /* color del track */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #9e6a6a; /* color del "pulgar" */
+  background-color: var(--color-primary-dark); /* color del "pulgar" */
   border-radius: 4px;
 }
-

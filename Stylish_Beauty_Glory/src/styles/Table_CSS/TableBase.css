@@ -1,26 +1,25 @@
-table,
+﻿table,
 th,
 td {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-/* 🔹 Tabla base */
+/* Tabla base */
 table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.95rem;
-  background-color: #fdf7f7;
+  background-color: var(--color-surface-soft, #fdf7f7);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 6px 16px rgba(186, 130, 130, 0.2);
+  box-shadow: var(--shadow-brand-large, 0 6px 16px rgba(186, 130, 130, 0.2));
 }
 
-/* 🔹 Encabezado */
+/* Encabezado */
 thead {
-  background-color: #fdf7f7;
-  color: #4a2e2e;
-
+  background-color: var(--color-surface-soft, #fdf7f7);
+  color: var(--color-text-main, #4a2e2e);
 }
 
 th {
@@ -28,46 +27,48 @@ th {
   padding: 16px;
   font-weight: 600;
   font-size: 0.95rem;
-  border-bottom: 1px solid #a46a6a;
+  border-bottom: 1px solid var(--color-border-strong, #a46a6a);
 }
 
-/* 🔹 Cuerpo */
+/* Cuerpo */
 td {
   padding: 14px 16px;
-  border-bottom: 1px solid #f2d6d5;
+  border-bottom: 1px solid var(--color-border-light, #f2d6d5);
   vertical-align: middle;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
   background-color: transparent;
 }
 
-/* 🔹 Hover en filas */
+/* Hover en filas */
 tbody tr {
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 tbody tr:hover {
-  background-color: rgb(249, 235, 235);
+  background-color: var(--color-surface-panel, #fbeaea);
   transform: scale(1.01);
 }
 
 tbody td:hover {
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
 }
 
-/* 🔹 Inputs inline */
+/* Inputs inline */
 td input[type="text"] {
   width: 100%;
   padding: 6px 10px;
   font-size: 0.9rem;
   border: none;
   border-radius: 999px;
-  background-color: #ffffff;
-  color: #ba8282;
-  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.2);
-  font-family: 'Montserrat', sans-serif;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary, #ba8282);
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
+  font-family: "Montserrat", sans-serif;
 }
 
-/* 🔹 Etiquetas de estado */
+/* Etiquetas de estado */
 .status-label {
   display: inline-block;
   padding: 4px 10px;
@@ -79,54 +80,53 @@ td input[type="text"] {
 
 /* Colores de estado */
 .status-disponible {
-  background-color: #d4f8d4;
+  background-color: var(--color-success-bg, #d4f8d4);
   /* verde suave */
-  color: #2e7d32;
+  color: var(--color-success-text, #2e7d32);
   /* verde profundo */
 }
 
 .status-cancelada {
-  background-color: #cdb5f6;
+  background-color: var(--color-surface-lilac, #cdb5f6);
   /* rojo anaranjado suave */
-  color: #584776;
+  color: var(--color-info-muted, #584776);
 }
 
 .status-agendada {
-  background-color: #ffe5b4;
+  background-color: var(--color-warning-bg, #ffe5b4);
   /* naranja suave */
-  color: #a86c00;
+  color: var(--color-warning-text, #a86c00);
   /* naranja oscuro */
 }
 
 .status-finalizada {
-  background-color: #d6f0ff;
+  background-color: var(--color-info-bg, #d6f0ff);
   /* azul suave */
-  color: #0077b6;
+  color: var(--color-info-text, #0077b6);
   /* azul profundo */
 }
 
-
 /* Colores de estado */
 .status-pendiente {
-  background-color: #ffe5b4;
-  color: #a86c00;
+  background-color: var(--color-warning-bg, #ffe5b4);
+  color: var(--color-warning-text, #a86c00);
 }
 
 .status-cancelado {
-  background-color: #d6f0ff;
+  background-color: var(--color-info-bg, #d6f0ff);
   /* azul cielo suave */
-  color: #0077b6;
+  color: var(--color-info-text, #0077b6);
   /* azul profundo y confiable */
 }
 
 .status-activo {
-  background-color: #d4f8d4;
-  color: #2e7d32;
+  background-color: var(--color-success-bg, #d4f8d4);
+  color: var(--color-success-text, #2e7d32);
 }
 
 .status-inactivo {
-  background-color: #f8d4d4;
-  color: #c62828;
+  background-color: var(--color-danger-bg, #f8d4d4);
+  color: var(--color-danger-text, #c62828);
 }
 
 .icon-btn {
@@ -136,18 +136,18 @@ td input[type="text"] {
   padding: 6px;
   margin-right: 6px;
   font-size: 1.3rem;
-  color: #6b4c4c;
+  color: var(--color-text-main, #4a2e2e);
   transition: color 0.3s ease;
 }
 
-/* 🔄 Tambaleo + escala al hover */
+/* Tambaleo + escala al hover */
 .icon-btn:hover {
-  color: #ba8282;
+  color: var(--color-primary, #ba8282);
   animation: shakeIcon 0.4s ease;
   transform: scale(1.2);
 }
 
-/* 🔹 Keyframes para el efecto de tambaleo */
+/* Keyframes para el efecto de tambaleo */
 @keyframes shakeIcon {
   0% {
     transform: rotate(0deg) scale(1.2);
@@ -170,37 +170,11 @@ td input[type="text"] {
   }
 }
 
-/* 🔹 Paginación base */
-.table-pagination {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
-  gap: 6px;
-}
-
-.table-pagination button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 999px;
-  background-color: #fbeaea;
-  color: #4a2e2e;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 6px rgba(186, 130, 130, 0.15);
-}
-
-.table-pagination button:hover {
-  background-color: #f2bcbc;
-}
-
 .no-info {
   text-align: center;
-  color: #8b5252;
+  color: var(--color-text-muted, #8b5252);
   margin-top: 1rem;
 }
-
 
 .ui-pagination {
   display: flex;
@@ -215,24 +189,26 @@ td input[type="text"] {
   padding: 0.4rem 0.85rem;
   border: none;
   border-radius: 999px;
-  background-color: #ffffff;
-  color: #cd9292;
-  font-family: 'Poppins', sans-serif;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary-soft, #cd9292);
+  font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .ui-pagination-btn:hover:not(:disabled) {
-  background-color: #cd9292;
-  color: #ffffff;
+  background-color: var(--color-primary-soft, #cd9292);
+  color: var(--color-text-inverse, #ffffff);
   transform: translateY(-2px);
 }
 
 .ui-pagination-btn.active {
-  background-color: #ba8282;
-  color: #ffffff;
+  background-color: var(--color-primary, #ba8282);
+  color: var(--color-text-inverse, #ffffff);
   font-weight: bold;
 }
 
@@ -241,20 +217,22 @@ td input[type="text"] {
   cursor: not-allowed;
 }
 
-/* 🔹 icon-btn con texto */
+/* icon-btn con texto */
 .icon-btn-text {
   background: none;
   border: none;
   cursor: pointer;
   padding: 6px 10px;
   font-size: 0.85rem;
-  font-family: 'Poppins', sans-serif;
-  color: #6b4c4c;
+  font-family: "Poppins", sans-serif;
+  color: var(--color-text-main, #4a2e2e);
   display: inline-flex;
   align-items: center;
   gap: 6px;
   border-radius: 999px;
-  transition: color 0.3s ease, background-color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
 }
 
 @keyframes heartbeat {
@@ -284,15 +262,15 @@ td input[type="text"] {
 }
 
 .icon-btn-text:hover {
-  color: #ffffff;
-  background-color: #ba8282;
+  color: var(--color-text-inverse, #ffffff);
+  background-color: var(--color-primary, #ba8282);
   animation: heartbeat 0.6s ease;
 }
 
 .ui-pagination-ellipsis {
   padding: 0.4rem 0.5rem;
-  color: #cd9292;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-primary-soft, #cd9292);
+  font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
   user-select: none;
 }
@@ -300,15 +278,15 @@ td input[type="text"] {
 @media (max-width: 768px) {
   .ui-table thead {
     display: none;
-    /* 👈 oculta el encabezado */
+    /* oculta el encabezado */
   }
 
   .ui-table tr {
     display: block;
     margin-bottom: 1rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(186, 130, 130, 0.15);
-    background-color: #fdf7f7;
+    box-shadow: var(--shadow-brand-mobile, 0 4px 12px rgba(186, 130, 130, 0.15));
+    background-color: var(--color-surface-soft, #fdf7f7);
     padding: 0.5rem;
   }
 
@@ -317,7 +295,7 @@ td input[type="text"] {
     justify-content: space-between;
     align-items: center;
     padding: 10px 14px;
-    border-bottom: 1px solid #f2d6d5;
+    border-bottom: 1px solid var(--color-border-light, #f2d6d5);
     font-size: 0.9rem;
   }
 
@@ -329,18 +307,18 @@ td input[type="text"] {
   .ui-table td::before {
     content: attr(data-label);
     font-weight: 600;
-    color: #875858;
+    color: var(--color-primary-dark, #875858);
     margin-right: 1rem;
     flex-shrink: 0;
   }
 
   table {
     background-color: transparent;
-    box-shadow: 0 6px 16px rgba(255, 255, 255, 0);
+    box-shadow: none;
   }
 
   tbody tr:hover {
-    background-color: rgb(250, 245, 245);
+    background-color: var(--color-surface-focus, #fff1f1);
     transform: scale(1.01);
   }
 }

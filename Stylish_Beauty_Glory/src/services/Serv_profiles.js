@@ -1,22 +1,27 @@
 import { apiFetch } from "./api";
 
-// Obtener perfil de administrador
-export async function fetchAdminProfile() {
+async function fetchProfile(endpoint, errorLabel) {
   try {
-    const res = await apiFetch("/profile/admin");
+    const res = await apiFetch(endpoint);
     return await res.json();
   } catch (err) {
-    console.error("Error al cargar perfil:", err);
+    console.error(`Error al cargar perfil de ${errorLabel}:`, err);
     return null;
   }
 }
-// Obtener perfil de cliente
+
+/**
+ * Obtiene el perfil completo del administrador autenticado.
+ * @returns {Promise<{ admin?: Record<string, unknown>, error?: string } | null>}
+ */
+export async function fetchAdminProfile() {
+  return fetchProfile("/profile/admin", "administrador");
+}
+
+/**
+ * Obtiene el perfil completo del cliente autenticado.
+ * @returns {Promise<{ client?: Record<string, unknown>, error?: string } | null>}
+ */
 export async function fetchClientProfile() {
-  try {
-    const res = await apiFetch("/profile/client");
-    return await res.json();
-  } catch (err) {
-    console.error("Error al cargar perfil cliente:", err);
-    return null;
-  }
+  return fetchProfile("/profile/client", "cliente");
 }

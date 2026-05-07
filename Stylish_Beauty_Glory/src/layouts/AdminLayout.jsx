@@ -1,17 +1,8 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Outlet, NavLink, Link } from "react-router-dom";
-import axios from "axios";
-
-import "../styles/Sidebar_CSS/sidebar.css";
-import Logo from "../assets/Stylish_Logo_White.png";
-
 import { Toaster } from "react-hot-toast";
-import { API_BASE } from "../services/config";
-
-// Íconos
 import {
-  FaUserShield,
   FaUserTie,
   FaUsers,
   FaTruck,
@@ -29,31 +20,66 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 
+import "../styles/Sidebar_CSS/sidebar.css";
+import Logo from "../assets/Stylish_Logo_White.png";
+import { fetchAdminProfile } from "../services/Serv_profiles";
+import { buildDisplayName } from "../utils/profile";
+
+function AdminAppointmentLinks({ openCitas, onToggle, onNavigate, isMobile = false }) {
+  const subMenuClassName = isMobile ? "hamburger-submenu" : "sidebar-submenu";
+
+  return (
+    <li>
+      <button className={`sidebar-toggle ${openCitas ? "active-link" : ""}`} onClick={onToggle}>
+        <FaCalendarAlt className="sidebar-icon" />
+        <span className={isMobile ? undefined : "sidebar-text"}>GestiÃ³n de citas</span>
+        <span className="sidebar-arrow">{openCitas ? <FaChevronDown /> : <FaChevronRight />}</span>
+      </button>
+
+      {openCitas && (
+        <ul className={subMenuClassName}>
+          <li>
+            <NavLink
+              to="/admin/appointments"
+              onClick={onNavigate}
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <FaRegCalendarPlus className="sidebar-icon" />
+              Citas
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/admin/schedule"
+              onClick={onNavigate}
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <FaBookOpen className="sidebar-icon" />
+              Agenda
+            </NavLink>
+          </li>
+        </ul>
+      )}
+    </li>
+  );
+}
+
 export default function AdminLayout() {
   const [openCitas, setOpenCitas] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // 👈 nuevo estado
+  const [menuOpen, setMenuOpen] = useState(false);
   const [nombreUsuario, setNombreUsuario] = useState("Cargando...");
   const [loadingProfile, setLoadingProfile] = useState(true);
 
   useEffect(() => {
-    const fetchAdminProfile = async () => {
+    const loadAdminProfile = async () => {
       try {
-        const token = localStorage.getItem("access_token");
-
-        if (!token) {
+        const response = await fetchAdminProfile();
+        if (!response?.admin) {
           setNombreUsuario("Administrador");
           return;
         }
 
-        const res = await axios.get(`${API_BASE}/profile/admin`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const admin = res.data.admin;
-
-        setNombreUsuario(`${admin.primary_name} ${admin.first_surname}`);
+        setNombreUsuario(buildDisplayName(response.admin, "Administrador"));
       } catch (error) {
         console.error("Error cargando perfil admin:", error);
         setNombreUsuario("Administrador");
@@ -62,115 +88,93 @@ export default function AdminLayout() {
       }
     };
 
-    fetchAdminProfile();
+    loadAdminProfile();
   }, []);
+
+  const handleToggleMenu = () => {
+    setMenuOpen((currentValue) => !currentValue);
+  };
+
+  const handleCloseMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const handleToggleAppointments = () => {
+    setOpenCitas((currentValue) => !currentValue);
+  };
 
   return (
     <div className="admin-layout">
-      {/* ✅ BOTÓN HAMBURGUESA - solo visible en móvil/tablet */}
       {createPortal(
-        <button
-          className={`hamburger-btn ${menuOpen ? "open" : ""}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <button className={`hamburger-btn ${menuOpen ? "open" : ""}`} onClick={handleToggleMenu}>
           <span></span>
           <span></span>
           <span></span>
         </button>,
-        document.body // 👈 se renderiza directo en el body, fuera del layout
+        document.body
       )}
 
-      {/* ✅ OVERLAY - fondo oscuro al abrir */}
-      {menuOpen && <div className="hamburger-overlay" onClick={() => setMenuOpen(false)} />}
+      {menuOpen && <div className="hamburger-overlay" onClick={handleCloseMenu} />}
 
-      {/* ✅ MENÚ CENTRADO */}
       {menuOpen && (
         <div className="hamburger-menu">
           <nav>
             <ul>
-              <li>
-                <button
-                  className={`sidebar-toggle ${openCitas ? "active-link" : ""}`}
-                  onClick={() => setOpenCitas(!openCitas)}
-                >
-                  <FaCalendarAlt className="sidebar-icon" />
-                  <span>Gestión de citas</span>
-                  <span className="sidebar-arrow">
-                    {openCitas ? <FaChevronDown /> : <FaChevronRight />}
-                  </span>
-                </button>
-                {openCitas && (
-                  <ul className="hamburger-submenu">
-                    <li>
-                      <NavLink
-                        to="/admin/appointments"
-                        onClick={() => setMenuOpen(false)}
-                        className={({ isActive }) => (isActive ? "active-link" : "")}
-                      >
-                        <FaRegCalendarPlus className="sidebar-icon" /> Citas
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/admin/schedule"
-                        onClick={() => setMenuOpen(false)}
-                        className={({ isActive }) => (isActive ? "active-link" : "")}
-                      >
-                        <FaBookOpen className="sidebar-icon" /> Agenda
-                      </NavLink>
-                    </li>
-                  </ul>
-                )}
-              </li>
+              <AdminAppointmentLinks
+                openCitas={openCitas}
+                onToggle={handleToggleAppointments}
+                onNavigate={handleCloseMenu}
+                isMobile
+              />
               <li>
                 <NavLink
                   to="/admin/users"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaUsers className="sidebar-icon" /> Gestión de Usuarios
+                  <FaUsers className="sidebar-icon" /> GestiÃ³n de Usuarios
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/admin/admins"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaUserTie className="sidebar-icon" /> Gestión de Administradores
+                  <FaUserTie className="sidebar-icon" /> GestiÃ³n de Administradores
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/admin/service"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaSpa className="sidebar-icon" /> Gestión de Servicios
+                  <FaSpa className="sidebar-icon" /> GestiÃ³n de Servicios
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/admin/portfolio"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaImages className="sidebar-icon" /> Gestión de Portafolio
+                  <FaImages className="sidebar-icon" /> GestiÃ³n de Portafolio
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/admin/sales"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaTags className="sidebar-icon" /> Gestión de Ventas
+                  <FaTags className="sidebar-icon" /> GestiÃ³n de Ventas
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/admin/payable"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
                   <FaMoneyBillWave className="sidebar-icon" /> Cuentas por Pagar
@@ -179,34 +183,33 @@ export default function AdminLayout() {
               <li>
                 <NavLink
                   to="/admin/suppliers"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaTruck className="sidebar-icon" /> Gestión de Proveedores
+                  <FaTruck className="sidebar-icon" /> Gestion de Proveedores
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/admin/reports"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaChartBar className="sidebar-icon" /> Reportes & Gráficos
+                  <FaChartBar className="sidebar-icon" /> Reportes & Graficos
                 </NavLink>
               </li>
-              {/* Perfil y salir */}
               <li>
                 <NavLink
                   to="/admin/profile"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
                   <FaUserCircle className="sidebar-icon" /> Perfil
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/" onClick={() => setMenuOpen(false)}>
-                  <FaSignOutAlt className="sidebar-icon" /> Cerrar sesión
+                <NavLink to="/" onClick={handleCloseMenu}>
+                  <FaSignOutAlt className="sidebar-icon" /> Cerrar sesion
                 </NavLink>
               </li>
             </ul>
@@ -214,62 +217,27 @@ export default function AdminLayout() {
         </div>
       )}
 
-      {/* SIDEBAR */}
       <aside className="sidebar">
-        {/* LOGO */}
         <div className="sidebar-logo">
           <Link to="/">
             <img src={Logo} alt="Logo" className="logo-sidebar" />
           </Link>
         </div>
 
-        {/* NAVEGACIÓN */}
         <nav className="sidebar-nav">
           <ul>
-            {/* Citas */}
-            <li>
-              <button
-                className={`sidebar-toggle ${openCitas ? "active-link" : ""}`}
-                onClick={() => setOpenCitas(!openCitas)}
-              >
-                <FaCalendarAlt className="sidebar-icon" />
-                <span className="sidebar-text">Gestión de citas</span>
-                <span className="sidebar-arrow">
-                  {openCitas ? <FaChevronDown /> : <FaChevronRight />}
-                </span>
-              </button>
-
-              {openCitas && (
-                <ul className="sidebar-submenu">
-                  <li>
-                    <NavLink
-                      to="/admin/appointments"
-                      className={({ isActive }) => (isActive ? "active-link" : "")}
-                    >
-                      <FaRegCalendarPlus className="sidebar-icon" />
-                      Citas
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/admin/schedule"
-                      className={({ isActive }) => (isActive ? "active-link" : "")}
-                    >
-                      <FaBookOpen className="sidebar-icon" />
-                      Agenda
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
-            {/* Usuarios y Roles */}
+            <AdminAppointmentLinks
+              openCitas={openCitas}
+              onToggle={handleToggleAppointments}
+              onNavigate={handleCloseMenu}
+            />
             <li>
               <NavLink
                 to="/admin/users"
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaUsers className="sidebar-icon" />
-                Gestión de Usuarios
+                Gestion de Usuarios
               </NavLink>
             </li>
             <li>
@@ -278,17 +246,16 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaUserTie className="sidebar-icon" />
-                Gestión de Administradores
+                Gestion de Administradores
               </NavLink>
             </li>
-            {/* Servicios y Portafolio */}
             <li>
               <NavLink
                 to="/admin/service"
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaSpa className="sidebar-icon" />
-                Gestión de Servicios
+                Gestion de Servicios
               </NavLink>
             </li>
             <li>
@@ -297,17 +264,16 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaImages className="sidebar-icon" />
-                Gestión de Portafolio
+                Gestion de Portafolio
               </NavLink>
             </li>
-            {/* Ventas y Finanzas */}
             <li>
               <NavLink
                 to="/admin/sales"
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaTags className="sidebar-icon" />
-                Gestión de Ventas
+                GestiÃ³n de Ventas
               </NavLink>
             </li>
             <li>
@@ -316,31 +282,27 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaMoneyBillWave className="sidebar-icon" />
-                Gestión de Cuentas por Pagar
+                GestiÃ³n de Cuentas por Pagar
               </NavLink>
             </li>
-            {/* Proveedores */}
             <li>
               <NavLink
                 to="/admin/suppliers"
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaTruck className="sidebar-icon" />
-                Gestión de Proveedores
+                GestiÃ³n de Proveedores
               </NavLink>
             </li>
-            {/* Reportes */}
             <li>
               <NavLink
                 to="/admin/reports"
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaChartBar className="sidebar-icon" />
-                Reportes & Gráficos
+                Reportes & GrÃ¡ficos
               </NavLink>
             </li>
-
-            {/* Opciones fantasma solo para móvil */}
             <li className="sidebar-profile-mobile">
               <NavLink
                 to="/admin/profile"
@@ -351,7 +313,6 @@ export default function AdminLayout() {
                 </span>
               </NavLink>
             </li>
-
             <li className="sidebar-leave-mobile">
               <NavLink to="/" className={({ isActive }) => (isActive ? "active-link" : "")}>
                 <span className="sidebar-icon">
@@ -362,7 +323,6 @@ export default function AdminLayout() {
           </ul>
         </nav>
 
-        {/* PERFIL */}
         <div className="sidebar-profile">
           <NavLink to="/admin/profile" className="profile-link">
             <FaUserCircle className="sidebar-icon" />
@@ -374,7 +334,6 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* CONTENIDO */}
       <main className="admin-content">
         <Toaster
           position="bottom-right"

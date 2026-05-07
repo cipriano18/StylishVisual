@@ -1,4 +1,4 @@
-.client-home {
+﻿.client-home {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -18,34 +18,35 @@
 .left-column {
   position: relative;
   flex: 0 0 20%;
-  /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   overflow: hidden;
-  background: linear-gradient(to bottom, #875858, #d6a1a1);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  color: white;
-
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary-dark, #875858),
+    var(--color-primary-gradient-soft, #d6a1a1)
+  );
+  box-shadow: var(--shadow-dark-soft, 0 2px 6px rgba(0, 0, 0, 0.1));
+  color: var(--color-text-inverse, #ffffff);
 }
 
 .middle-column h2,
 .right-column h2,
 .left-column h2 {
   font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Caja de consejos */
 .right-column {
   position: relative;
   flex: 0 0 40%;
-  /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   overflow: hidden;
-  background: #f4efef;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  color: #000;
+  background: var(--color-surface-subtle, #f4efef);
+  box-shadow: var(--shadow-dark-soft, 0 2px 6px rgba(0, 0, 0, 0.1));
+  color: var(--color-text-dark, #000000);
 }
 
 .right-column p {
@@ -57,25 +58,24 @@
 .middle-column {
   position: relative;
   flex: 0 0 25%;
-  /* ancho reducido */
   border-radius: 10px;
   padding: 1.5rem;
   padding-top: 10px;
   overflow: hidden;
-  background: #f4efef;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  color: #000;
+  background: var(--color-surface-subtle, #f4efef);
+  box-shadow: var(--shadow-dark-soft, 0 2px 6px rgba(0, 0, 0, 0.1));
+  color: var(--color-text-dark, #000000);
 }
 
 /* Fecha de hoy alineada a la derecha y con color distinto */
 .middle-column p.hoy {
   text-align: right;
-  color: #ba838375;
+  color: var(--color-date-fade, #ba838375);
   /* un tono diferente para destacarla */
   font-size: 12px;
 }
 
-/* Separación entre el título y la lista */
+/* Separacion entre el titulo y la lista */
 .middle-column h2 {
   margin-bottom: 0.5rem;
   /* espacio visible antes de la lista */
@@ -93,32 +93,6 @@
   text-align: justify;
 }
 
-/* Wrapper interno para imagen + texto */
-.right-content {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Imagen */
-.right-content .image img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 50%;
-  /* opcional: circular */
-  flex-shrink: 0;
-  /* evita que se deforme */
-}
-
-/* Texto */
-.right-content .text {
-  flex: 1;
-  /* ocupa el resto del espacio */
-}
-
-
-
 /* Encabezado citas */
 .appointments-header {
   display: flex;
@@ -129,19 +103,19 @@
 .appointments-count {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #f6f6f6;
+  color: var(--color-text-inverse, #ffffff);
   margin-top: 0.5rem;
   text-align: center;
 }
 
-/* Botón circular */
+/* Boton circular */
 .circle-btn {
   width: 32px;
   height: 32px;
   border: none;
   border-radius: 50%;
-  background-color: #fff;
-  color: #955e5e;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary-dark, #875858);
   font-size: 18px;
   cursor: pointer;
   display: flex;
@@ -152,44 +126,43 @@
 }
 
 .circle-btn:hover {
-  background-color: #c28989;
-  color: white;
+  background-color: var(--color-primary-active, #c89292);
+  color: var(--color-text-inverse, #ffffff);
 }
 
-/* Sección inferior */
+/* Seccion inferior */
 .bottom-section {
   text-align: center;
-  /* 🔹 centra todo el contenido de texto */
+  /* centra todo el contenido de texto */
   padding: 2rem 1rem;
-  /* 🔹 agrega espacio alrededor */
+  /* agrega espacio alrededor */
 }
 
 .bottom-section h2 {
   display: inline-flex;
-  /* 🔹 permite ícono + texto alineados */
+  /* permite Icono + texto alineados */
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  /* 🔹 espacio entre ícono y texto */
+  /* espacio entre Icono y texto */
   margin-bottom: 1rem;
-  /* 🔹 separación con la descripción */
+  /* separacion con la descripciA n */
 }
 
 .bottom-section p {
   max-width: 600px;
-  /* 🔹 limita ancho para que se vea elegante */
+  /* limita ancho para que se vea elegante */
   margin: 0 auto 2rem;
-  /* 🔹 centra y agrega espacio debajo */
+  /* centra y agrega espacio debajo */
   font-size: 1rem;
-  color: #444;
+  color: var(--color-text-medium, #444444);
 }
-
 
 /* Bolitas */
 .bubble {
   position: absolute;
   border-radius: 50%;
-  background: #e4bcbcba;
+  background: var(--color-surface-bubble, #e4bcbcba);
   filter: blur(8px);
   animation: float ease-in-out infinite;
 }
@@ -226,7 +199,6 @@
   }
 }
 
-
 .social-section {
   text-align: center;
   margin-top: 2rem;
@@ -234,7 +206,7 @@
 
 .social-section p {
   font-size: 1rem;
-  color: #444;
+  color: var(--color-text-medium, #444444);
   margin-bottom: 1rem;
 }
 
@@ -252,12 +224,11 @@
   transform: scale(1.2);
 }
 
-
 /* Estilos del modal */
 .client-portfolio-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: var(--overlay-strong, rgba(0, 0, 0, 0.9));
   /* fondo oscuro */
   display: flex;
   align-items: center;
@@ -276,10 +247,10 @@
   border-radius: 12px;
 }
 
-/*Movil*/
+/* Movil */
 @media (max-width: 768px) {
 
-  /*Pantalla general*/
+  /* Pantalla general */
   .client-home {
     padding: 0.2rem;
     gap: 1rem;
@@ -289,7 +260,7 @@
     padding: 1rem 0.2rem 3rem;
   }
 
-  /*Superior*/
+  /* Superior */
   .top-section {
     flex-direction: column;
   }
@@ -324,7 +295,7 @@
     text-align: center;
   }
 
-  /*Inferior*/
+  /* Inferior */
   .bottom-section>p {
     font-size: 0.85rem;
   }
@@ -338,7 +309,7 @@
   }
 }
 
-/*Tablet*/
+/* Tablet */
 @media (min-width: 769px) and (max-width: 1180px) {
   .right-column {
     display: none;

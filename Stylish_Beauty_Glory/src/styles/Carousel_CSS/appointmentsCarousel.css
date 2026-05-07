@@ -1,4 +1,4 @@
-/* Contenedor general del carrusel de citas */
+﻿/* Contenedor general del carrusel de citas */
 .appointments-section {
   padding: 1rem;
   text-align: left;
@@ -7,49 +7,56 @@
 .appointments-section h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: rgb(0, 0, 0);
+  color: var(--color-text-dark, #000000);
 }
 
 .appointment-section h3 {
   font-size: 1.4rem;
   margin: 1rem 0;
-  color: #875858;
+  color: var(--color-primary-dark, #875858);
 }
 
 /* Tarjeta de cita */
-.appointment-card { 
-  position: relative; 
-  width: 90%; 
-  height: 290px; 
-  border-radius: 10px; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between; /* 🔹 espacio entre título/texto y botón */ 
-  align-items: center; /* 🔹 centrar horizontalmente */ 
-  padding: 1rem; 
-  color: #fff; 
-  background: linear-gradient(135deg, #d2a0a0, #885959); 
-  overflow: hidden; 
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-  transition: box-shadow 0.3s; 
+.appointment-card {
+  position: relative;
+  width: 90%;
+  height: 290px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* espacio entre titulo/texto y boton */
+  align-items: center;
+  /* centrar horizontalmente */
+  padding: 1rem;
+  color: var(--color-text-inverse, #ffffff);
+  background: var(--gradient-card-brand-soft, linear-gradient(135deg, #d2a0a0, #885959));
+  overflow: hidden;
+  box-shadow: var(--shadow-dark-soft, 0 2px 6px rgba(0, 0, 0, 0.1));
+  transition: box-shadow 0.3s;
 }
 
-/* Variantes por estado */ 
-.appointment-card.agendada { 
-  background: linear-gradient(135deg, #d2a0a0, #885959); /* verde intermedio */ 
-} 
-.appointment-card.finalizada { 
-  background: linear-gradient(135deg, #e2e2e2, #2e2e2e); /* azul intermedio */ 
-} 
-.appointment-card.cancelada { 
-  background: linear-gradient(135deg, #f69292, #761e1e); /* verde intermedio */ 
+/* Variantes por estado */
+.appointment-card.agendada {
+  background: var(--gradient-card-brand-soft, linear-gradient(135deg, #d2a0a0, #885959));
+  /* normal */
+}
+
+.appointment-card.finalizada {
+  background: var(--gradient-card-neutral, linear-gradient(135deg, #e2e2e2, #2e2e2e));
+  /* gris intermedio */
+}
+
+.appointment-card.cancelada {
+  background: var(--gradient-card-danger, linear-gradient(135deg, #f69292, #761e1e));
+  /* rojo intermedio */
 }
 
 .appointment-card:hover {
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-dark-hover, 0 5px 20px rgba(0, 0, 0, 0.2));
 }
 
-.appointment-card h4{
+.appointment-card h4 {
   position: relative;
   z-index: 1;
   margin: 0.5rem 0;
@@ -62,13 +69,14 @@
   margin-bottom: 5px;
   text-align: center;
 }
+
 .appointment-tag {
   position: relative;
   z-index: 1;
   display: inline-block;
   margin-top: 6px;
-  background-color: #d89998;
-  color: #ffffff;
+  background-color: var(--color-primary-accent-soft, #d89998);
+  color: var(--color-text-inverse, #ffffff);
   font-size: 0.75rem;
   padding: 2px 8px;
   border-radius: 12px;
@@ -76,33 +84,34 @@
   text-align: center;
 }
 
-/* Variantes por estado */ 
-.appointment-tag.agendada { 
-  background-color: #d89998;
-} 
+/* Variantes por estado */
+.appointment-tag.agendada {
+  background-color: var(--color-primary-accent-soft, #d89998);
+}
 
-.appointment-tag.finalizada { 
-  background-color: #2f2f2f; /* azul intermedio */ 
-} 
+.appointment-tag.finalizada {
+  background-color: var(--color-neutral-strong-soft, #2f2f2f);
+  /* gris intermedio */
+}
 
-.appointment-tag.cancelada { 
-  background-color: #e15c5c; /* rojo intermedio */
-} 
+.appointment-tag.cancelada {
+  background-color: var(--color-danger-accent, #e15c5c);
+  /* rojo intermedio */
+}
 
-
-/* Flechas y paginación */
+/* Flechas y paginacion */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #87585800 !important;
+  color: transparent !important;
 }
 
 .swiper-pagination-bullet {
-  background-color: #ccc !important;
+  background-color: var(--color-border-input, #cccccc) !important;
   opacity: 1 !important;
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #875858 !important;
+  background-color: var(--color-primary-dark, #875858) !important;
 }
 
 .swiper-pagination {
@@ -111,32 +120,32 @@
   text-align: left;
 }
 
-
 .no-appointments {
-  color: #d49393;
+  color: var(--color-primary-soft, #cd9292);
   font-size: 1.2rem;
   margin-top: 2rem;
   text-align: center;
   font-family: "Josefin Sans", sans-serif;
 }
 
-
-/* Botón centrado abajo */ 
-.appointment-btn { 
-  margin-top: auto; /* 🔹 empuja el botón hacia abajo */ 
-  align-self: center; /* 🔹 lo centra horizontalmente */ 
-  padding: 0.6rem 1.2rem; 
-  background: #fff; 
-  color: #a06a6a; 
-  border: none; 
-  border-radius: 50px; 
-  cursor: pointer; 
-  font-family: "Josefin Sans", sans-serif; 
-  font-weight: bold; 
-  transition: all 0.3s ease; 
+/* Boton centrado abajo */
+.appointment-btn {
+  margin-top: auto;
+  /* empuja el boton hacia abajo */
+  align-self: center;
+  /* lo centra horizontalmente */
+  padding: 0.6rem 1.2rem;
+  background: var(--color-surface, #ffffff);
+  color: var(--color-primary-accent, #aa7676);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .appointment-btn:hover {
-  background: #875858;
-  color: #fff;
+  background: var(--color-primary-dark, #875858);
+  color: var(--color-text-inverse, #ffffff);
 }

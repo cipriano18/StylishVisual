@@ -1,6 +1,9 @@
 import { apiFetch } from "./api";
 
-// Obtener todos los administradores
+/**
+ * Obtiene el listado de administradores.
+ * @returns {Promise<{ admins?: Array<Record<string, unknown>>, error?: string } | null>}
+ */
 export async function fetchAdmins() {
   try {
     const res = await apiFetch("/admins");
@@ -11,7 +14,11 @@ export async function fetchAdmins() {
   }
 }
 
-// Crear un nuevo administrador
+/**
+ * Crea un administrador.
+ * @param {Record<string, unknown>} data
+ * @returns {Promise<Record<string, unknown> | null>}
+ */
 export async function createAdmin(data) {
   try {
     const res = await apiFetch("/admins", {
@@ -20,11 +27,17 @@ export async function createAdmin(data) {
     });
     return await res.json();
   } catch (error) {
+    console.error("createAdmin error:", error);
     return null;
   }
 }
 
-// Editar datos de un administrador (por cédula)
+/**
+ * Actualiza los datos de un administrador identificado por cédula.
+ * @param {string} identityCard
+ * @param {Record<string, unknown>} updatedData
+ * @returns {Promise<Record<string, unknown> | null>}
+ */
 export async function updateAdmin(identityCard, updatedData) {
   try {
     const res = await apiFetch(`/admins/${identityCard}`, {
@@ -32,18 +45,25 @@ export async function updateAdmin(identityCard, updatedData) {
       body: JSON.stringify(updatedData),
     });
     return await res.json();
-  } catch {
+  } catch (error) {
+    console.error("updateAdmin error:", error);
     return null;
   }
 }
-// Dar de baja a un administrador (por cédula)
+
+/**
+ * Inactiva un administrador por cédula.
+ * @param {string} identityCard
+ * @returns {Promise<Record<string, unknown> | null>}
+ */
 export async function deactivateAdmin(identityCard) {
   try {
     const res = await apiFetch(`/admins/${identityCard}/inactivar`, {
       method: "PUT",
     });
     return await res.json();
-  } catch {
+  } catch (error) {
+    console.error("deactivateAdmin error:", error);
     return null;
   }
 }

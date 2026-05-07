@@ -1,24 +1,26 @@
-.portfolio-card {
+﻿.portfolio-card {
   border-radius: 12px;
   background-size: cover;
   background-position: center;
-  height: 300px; 
+  height: 300px;
   display: flex;
   align-items: flex-end;
   padding: 1rem;
-  color: #fff;
+  color: var(--color-text-inverse, #ffffff);
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease
+  box-shadow: var(--shadow-dark-medium, 0 4px 8px rgba(0, 0, 0, 0.2));
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* Variante alargada */ 
-.portfolio-card.tall { 
-  height: 450px; /* 🔹 más alta */ 
+/* Variante alargada */
+.portfolio-card.tall {
+  height: 450px; /* mas alta */
 }
 .portfolio-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-dark-strong, 0 8px 24px rgba(0, 0, 0, 0.3));
 }
 .portfolio-card-content {
   display: flex;
@@ -39,13 +41,13 @@
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
-  color: white;
+  color: var(--color-text-inverse, #ffffff);
   text-align: left;
 }
 
 .portfolio-service {
-  background: #fff;
-  color: #333;
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-dark-soft, #333333);
   font-size: 0.75rem;
   padding: 2px 8px;
   border-radius: 12px;
@@ -54,9 +56,9 @@
 }
 .delete-btn,
 .edit-btn {
-  border: 2px solid #fff;
+  border: 2px solid var(--color-text-inverse, #ffffff);
   background: transparent;
-  color: #fff;
+  color: var(--color-text-inverse, #ffffff);
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -68,8 +70,8 @@
 }
 .delete-btn:hover,
 .edit-btn:hover {
-  background: #ba8282;
-  color: #ffffff;
+  background: var(--color-primary, #ba8282);
+  color: var(--color-text-inverse, #ffffff);
 }
 
 .portfolio-actions {
@@ -78,17 +80,14 @@
   gap: 8px; /* espacio entre botones */
 }
 
-
 /* Overlay con gradiente */
 .portfolio-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.5) 0%,   
-    rgba(0, 0, 0, 0.3) 40%,  
-    rgba(0, 0, 0, 0) 100%   
+  background: var(
+    --gradient-card-overlay,
+    linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0) 100%)
   );
   border-radius: 12px;
   opacity: 0.7;

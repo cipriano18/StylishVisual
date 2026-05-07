@@ -1,20 +1,23 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { FaArrowLeft } from "react-icons/fa";
+
 import { requestVerificationCode, verifyCode } from "../services/Serv_codes";
 import { createClient } from "../services/Serv_clients";
+import { login } from "../services/Serv_login";
+import { parseName } from "../utils/nameParser";
 import "../styles/Register_CSS/register.css";
 import IMG1 from "../assets/IMGR.png";
 import Logo from "../assets/Stylish_Logo_White.png";
-import { login } from "../services/Serv_login";
-import { FaArrowLeft } from "react-icons/fa";
-import { parseName } from "../utils/nameParser.js";
+
+const REGISTER_STORAGE_KEY = "registerData";
+const RESEND_SECONDS = 120;
 
 function Register() {
-  const [resendTimer, setResendTimer] = useState(120); // 2 min
-
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [resendTimer, setResendTimer] = useState(RESEND_SECONDS);
   const [formData, setFormData] = useState({
     nombre: "",
     fechaNacimiento: "",
@@ -23,7 +26,6 @@ function Register() {
     cedula: "",
     correo: "",
   });
-
   const [secondStepData, setSecondStepData] = useState({
     usuario: "",
     contrasena: "",
@@ -31,63 +33,71 @@ function Register() {
   });
 
   useEffect(() => {
-    if (step === 2 && resendTimer > 0) {
-      const interval = setInterval(() => {
-        setResendTimer((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(interval);
+    if (step !== 2 || resendTimer <= 0) {
+      return undefined;
     }
+
+    const interval = setInterval(() => {
+      setResendTimer((previousValue) => previousValue - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [step, resendTimer]);
 
-  // Manejo de cambios en inputs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((previousValue) => ({ ...previousValue, [name]: value }));
   };
 
-  const handleSecondChange = (e) => {
-    const { name, value } = e.target;
-    setSecondStepData((prev) => ({ ...prev, [name]: value }));
+  const handleSecondChange = (event) => {
+    const { name, value } = event.target;
+    setSecondStepData((previousValue) => ({ ...previousValue, [name]: value }));
   };
 
-  // Enviar primer formulario
-  const handleFirstSubmit = async () => {
+  const restoreFirstStep = () => {
+    const savedData = JSON.parse(localStorage.getItem(REGISTER_STORAGE_KEY));
+    if (savedData) {
+      setFormData(savedData);
+    }
+
+    setStep(1);
+  };
+
+  const validateFirstStep = () => {
     const { nombre, fechaNacimiento, genero, telefono, cedula, correo } = formData;
 
-    // Validaciones de formato (solo si el campo tiene algo escrito)
-
     if (cedula && !/^[A-Za-z0-9]{9,20}$/.test(cedula.trim())) {
-      toast.error("La cédula debe contener entre 9 y 20 dígitos numéricos");
-      return;
+      toast.error("La cedula debe contener entre 9 y 20 caracteres.");
+      return false;
     }
 
     if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.trim())) {
-      toast.error("El correo debe tener un formato válido (ejemplo: usuario@dominio.com)");
-      return;
+      toast.error("El correo debe tener un formato valido.");
+      return false;
     }
 
     if (telefono && !/^\d{8}$/.test(telefono.trim())) {
-      toast.error("El número de teléfono debe contener exactamente 8 dígitos");
-      return;
+      toast.error("El telefono debe contener exactamente 8 digitos.");
+      return false;
     }
 
     if (fechaNacimiento) {
-      const MIN = "1926-01-01";
-      const MAX = new Date().toISOString().split("T")[0];
-      const fecha = new Date(fechaNacimiento).toISOString().split("T")[0];
-      if (fecha < MIN || fecha > MAX) {
-        toast.error("La fecha de ingreso no puede ser menor al límite permitido");
-        return;
+      const minDate = "1926-01-01";
+      const maxDate = new Date().toISOString().split("T")[0];
+      const normalizedDate = new Date(fechaNacimiento).toISOString().split("T")[0];
+
+      if (normalizedDate < minDate || normalizedDate > maxDate) {
+        toast.error("La fecha de nacimiento esta fuera del rango permitido.");
+        return false;
       }
     }
 
-    // Validación de campos obligatorios vacíos
     const { primary_name, first_surname, second_surname } = parseName(nombre || "");
-    const camposRequeridos = {
+    const requiredFields = {
+      primary_name,
+      first_surname,
+      second_surname,
       identity_card: cedula,
-      primary_name: primary_name,
-      first_surname: first_surname,
-      second_surname: second_surname,
       phone: telefono,
       gender: genero,
     };
@@ -96,139 +106,158 @@ function Register() {
       primary_name: "Nombre",
       first_surname: "Primer apellido",
       second_surname: "Segundo apellido",
-      identity_card: "Cédula",
-      username: "Nombre de usuario",
-      password: "Contraseña",
-      phone: "Teléfono",
-      gender: "Género",
+      identity_card: "Cedula",
+      phone: "Telefono",
+      gender: "Genero",
     };
 
-    const faltantes = Object.entries(camposRequeridos)
-      .filter(([_, value]) => !value || String(value).trim() === "")
-      .map(([key]) => key);
+    const missingFields = Object.entries(requiredFields)
+      .filter(([, value]) => !value || String(value).trim() === "")
+      .map(([field]) => fieldLabels[field] || field);
 
-    const missingLabels = faltantes.map(field => fieldLabels[field] || field);
+    if (missingFields.length > 0) {
+      toast.error(`Faltan campos obligatorios: ${missingFields.join(", ")}`);
+      return false;
+    }
 
-    if (faltantes.length > 0) {
-      toast.error(`Faltan campos obligatorios: ${missingLabels.join(", ")}`);
+    return true;
+  };
+
+  const handleFirstSubmit = async () => {
+    if (!validateFirstStep()) {
       return;
     }
 
-    // Enviar
     try {
-      localStorage.setItem("registerData", JSON.stringify(formData));
-      const res = await requestVerificationCode(correo);
-      if (res && res.message) {
-        toast.success(res.message);
+      localStorage.setItem(REGISTER_STORAGE_KEY, JSON.stringify(formData));
+      const response = await requestVerificationCode(formData.correo);
+
+      if (response?.message) {
+        toast.success(response.message);
+        setResendTimer(RESEND_SECONDS);
         setStep(2);
-      } else {
-        toast.error(res?.error || "No se pudo enviar el código, intenta de nuevo");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error(res?.error || "Error al solicitar el código de verificación");
-    }
-  };
-
-  // Enviar segundo formulario
-  const handleSecondSubmit = async () => {
-    const usuarioTrim = secondStepData.usuario?.trim();
-    const contrasenaTrim = secondStepData.contrasena?.trim();
-    const codigo = secondStepData.codigo;
-
-    // 1️⃣ Validar que todos los campos estén llenos
-
-    try {
-      // Recuperar datos del primer paso
-      const initialData = JSON.parse(localStorage.getItem("registerData"));
-      const email = initialData?.correo;
-
-      if (!email) {
-        toast.error("No se encontró el correo del registro");
         return;
       }
 
-      // 2️⃣ Verificar el código con la API
+      toast.error(response?.error || "No se pudo enviar el codigo de verificacion.");
+    } catch (error) {
+      console.error("Error al solicitar el codigo:", error);
+      toast.error("Error al solicitar el codigo de verificacion");
+    }
+  };
 
-      const res = await verifyCode(email, codigo);
-      // La API devuelve un objeto con "message"
-      if (res && res.message && res.message.includes("Correo verificado correctamente")) {
-        toast.success(res.message);
+  const handleSecondSubmit = async () => {
+    const username = secondStepData.usuario.trim();
+    const password = secondStepData.contrasena.trim();
+    const code = secondStepData.codigo.trim();
 
-        // 3️⃣ Preparar datos finales con la estructura que espera la API
-        const { primary_name, secondary_name, first_surname, second_surname } = parseName(
-          initialData.nombre
-        );
+    if (!username || !password || !code) {
+      toast.error("Completa usuario, contrasena y codigo.");
+      return;
+    }
 
-        const finalData = {
-          username: usuarioTrim,
-          password: contrasenaTrim,
-          role_id: 2,
-          identity_card: initialData.cedula,
-          primary_name,
-          secondary_name,
-          first_surname,
-          second_surname,
-          birth_date: initialData.fechaNacimiento,
-          gender: initialData.genero.charAt(0).toUpperCase(),
-          email: initialData.correo,
-          phone: initialData.telefono,
-        };
+    try {
+      const initialData = JSON.parse(localStorage.getItem(REGISTER_STORAGE_KEY));
+      const email = initialData?.correo;
 
-        // 4️⃣ Enviar datos a la API de clientes
-        const clientRes = await createClient(finalData);
-        if (clientRes && clientRes.message) {
-          toast.success(clientRes.message);
-
-          try {
-            // Hacer login automático con los datos recién creados
-            const { user } = await login(usuarioTrim, contrasenaTrim);
-
-            // Si el login funciona, limpiar datos de registro
-            localStorage.removeItem("registerData");
-
-            // Redirigir siempre al cliente
-            if (user.role?.toLowerCase() === "cliente") {
-              navigate("/client");
-            }
-          } catch (err) {
-            toast.error("Error al iniciar sesión automáticamente");
-            // Si falla el login automático, limpiar igual y mandar al login manual
-            localStorage.removeItem("registerData");
-            navigate("/login");
-          }
-        } else {
-          toast.error(clientRes?.error || "Error al crear el cliente, intenta de nuevo");
-          if (clientRes.missing_fields) {
-            toast.error(`Campos faltantes: ${clientRes.missing_fields.join(", ")}`);
-          }
-        }
-      } else {
-        toast.error(res.error || "El código de verificación no es válido");
+      if (!email) {
+        toast.error("No se encontro el correo del registro.");
+        return;
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Error al verificar el código");
+
+      const verificationResponse = await verifyCode(email, code);
+      if (!verificationResponse?.message?.includes("Correo verificado correctamente")) {
+        toast.error(verificationResponse?.error || "El codigo de verificacion no es valido.");
+        return;
+      }
+
+      toast.success(verificationResponse.message);
+
+      const { primary_name, secondary_name, first_surname, second_surname } = parseName(
+        initialData.nombre
+      );
+
+      const finalData = {
+        username,
+        password,
+        role_id: 2,
+        identity_card: initialData.cedula,
+        primary_name,
+        secondary_name,
+        first_surname,
+        second_surname,
+        birth_date: initialData.fechaNacimiento,
+        gender: initialData.genero.charAt(0).toUpperCase(),
+        email: initialData.correo,
+        phone: initialData.telefono,
+      };
+
+      const clientResponse = await createClient(finalData);
+      if (!clientResponse?.message) {
+        toast.error(clientResponse?.error || "Error al crear el cliente.");
+        if (clientResponse?.missing_fields) {
+          toast.error(`Campos faltantes: ${clientResponse.missing_fields.join(", ")}`);
+        }
+        return;
+      }
+
+      toast.success(clientResponse.message);
+
+      try {
+        const { user } = await login(username, password);
+        localStorage.removeItem(REGISTER_STORAGE_KEY);
+
+        if (user.role?.toLowerCase() === "cliente") {
+          navigate("/client");
+          return;
+        }
+      } catch (loginError) {
+        console.error("Error en login automatico:", loginError);
+        toast.error("No se pudo iniciar sesion automaticamente");
+      }
+
+      localStorage.removeItem(REGISTER_STORAGE_KEY);
+      navigate("/login");
+    } catch (error) {
+      console.error("Error al verificar el codigo:", error);
+      toast.error("Error al verificar el codigo");
+    }
+  };
+
+  const handleResendCode = async () => {
+    try {
+      const response = await requestVerificationCode(formData.correo);
+      if (response?.message) {
+        toast.success(response.message);
+        setResendTimer(RESEND_SECONDS);
+        return;
+      }
+
+      toast.error(response?.error || "No se pudo reenviar el codigo");
+    } catch (error) {
+      console.error("Error al reenviar el codigo:", error);
+      toast.error("Error al solicitar nuevamente el codigo");
     }
   };
 
   return (
     <div className="register-section">
       <section className="registerr-left">
-        <h2>Estamos aquí para ayudarte!</h2>
+        <h2>Estamos aqui para ayudarte!</h2>
         <p>
           <strong>Descubre </strong>tu yo interior y hazlo relucir.
         </p>
         <p className="tell">
-          <strong>Contáctanos: </strong>
+          <strong>Contactanos: </strong>
           <br />
           +506 7133-8429
         </p>
-        <img src={IMG1} alt="Decoración" className="handR-img" />
+        <img src={IMG1} alt="Decoracion" className="handR-img" />
       </section>
 
       <section className="register-right">
         <img src={Logo} alt="Logo" className="logo-img-register" />
+
         {step === 1 && (
           <form className="register-form">
             <label>
@@ -252,8 +281,9 @@ function Register() {
                   onChange={handleChange}
                 />
               </label>
+
               <label>
-                Género
+                Genero
                 <select name="genero" value={formData.genero} onChange={handleChange}>
                   <option value="">Selecciona</option>
                   <option value="femenino">Femenino</option>
@@ -265,44 +295,45 @@ function Register() {
 
             <div className="form-row">
               <label>
-                Teléfono
+                Telefono
                 <input
                   type="tel"
                   name="telefono"
                   value={formData.telefono}
                   onChange={handleChange}
-                  placeholder="Ingresa tu teléfono"
+                  placeholder="Ingresa tu telefono"
                 />
               </label>
+
               <label>
-                Cédula
+                Cedula
                 <input
                   type="text"
                   name="cedula"
                   value={formData.cedula}
                   onChange={handleChange}
-                  placeholder="Ingresa tu cédula"
+                  placeholder="Ingresa tu cedula"
                 />
               </label>
             </div>
 
             <label>
-              Correo Electrónico
+              Correo electronico
               <input
                 type="email"
                 name="correo"
                 value={formData.correo}
                 onChange={handleChange}
-                placeholder="Ingresa tu correo electrónico"
+                placeholder="Ingresa tu correo electronico"
               />
             </label>
+
             <button type="button" onClick={handleFirstSubmit}>
-              Obtener Código de Verificación
+              Obtener codigo de verificacion
             </button>
 
-            {/* Texto final */}
             <p className="login-text">
-              ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
+              Ya tienes un usuario? <a href="/login">Inicia sesion aqui!</a>
             </p>
           </form>
         )}
@@ -310,23 +341,12 @@ function Register() {
         {step === 2 && (
           <form className="register-form">
             <div className="back-container">
-              {/* Botón para volver al Step 1 */}
-              <button
-                type="button"
-                className="back-btn"
-                onClick={() => {
-                  const savedData = JSON.parse(localStorage.getItem("registerData"));
-                  if (savedData) {
-                    setFormData(savedData); // 👈 restaura los datos previos al Step 1
-                  }
-                  setStep(1); // 👈 vuelve al Step 1
-                }}
-              >
+              <button type="button" className="back-btn" onClick={restoreFirstStep}>
                 <FaArrowLeft />
                 Paso anterior
               </button>
             </div>
-            {/* Usuario y contraseña en una sola fila */}
+
             <div className="form-row">
               <label>
                 Nombre de usuario
@@ -340,49 +360,39 @@ function Register() {
               </label>
 
               <label>
-                Contraseña
+                Contrasena
                 <input
                   type="password"
                   name="contrasena"
                   value={secondStepData.contrasena}
                   onChange={handleSecondChange}
-                  placeholder="Ingresa tu contraseña"
+                  placeholder="Ingresa tu contrasena"
                 />
               </label>
             </div>
 
-            {/* Mini leyenda */}
             <small className="legend-text">
-              No olvides estos datos, serán necesarios para iniciar sesión cada vez que entres a la
-              página.
+              No olvides estos datos; los necesitaras para iniciar sesion mas adelante.
             </small>
+
             <label>
-              Código de verificación
+              Codigo de verificacion
               <input
                 type="text"
                 name="codigo"
                 value={secondStepData.codigo}
                 onChange={handleSecondChange}
-                placeholder="Ingresa el código enviado"
+                placeholder="Ingresa el codigo enviado"
               />
             </label>
+
             <div className="resend-container">
-              <span>¿Aún no te llega el código?</span>
+              <span>Aun no te llega el codigo?</span>
               <button
                 type="button"
                 className="resend-btn"
                 disabled={resendTimer > 0}
-                onClick={async () => {
-                  try {
-                    const res = await requestVerificationCode(formData.correo);
-                    if (res && res.message) {
-                      toast.success(res.message);
-                      setResendTimer(120); // reiniciar contador
-                    }
-                  } catch (err) {
-                    toast.error("Error al solicitar nuevamente el código");
-                  }
-                }}
+                onClick={handleResendCode}
               >
                 {resendTimer > 0
                   ? `Solicitar de nuevo (${Math.floor(resendTimer / 60)}:${(resendTimer % 60)
@@ -391,17 +401,18 @@ function Register() {
                   : "Solicitar de nuevo"}
               </button>
             </div>
+
             <button type="button" onClick={handleSecondSubmit}>
-              Confirmar Registro
+              Confirmar registro
             </button>
 
-            {/* Texto final */}
             <p className="login-text">
-              ¿Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
+              Ya tienes un usuario? <a href="/login">Inicia sesion aqui!</a>
             </p>
           </form>
         )}
       </section>
+
       <Toaster
         position="center-top"
         toastOptions={{

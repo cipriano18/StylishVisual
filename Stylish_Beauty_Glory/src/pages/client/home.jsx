@@ -130,7 +130,7 @@ function ClientHome() {
   }, []);
 
   // Estado para consejos
-  const [tips, setTips] = useState([
+  const [tips] = useState([
     "Mantén tu piel hidratada diariamente.",
     "Usa protector solar incluso en días nublados.",
     "Aplica crema para manos después de lavarlas.",

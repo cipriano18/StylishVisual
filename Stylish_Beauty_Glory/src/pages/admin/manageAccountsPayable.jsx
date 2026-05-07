@@ -14,7 +14,6 @@ import { fetchSuppliers } from "../../services/Serv_suppliers";
 import LoaderOverlay from "../overlay/UniversalOverlay";
 
 function ManageAccounts() {
-  const [cuentas, setCuentas] = useState([]);
   const [facturasFiltradas, setFacturasFiltradas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -91,7 +90,6 @@ function ManageAccounts() {
       }
 
       const facturas = data.invoices || [];
-      setCuentas(facturas);
       setFacturasFiltradas(facturas);
       setCurrentPage(1);
     } catch (err) {
@@ -150,7 +148,7 @@ function ManageAccounts() {
 
   //editar facturas
   const handleEditarFactura = async (facturaEditada) => {
-    const { invoice_id, supplier_id, type, amount, date, due_date, status, name, description } =
+    const { invoice_id, supplier_id, type, amount, date, due_date, name, description } =
       facturaEditada;
 
     const statusNormalizado =

@@ -1,3 +1,8 @@
+/**
+ * Splits a full name into the fields expected by the backend.
+ * @param {string} fullName
+ * @returns {{ primary_name: string, secondary_name: string, first_surname: string, second_surname: string }}
+ */
 export const parseName = (fullName) => {
   const parts = fullName.trim().split(" ");
 

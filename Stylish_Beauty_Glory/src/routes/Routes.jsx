@@ -3,7 +3,6 @@ import Home from "../pages/App";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 
-// --- ADMIN ---
 import AdminLayout from "../layouts/AdminLayout";
 import ManageAdmins from "../pages/admin/manageAdmins";
 import ManageUsers from "../pages/admin/showUsers";
@@ -16,25 +15,22 @@ import ManageSales from "../pages/admin/manageSales";
 import ManageAppointments from "../pages/admin/manageAppointments";
 import ManageSchedule from "../pages/admin/adminSchedule";
 import ShowReports from "../pages/admin/showReports";
-// --- CLIENTE ---
+
 import ClientLayout from "../layouts/ClientLayout";
 import ManageMyDetails from "../pages/client/manageProfile";
 import ClientHome from "../pages/client/home";
 import ClientAppointments from "../pages/client/scheduleAppointments";
 import ClientSchedule from "../pages/client/clientSchedule";
+
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* 🔹 Páginas públicas */}
       <Route path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
 
-      {/* 🔹 Sección de administración */}
       <Route path="/admin" element={<AdminLayout />}>
-        {/* Redirección automática si solo entra a /admin */}
         <Route index element={<Navigate to="admins" replace />} />
-
         <Route path="admins" element={<ManageAdmins />} />
         <Route path="users" element={<ManageUsers />} />
         <Route path="suppliers" element={<ManageSuppliers />} />
@@ -48,18 +44,14 @@ export default function AppRoutes() {
         <Route path="reports" element={<ShowReports />} />
       </Route>
 
-      {/* 🔹 Sección de clientes */}
       <Route path="/client" element={<ClientLayout />}>
-        {/* Redirección automática si solo entra a /client */}
         <Route index element={<Navigate to="home" replace />} />
-
         <Route path="profile" element={<ManageMyDetails />} />
         <Route path="home" element={<ClientHome />} />
         <Route path="appointments" element={<ClientAppointments />} />
         <Route path="schedule" element={<ClientSchedule />} />
       </Route>
 
-      {/* 🔹 Si la ruta no existe */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

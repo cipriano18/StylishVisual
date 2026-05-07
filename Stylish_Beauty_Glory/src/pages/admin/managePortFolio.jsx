@@ -99,7 +99,8 @@ function ManagePortfolio() {
       } else {
         toast.error(res?.error || "Error al eliminar el portafolio");
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Error eliminando portafolio:", error);
       toast.error("Error inesperado al eliminar");
     }
   };
@@ -235,7 +236,8 @@ function ManagePortfolio() {
       } else {
         toast.error(res?.error || "Error al actualizar el portafolio");
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Error actualizando portafolio:", error);
       toast.error("Error inesperado al actualizar");
     } finally {
       setLoading(false);

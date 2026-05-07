@@ -1,37 +1,29 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserCircle, FaPencilAlt, FaKey, FaUserSlash } from "react-icons/fa";
+import { FaUserCircle, FaPencilAlt, FaKey, FaUserSlash, FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
-//CSS
 import "../../styles/Profile_CSS/ProfileBase.css";
-
-//Servicios & overlays
 import { fetchClientProfile } from "../../services/Serv_profiles";
 import { updateUser, inactivateUser } from "../../services/Serv_users";
 import { updateClient } from "../../services/Serv_clients";
-import LoaderOverlay from "../overlay/UniversalOverlay";
+import { getContactValue, formatIsoDate } from "../../utils/profile";
+import { getStoredUser, setStoredUser } from "../../utils/session";
 
 function ManageProfile() {
   const navigate = useNavigate();
-
-  //Modales
-  const [showPasswordModal, setShowPasswordModal] = useState(false); // estado modal cambiar contraseña
-  const [showDeactivateModal, setShowDeactivateModal] = useState(false); // estado modal dar de baja
-
-  //Perfil & carga
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  //Editar contraseña y usuario
   const [newPassword, setNewPassword] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  //Editar información personal
-  const [isEditingPersonal, setIsEditingPersonal] = useState(false); // estado para poder editar
-
-  //Datos editables
+  const [visiblePasswords, setVisiblePasswords] = useState({
+    newPassword: false,
+    confirmPassword: false,
+  });
+  const [isEditingPersonal, setIsEditingPersonal] = useState(false);
   const [editedPrimaryName, setEditedPrimaryName] = useState("");
   const [editedSecondaryName, setEditedSecondaryName] = useState("");
   const [editedFirstSurname, setEditedFirstSurname] = useState("");
@@ -41,163 +33,200 @@ function ManageProfile() {
   const [editedPhone, setEditedPhone] = useState("");
   const [editedEmail, setEditedEmail] = useState("");
 
-  //Cargar perfil de usuario
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        setLoading(true);
-        const data = await fetchClientProfile(); //API
-        console.log(data);
-        if (data?.client) {
-          const client = data.client;
-          setProfile(client);
-
-          // Sincronizar estados editables
-          setEditedPrimaryName(client.primary_name || "");
-          setEditedSecondaryName(client.secondary_name || "");
-          setEditedFirstSurname(client.first_surname || "");
-          setEditedSecondSurname(client.second_surname || "");
-          setEditedBirthDate(client.birth_date ? client.birth_date.slice(0, 10) : "");
-          setEditedGender(client.gender || "");
-          const phone =
-            client.contacts?.find((c) => c.contact_type === "TELEFONO")?.contact_value || "";
-          const email =
-            client.contacts?.find((c) => c.contact_type === "EMAIL")?.contact_value || "";
-
-          setEditedPhone(phone);
-          setEditedEmail(email);
+        const response = await fetchClientProfile();
+        if (!response?.client) {
+          toast.error(response?.error || "No se pudo cargar el perfil");
+          return;
         }
+
+        const client = response.client;
+        setProfile(client);
+        setEditedPrimaryName(client.primary_name || "");
+        setEditedSecondaryName(client.secondary_name || "");
+        setEditedFirstSurname(client.first_surname || "");
+        setEditedSecondSurname(client.second_surname || "");
+        setEditedBirthDate(formatIsoDate(client.birth_date));
+        setEditedGender(client.gender || "");
+        setEditedPhone(getContactValue(client.contacts, "TELEFONO"));
+        setEditedEmail(getContactValue(client.contacts, "EMAIL"));
       } catch (error) {
         console.error("Error al cargar perfil cliente:", error);
+        toast.error("No se pudo cargar el perfil");
       } finally {
         setLoading(false);
       }
     };
+
     loadProfile();
   }, []);
 
-  // Cambiar datos de usuario (nombre y/o contraseña)
-  const handleUpdateUser = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const userId = user.user_id;
+  const resetUserFields = () => {
+    setShowPasswordModal(false);
+    setNewUsername("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setVisiblePasswords({
+      newPassword: false,
+      confirmPassword: false,
+    });
+  };
 
-      const updatedData = {};
+  const togglePasswordVisibility = (field) => {
+    setVisiblePasswords((previousValue) => ({
+      ...previousValue,
+      [field]: !previousValue[field],
+    }));
+  };
+
+  const resetPersonalFields = () => {
+    setEditedPrimaryName(profile?.primary_name || "");
+    setEditedSecondaryName(profile?.secondary_name || "");
+    setEditedFirstSurname(profile?.first_surname || "");
+    setEditedSecondSurname(profile?.second_surname || "");
+    setEditedBirthDate(formatIsoDate(profile?.birth_date));
+    setEditedGender(profile?.gender || "");
+    setEditedPhone(getContactValue(profile?.contacts, "TELEFONO"));
+    setEditedEmail(getContactValue(profile?.contacts, "EMAIL"));
+    setIsEditingPersonal(false);
+  };
+
+  const hasChanges =
+    profile &&
+    (editedPrimaryName !== (profile.primary_name || "") ||
+      editedSecondaryName !== (profile.secondary_name || "") ||
+      editedFirstSurname !== (profile.first_surname || "") ||
+      editedSecondSurname !== (profile.second_surname || "") ||
+      editedBirthDate !== formatIsoDate(profile.birth_date) ||
+      editedGender !== (profile.gender || "") ||
+      editedPhone !== getContactValue(profile.contacts, "TELEFONO") ||
+      editedEmail !== getContactValue(profile.contacts, "EMAIL"));
+
+  const handleUpdateUser = async () => {
+    const storedUser = getStoredUser();
+    const userId = storedUser?.user_id;
+
+    if (!userId) {
+      toast.error("No se pudo identificar el usuario actual");
+      return;
+    }
+
+    const updatedData = {};
+    if (newUsername) updatedData.username = newUsername;
+    if (newPassword) updatedData.password = newPassword;
+
+    if (Object.keys(updatedData).length === 0) {
+      toast.error("No hay cambios para guardar");
+      return;
+    }
+
+    try {
+      const result = await updateUser(userId, updatedData);
+      if (result?.error) {
+        toast.error(result.error || "Error al actualizar usuario");
+        return;
+      }
 
       if (newUsername) {
-        updatedData.username = newUsername;
-      }
-      if (newPassword) {
-        updatedData.password = newPassword;
+        const nextUser = { ...storedUser, username: newUsername };
+        setStoredUser(nextUser);
+        setProfile((previousValue) => ({
+          ...previousValue,
+          user: {
+            ...previousValue.user,
+            username: newUsername,
+          },
+        }));
       }
 
-      const result = await updateUser(userId, updatedData); // API
-
-      if (result && !result.error) {
-        toast.success(result.message || "Usuario actualizado correctamente");
-        setShowPasswordModal(false);
-        setNewUsername("");
-        setNewPassword("");
-        setConfirmPassword("");
-      } else {
-        toast.error(result?.error || "Error al actualizar usuario");
-      }
-    } catch (err) {
+      toast.success(result?.message || "Usuario actualizado correctamente");
+      resetUserFields();
+    } catch (error) {
+      console.error("Error al actualizar usuario:", error);
       toast.error("Error al actualizar usuario");
     }
   };
 
-  // Dar de baja la cuenta
   const handleDeactivateAccount = async () => {
+    const storedUser = getStoredUser();
+    const userId = storedUser?.user_id;
+
+    if (!userId) {
+      toast.error("No se pudo identificar el usuario actual");
+      return;
+    }
+
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const userId = user.user_id;
-
-      const result = await inactivateUser(userId); //API
-
-      if (result && !result.error) {
-        localStorage.clear();
-        navigate("/");
-      } else {
-        console.error("Error al desactivar cuenta:", result?.error);
-        toast.error(result?.error || "Error al desactivar cuenta");
+      const result = await inactivateUser(userId);
+      if (result?.error) {
+        toast.error(result.error || "Error al desactivar cuenta");
+        return;
       }
-    } catch (err) {
-      console.error("Error en handleDeactivateAccount:", err);
+
+      localStorage.clear();
+      navigate("/");
+    } catch (error) {
+      console.error("Error en handleDeactivateAccount:", error);
       toast.error("Error al desactivar cuenta");
     } finally {
       setShowDeactivateModal(false);
     }
   };
 
-  // Actualizar información personal
   const handleSavePersonal = async () => {
+    const updatedData = {
+      primary_name: editedPrimaryName,
+      secondary_name: editedSecondaryName,
+      first_surname: editedFirstSurname,
+      second_surname: editedSecondSurname,
+      gender: editedGender?.trim().charAt(0).toUpperCase(),
+      birth_date: editedBirthDate,
+      phone: editedPhone,
+      email: editedEmail,
+    };
+
     try {
-      const identityCard = profile.identity_card;
-      const updatedData = {
-        primary_name: editedPrimaryName,
-        secondary_name: editedSecondaryName,
-        first_surname: editedFirstSurname,
-        second_surname: editedSecondSurname,
-        gender: editedGender?.trim().charAt(0).toUpperCase(),
-        birth_date: editedBirthDate,
-        phone: editedPhone,
-        email: editedEmail,
-      };
-
-      const result = await updateClient(identityCard, updatedData); //API
-
-      if (result && !result.error) {
-        // Actualizar local
-        setProfile((prev) => ({
-          ...prev,
-          ...updatedData,
-        }));
-        setIsEditingPersonal(false);
-        toast.success(result.message || "Datos personales actualizados correctamente");
-      } else {
-        toast.error(result?.error || "Error al actualizar datos personales");
+      const result = await updateClient(profile.identity_card, updatedData);
+      if (result?.error) {
+        toast.error(result.error || "Error al actualizar datos personales");
+        return;
       }
-    } catch (err) {
-      console.error("Error en handleSavePersonal:", err);
+
+      setProfile((previousValue) => ({
+        ...previousValue,
+        ...updatedData,
+        contacts: [
+          { contact_type: "TELEFONO", contact_value: editedPhone },
+          { contact_type: "EMAIL", contact_value: editedEmail },
+        ],
+      }));
+      setIsEditingPersonal(false);
+      toast.success(result?.message || "Datos personales actualizados correctamente");
+    } catch (error) {
+      console.error("Error en handleSavePersonal:", error);
       toast.error("Error al actualizar datos personales");
     }
   };
 
-  // Verificar si hay cambios = permitir guardar
-  const hasChanges =
-    profile &&
-    (editedPrimaryName !== profile.primary_name ||
-      editedSecondaryName !== profile.secondary_name ||
-      editedFirstSurname !== profile.first_surname ||
-      editedSecondSurname !== profile.second_surname ||
-      editedBirthDate !== (profile.birth_date?.slice(0, 10) || "") ||
-      editedGender !== profile.gender ||
-      editedPhone !==
-        (profile.contacts?.find((c) => c.contact_type === "TELEFONO")?.contact_value || "") ||
-      editedEmail !==
-        (profile.contacts?.find((c) => c.contact_type === "EMAIL")?.contact_value || ""));
-
-  //Estados de carga y perfil
   if (loading) return <p>Cargando perfil...</p>;
   if (!profile) return <p>No se pudo cargar el perfil.</p>;
 
   return (
     <>
       <div className="profile-wrapper">
-        {loading && <LoaderOverlay message="Cargando tu información..." />}
         <h2 className="profile-greeting">
           Hola de nuevo {profile.primary_name} {profile.first_surname}!
         </h2>
 
-        {/* Cuenta */}
         <section className="profile-section account">
           <div className="account-left">
             <FaUserCircle className="profile-icon" />
             <div className="profile-info">
               <div className="profile-username">{profile.user.username}</div>
               <div className="profile-entry-date">
-                <strong>Cédula:</strong> {profile.identity_card}
+                <strong>Cedula:</strong> {profile.identity_card}
               </div>
 
               <div className={`profile-status ${profile.user.status.toLowerCase()}`}>
@@ -213,7 +242,7 @@ function ManageProfile() {
               onClick={() => setShowPasswordModal(true)}
             >
               <FaKey className="btn-icon" />
-              Cambiar contraseña
+              Cambiar contrasena
             </button>
 
             <button
@@ -226,10 +255,9 @@ function ManageProfile() {
           </div>
         </section>
 
-        {/* Información personal */}
         <section className="profile-section contacts">
           <div className="section-header">
-            <h3>Información personal</h3>
+            <h3>Informacion personal</h3>
 
             {isEditingPersonal ? (
               <div className="edit-actions">
@@ -240,25 +268,7 @@ function ManageProfile() {
                 >
                   Guardar
                 </button>
-                <button
-                  className="profile-btn profile-btn-edit"
-                  onClick={() => {
-                    setEditedPrimaryName(profile.primary_name || "");
-                    setEditedSecondaryName(profile.secondary_name || "");
-                    setEditedFirstSurname(profile.first_surname || "");
-                    setEditedSecondSurname(profile.second_surname || "");
-                    setEditedBirthDate(profile.birth_date ? profile.birth_date.slice(0, 10) : "");
-                    setEditedGender(profile.gender || "");
-                    setEditedPhone(
-                      profile.contacts?.find((c) => c.contact_type === "TELEFONO")?.contact_value ||
-                        ""
-                    );
-                    setEditedEmail(
-                      profile.contacts?.find((c) => c.contact_type === "EMAIL")?.contact_value || ""
-                    );
-                    setIsEditingPersonal(false);
-                  }}
-                >
+                <button className="profile-btn profile-btn-edit" onClick={resetPersonalFields}>
                   Cancelar
                 </button>
               </div>
@@ -274,7 +284,6 @@ function ManageProfile() {
           </div>
 
           <div className="contact-info">
-            {/* Nombre completo */}
             <div className="contact-field">
               <strong>Nombre completo</strong>
               {isEditingPersonal ? (
@@ -282,40 +291,39 @@ function ManageProfile() {
                   <input
                     className="contact-input"
                     value={editedPrimaryName}
-                    onChange={(e) => setEditedPrimaryName(e.target.value)}
+                    onChange={(event) => setEditedPrimaryName(event.target.value)}
                   />
                   <input
                     className="contact-input"
                     value={editedSecondaryName}
-                    onChange={(e) => setEditedSecondaryName(e.target.value)}
+                    onChange={(event) => setEditedSecondaryName(event.target.value)}
                   />
                   <input
                     className="contact-input"
                     value={editedFirstSurname}
-                    onChange={(e) => setEditedFirstSurname(e.target.value)}
+                    onChange={(event) => setEditedFirstSurname(event.target.value)}
                   />
                   <input
                     className="contact-input"
                     value={editedSecondSurname}
-                    onChange={(e) => setEditedSecondSurname(e.target.value)}
+                    onChange={(event) => setEditedSecondSurname(event.target.value)}
                   />
                 </div>
               ) : (
                 <span>
-                  {editedPrimaryName} {editedSecondaryName}
-                  {editedFirstSurname} {editedSecondSurname}
+                  {editedPrimaryName} {editedSecondaryName} {editedFirstSurname}{" "}
+                  {editedSecondSurname}
                 </span>
               )}
             </div>
 
-            {/* Género */}
             <div className="contact-field">
-              <strong>Género</strong>
+              <strong>Genero</strong>
               {isEditingPersonal ? (
                 <select
                   className="contact-input"
                   value={editedGender}
-                  onChange={(e) => setEditedGender(e.target.value)}
+                  onChange={(event) => setEditedGender(event.target.value)}
                 >
                   <option value="">Seleccione...</option>
                   <option value="Masculino">Masculino</option>
@@ -327,7 +335,6 @@ function ManageProfile() {
               )}
             </div>
 
-            {/* Fecha de nacimiento */}
             <div className="contact-field">
               <strong>Fecha de nacimiento</strong>
               {isEditingPersonal ? (
@@ -335,29 +342,27 @@ function ManageProfile() {
                   type="date"
                   className="contact-input"
                   value={editedBirthDate}
-                  onChange={(e) => setEditedBirthDate(e.target.value)}
+                  onChange={(event) => setEditedBirthDate(event.target.value)}
                 />
               ) : (
                 <span>{editedBirthDate}</span>
               )}
             </div>
 
-            {/* Teléfono */}
             <div className="contact-field">
-              <strong>Teléfono</strong>
+              <strong>Telefono</strong>
               {isEditingPersonal ? (
                 <input
                   type="tel"
                   className="contact-input"
                   value={editedPhone}
-                  onChange={(e) => setEditedPhone(e.target.value)}
+                  onChange={(event) => setEditedPhone(event.target.value)}
                 />
               ) : (
                 <span>{editedPhone}</span>
               )}
             </div>
 
-            {/* Email */}
             <div className="contact-field">
               <strong>Email</strong>
               {isEditingPersonal ? (
@@ -365,7 +370,7 @@ function ManageProfile() {
                   type="email"
                   className="contact-input"
                   value={editedEmail}
-                  onChange={(e) => setEditedEmail(e.target.value)}
+                  onChange={(event) => setEditedEmail(event.target.value)}
                 />
               ) : (
                 <span>{editedEmail}</span>
@@ -375,7 +380,6 @@ function ManageProfile() {
         </section>
       </div>
 
-      {/* MODAL USUARIO */}
       {showPasswordModal && (
         <div className="modal-overlay">
           <div className="modal-content small">
@@ -386,27 +390,53 @@ function ManageProfile() {
               type="text"
               placeholder="Nuevo nombre"
               value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
+              onChange={(event) => setNewUsername(event.target.value)}
               className="contact-input"
             />
 
-            <p>Nueva contraseña:</p>
-            <input
-              type="password"
-              placeholder="Nueva contraseña"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="contact-input"
-            />
+            <p>Nueva contrasena:</p>
+            <div className="password-input-wrapper">
+              <input
+                type={visiblePasswords.newPassword ? "text" : "password"}
+                placeholder="Nueva contrasena"
+                value={newPassword}
+                onChange={(event) => setNewPassword(event.target.value)}
+                className="contact-input"
+              />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => togglePasswordVisibility("newPassword")}
+                aria-label={
+                  visiblePasswords.newPassword ? "Ocultar contrasena" : "Mostrar contrasena"
+                }
+              >
+                {visiblePasswords.newPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
 
-            <p>Confirmar contraseña:</p>
-            <input
-              type="password"
-              placeholder="Confirmar contraseña"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="contact-input"
-            />
+            <p>Confirmar contrasena:</p>
+            <div className="password-input-wrapper">
+              <input
+                type={visiblePasswords.confirmPassword ? "text" : "password"}
+                placeholder="Confirmar contrasena"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                className="contact-input"
+              />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => togglePasswordVisibility("confirmPassword")}
+                aria-label={
+                  visiblePasswords.confirmPassword
+                    ? "Ocultar contrasena"
+                    : "Mostrar contrasena"
+                }
+              >
+                {visiblePasswords.confirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
 
             <div className="modal-actions">
               <button
@@ -415,13 +445,13 @@ function ManageProfile() {
                   if (!newPassword || newPassword === confirmPassword) {
                     handleUpdateUser();
                   } else {
-                    toast.error("Las contraseñas no coinciden o son demasiado cortas");
+                    toast.error("Las contrasenas no coinciden");
                   }
                 }}
               >
                 Guardar
               </button>
-              <button className="modal-btn cancel" onClick={() => setShowPasswordModal(false)}>
+              <button className="modal-btn cancel" onClick={resetUserFields}>
                 Cancelar
               </button>
             </div>
@@ -429,23 +459,16 @@ function ManageProfile() {
         </div>
       )}
 
-      {/* MODAL DAR DE BAJA */}
       {showDeactivateModal && (
         <div className="modal-overlay">
           <div className="modal-content medium">
-            <h3>¿Estás seguro?</h3>
+            <h3>Estas seguro?</h3>
             <p>
-              Esta acción desactivará tu cuenta permanentemente. Para reactivarla, deberás contactar
+              Esta accion desactivara tu cuenta permanentemente. Para reactivarla, deberas contactar
               al administrador.
             </p>
             <div className="modal-actions">
-              <button
-                className="modal-btn confirm"
-                onClick={() => {
-                  handleDeactivateAccount();
-                  setShowDeactivateModal(false);
-                }}
-              >
+              <button className="modal-btn confirm" onClick={handleDeactivateAccount}>
                 Confirmar
               </button>
               <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>

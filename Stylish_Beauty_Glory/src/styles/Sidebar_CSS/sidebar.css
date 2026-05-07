@@ -1,4 +1,4 @@
-/*Esto es de sidevar*/
+﻿/* Sidebar layout */
 .admin-layout {
   display: flex;
   flex-direction: row;
@@ -7,14 +7,13 @@
   /* Ocupa toda la altura de la ventana */
   overflow: hidden;
   /* Evita que el layout completo haga scroll */
-
 }
 
 .sidebar-nav {
   overflow-y: auto;
   /* activa scroll vertical */
   overflow-x: hidden;
-  border-top: 1px solid #af7777;
+  border-top: 1px solid var(--color-border-accent, #af7777);
   padding-top: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -22,15 +21,13 @@
   direction: rtl;
 }
 
-
 /* Opcional: estilizar el scroll */
 .sidebar-nav::-webkit-scrollbar {
   width: 6px;
-
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background-color: #7c4a4a;
+  background-color: var(--color-primary-dark, #875858);
   border-radius: 4px;
   padding-left: 2rem;
 }
@@ -39,13 +36,13 @@
   background: transparent;
 }
 
-/* 🔹 Esto es del contendio cambiante */
+/* Contenido principal */
 .admin-content {
   flex-grow: 1;
   overflow-y: auto;
   height: 100vh;
   padding: 24px;
-  background-color: #fbeaea;
+  background-color: var(--color-surface-panel, #fbeaea);
   animation: fadeIn 0.4s ease;
 }
 
@@ -61,15 +58,15 @@
   }
 }
 
-/* 🔹 Perfil siempre al fondo */
+/* Perfil siempre al fondo */
 .sidebar-profile {
   width: 100%;
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid #af7777;
+  border-top: 1px solid var(--color-border-accent, #af7777);
 }
 
-/* 🔹 Estilo del enlace de perfil */
+/* Estilo del enlace de perfil */
 .profile-link {
   display: flex;
   align-items: center;
@@ -81,8 +78,8 @@
 }
 
 .profile-link:hover {
-  background-color: #875858;
-  /* Fondo más claro al hacer hover */
+  background-color: var(--color-primary-dark, #875858);
+  /* Fondo mas claro al hacer hover */
   border-radius: 8px;
 }
 
@@ -95,23 +92,23 @@
 
 .profile-link:hover .profile-text {
   transform: translateX(2px);
-  /* Pequeño desplazamiento lateral */
+  /* Pequeno desplazamiento lateral */
 }
 
 .profile-name {
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
   font-weight: bold;
 }
 
 .profile-edit {
   font-size: 0.85rem;
-  color: #ebebeb;
+  color: var(--color-text-faint, #f1e5e5);
 }
 
-/* 🔹 Ícono del perfil más grande */
+/* Icono del perfil mas grande */
 .sidebar-profile .sidebar-icon {
   font-size: 1.8rem;
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
   transition: transform 0.3s ease;
 }
 
@@ -129,7 +126,7 @@
 .logo-sidebar {
   width: 160px;
   max-width: 160px;
-  /* Tamaño máximo */
+  /* Tamano maximo */
   height: auto;
   object-fit: contain;
   display: block;
@@ -138,8 +135,7 @@
   padding-bottom: 3rem;
 }
 
-
-/* 🔹 Estilos para los enlaces de navegación */
+/* Estilos para los enlaces de navegacion */
 
 .sidebar-nav ul {
   direction: ltr;
@@ -152,7 +148,7 @@
   margin-bottom: 12px;
 }
 
-/* 🔹 Sidebar como contenedor flexible vertical */
+/* Sidebar como contenedor flexible vertical */
 .sidebar {
   width: 270px;
   display: flex;
@@ -160,51 +156,54 @@
   height: 100vh;
   /* ocupa toda la altura de la ventana */
   padding: 16px;
-  background-color: #ba8282;
+  background-color: var(--color-primary, #ba8282);
   position: sticky;
   /* Alternativa a fixed si quieres que se quede en scroll local */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   align-items: center;
-  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-dark-medium, 0 4px 12px rgba(0, 0, 0, 0.2));
 }
 
 .sidebar-nav a {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
   padding: 10px 16px;
   border-radius: 999px;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+  font-family: "Poppins", sans-serif;
   width: 230px;
-  /* 👈 ancho fijo */
+  /* ancho fijo */
   box-sizing: border-box;
   margin-bottom: 8px;
 }
 
 .sidebar-nav a:hover {
-  background-color: #875858;
-  color: #ffffff;
+  background-color: var(--color-primary-dark, #875858);
+  color: var(--color-text-inverse, #ffffff);
   transform: scale(1.03);
-  /* Pequeño agrandamiento */
+  /* Pequeno agrandamiento */
 }
 
 .active-link {
-  background-color: #c89292;
-  color: #ffffff;
+  background-color: var(--color-primary-active, #c89292);
+  color: var(--color-text-inverse, #ffffff);
   font-weight: bold;
-  border-left: 4px solid #875858;
+  border-left: 4px solid var(--color-primary-dark, #875858);
 }
 
 .sidebar-nav a:active {
   transform: scale(0.96);
-  /* Pequeño encogimiento al hacer clic */
+  /* Pequeno encogimiento al hacer clic */
 }
 
 .sidebar-nav a:active .sidebar-icon {
   transform: scale(1.1);
-  /* Ícono crece un poco al hacer clic */
+  /* Icono crece un poco al hacer clic */
 }
 
 .profile-link:active {
@@ -221,7 +220,7 @@
 
 .sidebar-nav a:hover .sidebar-icon {
   transform: scale(1.2);
-  /* Ícono crece suavemente */
+  /* Icono crece suavemente */
 }
 
 .sidebar-icon {
@@ -231,14 +230,14 @@
   transition: color 0.3s ease;
 }
 
-/* 🔄 Tambaleo al hover */
+/* Tambaleo al hover */
 .sidebar-nav a:hover .sidebar-icon,
 .profile-link:hover .sidebar-icon {
   animation: shakeIcon 0.4s ease;
   transform: scale(1.2);
 }
 
-/* 🔹 Keyframes compartidos */
+/* Keyframes compartidos */
 @keyframes shakeIcon {
   0% {
     transform: rotate(0deg) scale(1.2);
@@ -261,17 +260,20 @@
   }
 }
 
-/*button toggle*/
+/* button toggle */
 .sidebar-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--color-text-inverse, #ffffff);
   padding: 10px 16px;
   border-radius: 999px;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+  font-family: "Poppins", sans-serif;
   width: 230px;
   /* igual que los NavLink */
   box-sizing: border-box;
@@ -284,8 +286,8 @@
 }
 
 .sidebar-toggle:hover {
-  background-color: #875858;
-  color: #ffffff;
+  background-color: var(--color-primary-dark, #875858);
+  color: var(--color-text-inverse, #ffffff);
   transform: scale(1.03);
 }
 
@@ -294,10 +296,10 @@
 }
 
 .sidebar-toggle.active-link {
-  background-color: #c89292;
-  color: #ffffff;
+  background-color: var(--color-primary-active, #c89292);
+  color: var(--color-text-inverse, #ffffff);
   font-weight: bold;
-  border-left: 4px solid #875858;
+  border-left: 4px solid var(--color-primary-dark, #875858);
 }
 
 .sidebar-toggle .sidebar-icon {
@@ -311,7 +313,6 @@
   transform: scale(1.2);
   animation: shakeIcon 0.4s ease;
 }
-
 
 .sidebar-arrow {
   font-size: 0.9rem;
@@ -335,9 +336,7 @@
   display: none;
 }
 
-/* ==============================
-   🍔 HAMBURGER MENU
-   ============================== */
+/* ============================== Y HAMBURGER MENU ============================== */
 
 /* Oculto en desktop */
 .hamburger-btn {
@@ -345,13 +344,12 @@
 }
 
 @media (max-width: 1180px) {
-
   /* Ocultar sidebar original */
   .sidebar {
     display: none;
   }
 
-  /* Botón flotante esquina inferior derecha */
+  /* Boton flotante esquina inferior derecha */
   .hamburger-btn {
     display: flex;
     flex-direction: column;
@@ -362,32 +360,36 @@
     width: 52px;
     height: 52px;
     padding: 14px;
-    background-color: #ba8282;
+    background-color: var(--color-primary, #ba8282);
     border: none;
     border-radius: 50%;
     cursor: pointer;
     z-index: 1100;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: var(--shadow-dark-strong, 0 8px 24px rgba(0, 0, 0, 0.3));
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease;
   }
 
   .hamburger-btn:hover {
-    background-color: #875858;
+    background-color: var(--color-primary-dark, #875858);
     transform: scale(1.08);
   }
 
-  /* Las 3 líneas */
+  /* Las 3 llineas */
   .hamburger-btn span {
     display: block;
     width: 100%;
     height: 2px;
-    background-color: #ffffff;
+    background-color: var(--color-text-inverse, #ffffff);
     border-radius: 2px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
     transform-origin: center;
   }
 
-  /* Animación a X cuando está abierto */
+  /* AnimaciA n a X cuando estA abierto */
   .hamburger-btn.open span:nth-child(1) {
     transform: translateY(10px) rotate(50deg);
   }
@@ -404,7 +406,7 @@
   .hamburger-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: var(--overlay-soft, rgba(0, 0, 0, 0.45));
     z-index: 1050;
     animation: fadeInOverlay 0.2s ease;
   }
@@ -419,13 +421,13 @@
     }
   }
 
-  /* Menú centrado */
+  /* MenA centrado */
   .hamburger-menu {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #ba8282;
+    background-color: var(--color-primary, #ba8282);
     border-radius: 20px;
     padding: 24px 20px;
     width: 85%;
@@ -433,9 +435,9 @@
     max-height: 80vh;
     overflow-y: auto;
     z-index: 1100;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--shadow-dark-xstrong, 0 8px 32px rgba(0, 0, 0, 0.35));
     animation: popIn 0.25s ease;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
   }
 
   @keyframes popIn {
@@ -467,7 +469,7 @@
     align-items: center;
     gap: 12px;
     text-decoration: none;
-    color: #ffffff;
+    color: var(--color-text-inverse, #ffffff);
     padding: 10px 16px;
     border-radius: 999px;
     font-size: 0.95rem;
@@ -476,19 +478,21 @@
     background: none;
     border: none;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
   }
 
   .hamburger-menu a:hover,
   .hamburger-menu .sidebar-toggle:hover {
-    background-color: #875858;
+    background-color: var(--color-primary-dark, #875858);
     transform: scale(1.02);
   }
 
   .hamburger-menu .active-link {
-    background-color: #c89292;
+    background-color: var(--color-primary-active, #c89292);
     font-weight: bold;
-    border-left: 4px solid #875858;
+    border-left: 4px solid var(--color-primary-dark, #875858);
   }
 
   /* Submenu */

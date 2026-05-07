@@ -1,3 +1,9 @@
+/**
+ * Returns the pagination buttons to display around the current page.
+ * @param {number} currentPage
+ * @param {number} totalPages
+ * @returns {(number | string)[]}
+ */
 export const getPageNumbers = (currentPage, totalPages) => {
   const delta = 1;
   const pages = [];

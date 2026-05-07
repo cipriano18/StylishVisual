@@ -1,4 +1,4 @@
-/* Contenedor base */
+﻿/* Contenedor base */
 .profile-wrapper {
   display: flex;
   flex-direction: column;
@@ -6,32 +6,31 @@
   padding: 3rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #fdf7f7;
+  background-color: var(--color-surface-soft, #fdf7f7);
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  font-family: 'Poppins', sans-serif;
+  box-shadow: var(--shadow-dark-surface, 0 2px 12px rgba(0, 0, 0, 0.08));
+  font-family: "Poppins", sans-serif;
 }
 
 /* Saludo de bienvenida */
 .profile-greeting {
   font-size: 2rem;
   font-weight: 600;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-/* Sección de detalles de perfil */
+/* Seccion de detalles de perfil */
 
 .profile-section.account {
-
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border-soft, #ddd);
 }
 
 .account-left {
@@ -42,21 +41,19 @@
 
 .profile-icon {
   font-size: 7rem;
-  color: #ba8282;
+  color: var(--color-primary, #ba8282);
 }
-
-
 
 .profile-username {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
 }
 
 .profile-entry-date {
   font-size: 0.95rem;
   font-weight: 400;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
 }
 
 .profile-status {
@@ -72,13 +69,13 @@
 }
 
 .profile-status.activo {
-  background-color: #d4f8d4;
-  color: #2ecc71;
+  background-color: var(--color-success-bg, #d4f8d4);
+  color: var(--color-success-text-strong, #2ecc71);
 }
 
 .profile-status.inactivo {
-  background-color: #f8d4d4;
-  color: #e74c3c;
+  background-color: var(--color-danger-bg, #f8d4d4);
+  color: var(--color-danger-text-strong, #e74c3c);
 }
 
 .status-dot {
@@ -106,12 +103,14 @@
   font-weight: 500;
   border: none;
   border-radius: 999px;
-  background-color: #ffffff;
-  color: #cd9292;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary-soft, #cd9292);
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: "Poppins", sans-serif;
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .btn-icon {
@@ -120,22 +119,22 @@
 }
 
 .account-right .profile-btn:hover {
-  background-color: #cd9292;
-  color: #ffffff;
+  background-color: var(--color-primary-soft, #cd9292);
+  color: var(--color-text-inverse, #ffffff);
   transform: translateY(-2px);
 }
 
-/* Sección Contactos */
+/* Seccion Contactos */
 
 .profile-section.contacts {
   padding: 1rem 0;
   padding-left: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border-soft, #ddd);
   display: flex;
   flex-direction: column;
   gap: 1rem;
   border-radius: 25px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .section-header {
@@ -143,15 +142,14 @@
   justify-content: space-between;
   align-items: center;
   padding-right: 1rem;
-
 }
 
 .section-header h3 {
   font-size: 1.2rem;
   font-weight: 600;
   margin: 0;
-  color: #4a2e2e;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-text-main, #4a2e2e);
+  font-family: "Poppins", sans-serif;
 }
 
 .contact-info {
@@ -174,13 +172,13 @@
 
 .contact-field strong {
   font-weight: 500;
-  color: #9f9090;
+  color: var(--color-text-soft, #9f9090);
   font-size: 0.95rem;
 }
 
 .contact-field span {
   font-weight: 600;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
   font-size: 1.05rem;
 }
 
@@ -188,18 +186,18 @@
   appearance: none;
   font-size: 1rem;
   border-color: transparent;
-  border-bottom: 1px solid #ccc;
-  font-family: 'Poppins', sans-serif;
+  border-bottom: 1px solid var(--color-border-input, #ccc);
+  font-family: "Poppins", sans-serif;
   width: 100%;
   max-width: 220px;
   background-color: transparent;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
   border-radius: 1px;
 }
 
 .contact-input:focus {
   outline: none;
-  border-bottom-color: #cd9292;
+  border-bottom-color: var(--color-primary-soft, #cd9292);
 }
 
 .edit-actions {
@@ -214,22 +212,24 @@
   font-weight: 500;
   border: none;
   border-radius: 999px;
-  background-color: #ffffff;
-  color: #cd9292;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary-soft, #cd9292);
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: "Poppins", sans-serif;
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .profile-btn-save:disabled {
-  background-color: #f0f0f0;
-  color: #ddb7b7;
+  background-color: var(--color-surface-disabled, #f0f0f0);
+  color: var(--color-disabled-text, #ddb7b7);
 }
 
 .profile-btn-save:hover:enabled {
-  background-color: #cd9292;
-  color: #ffffff;
+  background-color: var(--color-primary-soft, #cd9292);
+  color: var(--color-text-inverse, #ffffff);
   transform: translateY(-2px);
 }
 
@@ -243,49 +243,37 @@
   font-weight: 500;
   border: none;
   border-radius: 999px;
-  background-color: #ffffff;
-  color: #cd9292;
+  background-color: var(--color-surface, #ffffff);
+  color: var(--color-primary-soft, #cd9292);
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 4px 8px rgba(186, 130, 130, 0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: "Poppins", sans-serif;
+  box-shadow: var(--shadow-soft, 0 4px 8px rgba(186, 130, 130, 0.2));
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .profile-btn-edit:hover {
-  background-color: #cd9292;
-  color: #ffffff;
+  background-color: var(--color-primary-soft, #cd9292);
+  color: var(--color-text-inverse, #ffffff);
 }
 
-
-/* Sección Profesional */
+/* Seccion Profesional */
 .profile-section.professional {
   padding: 1rem 0;
   padding-left: 1rem;
   padding-right: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border-soft, #ddd);
   display: flex;
   flex-direction: column;
   gap: 1rem;
   border-radius: 25px;
-  font-family: 'Poppins', sans-serif;
-  background-color: #fff6f6;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--color-surface-card, #fff6f6);
 }
 
 .profile-section.professional p {
-  font-family: 'Poppins', sans-serif;
-}
-
-.profile-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-}
-
-.profile-block-text {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .contact-textarea {
@@ -293,17 +281,17 @@
   padding: 0.6rem 0.75rem;
   width: 100%;
   max-width: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   resize: vertical;
   line-height: 1.5;
   background-color: transparent;
-  color: #4a2e2e;
+  color: var(--color-text-main, #4a2e2e);
   border-color: transparent;
 }
 
 .contact-textarea:focus {
   outline: none;
-  border: 1px solid #dedede;
+  border: 1px solid var(--color-border-soft, #dddddd);
   border-radius: 15px;
 }
 
@@ -319,23 +307,10 @@
   width: 100%;
   /* ocupa todo el espacio disponible */
   max-width: 198px;
-  /* límite para que no se estire demasiado */
+  /* lA mite para que no se estire demasiado */
 }
-
-
-.name-field label {
-  display: block;
-  text-align: left;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-  color: #b6b6b6;
-}
-
-
 
 @media (max-width: 768px) {
-
   .profile-wrapper {
     padding: 1.5rem 1rem;
     gap: 1.5rem;
