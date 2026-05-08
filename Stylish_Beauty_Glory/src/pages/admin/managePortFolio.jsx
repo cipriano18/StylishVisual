@@ -23,23 +23,16 @@ import LoaderOverlay from "../overlay/UniversalOverlay";
    🔹 Componente PortfolioCard
    =============================== */
 function PortfolioCard({ portfolio, onEdit, onDelete }) {
-  return (
-    <div
-      className="portfolio-card"
-      style={{
-        backgroundImage: `url(${portfolio.image_url})`,
-      }}
-    >
-      <div className="portfolio-card-content">
-        <div className="portfolio-info">
-          <p className="portfolio-description">{portfolio.description}</p>
-          <span className="portfolio-service">
-            {" "}
-            {portfolio.service?.service_name || portfolio.service_name}{" "}
-          </span>
-        </div>
+  const serviceName = portfolio.service?.service_name || portfolio.service_name;
 
-        {/* Contenedor de acciones */}
+  return (
+    <div className="portfolio-card portfolio-card-admin">
+      <div className="portfolio-card-media">
+        <img
+          src={portfolio.image_url}
+          alt={serviceName || "Portafolio"}
+          className="portfolio-card-image"
+        />
         <div className="portfolio-actions">
           <button className="edit-btn" onClick={() => onEdit(portfolio)} title="Editar portafolio">
             <FaPen />
@@ -50,6 +43,25 @@ function PortfolioCard({ portfolio, onEdit, onDelete }) {
             title="Eliminar portafolio"
           >
             <FaTrash />
+          </button>
+        </div>
+      </div>
+
+      <div className="portfolio-card-content">
+        <span className="portfolio-service">{serviceName}</span>
+        <p className="portfolio-description">{portfolio.description}</p>
+        <div className="portfolio-actions portfolio-actions-inline">
+          <button className="edit-btn" onClick={() => onEdit(portfolio)} title="Editar portafolio">
+            <FaPen />
+            <span>Editar</span>
+          </button>
+          <button
+            className="delete-btn"
+            onClick={() => onDelete(portfolio)}
+            title="Eliminar portafolio"
+          >
+            <FaTrash />
+            <span>Eliminar</span>
           </button>
         </div>
       </div>

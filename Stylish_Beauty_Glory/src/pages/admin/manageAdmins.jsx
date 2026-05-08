@@ -570,18 +570,10 @@ function ManageAdmins() {
           <div className="modal-content xlarge">
             <h2 style={{ marginBottom: "1.5rem", color: "#4a2e2e" }}>Crear nuevo administrador</h2>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: "2rem",
-              }}
-            >
+            <div className="modal-form-grid single-column">
               {/* Datos personales */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#4a2e2e" }}
-                >
+              <div className="modal-form-section">
+                <div className="modal-form-section-header">
                   <FaUser />
                   <strong>Datos personales</strong>
                 </div>
@@ -646,12 +638,12 @@ function ManageAdmins() {
                 </div>
 
                 <div>
-                  <label>Especialidad</label>
+                  <label>Días laborales</label>
                   <textarea
                     rows="2"
-                    value={newAdmin.specialty}
-                    onChange={(e) => setNewAdmin({ ...newAdmin, specialty: e.target.value })}
-                    placeholder="Ej: Gestión, Administración, etc."
+                    value={newAdmin.working_days}
+                    onChange={(e) => setNewAdmin({ ...newAdmin, working_days: e.target.value })}
+                    placeholder="Ej: Lunes a Viernes"
                   />
                 </div>
 
@@ -661,17 +653,17 @@ function ManageAdmins() {
                     rows="3"
                     value={newAdmin.certifications}
                     onChange={(e) => setNewAdmin({ ...newAdmin, certifications: e.target.value })}
-                    placeholder="Ej: ISO 9001, PMP, etc."
+                    placeholder="Ej: Nail Art, Uñas Acrílicas, Manicure Profesional"
                   />
                 </div>
 
                 <div>
-                  <label>Días laborales</label>
+                  <label>Especialidad</label>
                   <textarea
-                    rows="2"
-                    value={newAdmin.working_days}
-                    onChange={(e) => setNewAdmin({ ...newAdmin, working_days: e.target.value })}
-                    placeholder="Ej: Lunes a Viernes"
+                    rows="3"
+                    value={newAdmin.specialty}
+                    onChange={(e) => setNewAdmin({ ...newAdmin, specialty: e.target.value })}
+                    placeholder="Ej: Gestión, Administración, etc."
                   />
                 </div>
               </div>
@@ -730,9 +722,7 @@ function ManageAdmins() {
                       type="button"
                       className="password-toggle-btn"
                       onClick={() => setShowCreatePassword((previousValue) => !previousValue)}
-                      aria-label={
-                        showCreatePassword ? "Ocultar contrasena" : "Mostrar contrasena"
-                      }
+                      aria-label={showCreatePassword ? "Ocultar contrasena" : "Mostrar contrasena"}
                     >
                       {showCreatePassword ? <FaEyeSlash /> : <FaEye />}
                     </button>

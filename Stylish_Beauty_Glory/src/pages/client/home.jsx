@@ -22,22 +22,32 @@ import { API_BASE } from "../../services/config";
 import LoaderOverlay from "../overlay/UniversalOverlay";
 
 function PortfolioCard({ portfolio, onClick }) {
+  const serviceName = portfolio.service?.service_name || portfolio.service_name;
+
   return (
     <div
       className="portfolio-card tall"
-      style={{
-        backgroundImage: `url(${portfolio.image_url})`,
-      }}
       onClick={() => onClick(portfolio.image_url)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onClick(portfolio.image_url);
+        }
+      }}
+      role="button"
+      tabIndex={0}
     >
+      <div className="portfolio-card-media">
+        <img
+          src={portfolio.image_url}
+          alt={serviceName || "Portafolio"}
+          className="portfolio-card-image"
+        />
+      </div>
+
       <div className="portfolio-card-content">
-        <div className="portfolio-info">
-          <p className="portfolio-description">{portfolio.description}</p>
-          <span className="portfolio-service">
-            {" "}
-            {portfolio.service?.service_name || portfolio.service_name}{" "}
-          </span>
-        </div>
+        <span className="portfolio-service">{serviceName}</span>
+        <p className="portfolio-description">{portfolio.description}</p>
       </div>
     </div>
   );
@@ -217,14 +227,7 @@ function ClientHome() {
           bienestar. Cada detalle refleja dedicación, estilo y cuidado profesional.
         </p>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1rem",
-            marginTop: "1.5rem",
-          }}
-        >
+        <div className="portfolio-client-grid">
           {portfolios.map((p) => (
             <PortfolioCard key={p.portfolio_id} portfolio={p} onClick={setSelectedImage} />
           ))}

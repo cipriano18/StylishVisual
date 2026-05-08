@@ -403,7 +403,7 @@ function ManageSales() {
       {/* Modal agregar */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal-content small">
+          <div className="modal-content medium">
             <h2>Nueva venta</h2>
 
             <p>Cliente</p>

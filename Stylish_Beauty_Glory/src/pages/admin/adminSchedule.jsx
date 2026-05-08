@@ -294,7 +294,7 @@ function AdminSchedule() {
                   navigation
                   pagination={{ clickable: true, type: "bullets" }}
                   breakpoints={{
-                    340: { slidesPerView: 2, slidesPerGroup: 2 },
+                    340: { slidesPerView: 1, slidesPerGroup: 1 },
                     590: { slidesPerView: 3, slidesPerGroup: 3 },
                     770: { slidesPerView: 4, slidesPerGroup: 4 },
                     1214: { slidesPerView: 5, slidesPerGroup: 5 },

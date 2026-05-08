@@ -13,34 +13,33 @@ import "../styles/Home_CSS/portFolio.css";
 import { fetchPortfolios } from "../services/Serv_portFolio";
 
 import portIcon from "../assets/PortIcon.png";
-//swiper
-// Importa los componentes de Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 
-// Importa los estilos básicos de Swiper
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// Opcional: módulos extra
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
 function App() {
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
 
-  // Datos de servicios para el carrusel
   useEffect(() => {
     const cargarPortafolios = async () => {
       const data = await fetchPortfolios();
+
       if (data?.portfolios) {
         setServices(data.portfolios);
       } else {
         toast.error("Error cargando portafolios");
       }
     };
+
     cargarPortafolios();
   }, []);
+
+  const primaryServices = services.slice(0, 4);
+  const secondaryServices = services.slice(4, 7);
 
   return (
     <>
@@ -65,10 +64,10 @@ function App() {
 
         <div className="header-buttons">
           <button className="login-btn" onClick={() => navigate("/login")}>
-            Iniciar sesión
+            Iniciar sesion
           </button>
           <button className="register-btn" onClick={() => navigate("/register")}>
-            Regístrate
+            Registrate
           </button>
         </div>
       </header>
@@ -77,12 +76,12 @@ function App() {
       <main className="main" id="home">
         <div className="main-content">
           <div className="text">
-            <h1>¡Bienvenida a nuestro rincón de inspiración y cuidado!</h1>
+            <h1>Bienvenida a nuestro rincon de inspiracion y cuidado</h1>
             <p>
               En Stylish Beauty Glori creemos que cada mujer merece consentirse, brillar y sentirse
-              segura de sí misma. Somos un espacio creado con amor, pensado para realzar tu belleza
-              y cuidar de ti en cada detalle. Aquí no solo se trata de uñas hermosas, se trata de
-              vivir una experiencia donde el cariño, la dedicación y la creatividad se reflejan en
+              segura de si misma. Somos un espacio creado con amor, pensado para realzar tu belleza
+              y cuidar de ti en cada detalle. Aqui no solo se trata de unas hermosas, se trata de
+              vivir una experiencia donde el carino, la dedicacion y la creatividad se reflejan en
               cada servicio.
             </p>
           </div>
@@ -111,58 +110,118 @@ function App() {
       {/* Portfolio / Servicios */}
       <section className="portfolio" id="services">
         <div className="portfolio-header-img">
-          {" "}
-          <img src={portIcon} alt="Portafolio" />{" "}
+          <img src={portIcon} alt="Portafolio" />
         </div>
-        <h2>¡Trabajos que inspiran confianza!</h2>
+        <h2>Trabajos que inspiran confianza</h2>
         <p>
           Porque no hay mejor recompensa que ver a nuestros clientes felices con los resultados.
         </p>
 
-        <div className="divider">
-          <Swiper
-            modules={[Navigation, Pagination, Autoplay]}
-            spaceBetween={8}
-            slidesPerView={2}
-            navigation
-            pagination={{
-              clickable: true,
-              el: ".swiper-pagination", // contenedor de paginación
-            }}
-            autoplay={{ delay: 4000 }}
-            breakpoints={{
-              340: { slidesPerView: 1, slidesPerGroup: 1 },
-              590: { slidesPerView: 3, slidesPerGroup: 1 },
-              770: { slidesPerView: 3, slidesPerGroup: 1 },
-              1214: { slidesPerView: 3, slidesPerGroup: 1 },
-              1524: { slidesPerView: 3, slidesPerGroup: 1 },
-            }}
-          >
-            {services.slice(0, 7).map((service, index) => (
-              <SwiperSlide key={index}>
-                <div
-                  className="portfolio-item"
-                  style={{ backgroundImage: `url(${service.image_url})` }}
-                >
-                  <p>{service.description}</p>
-                  <span className="service-tag">{service.service.service_name}</span>
-                </div>
-              </SwiperSlide>
-            ))}
+        <div className="divider portfolio-swiper-stack">
+          {primaryServices.length > 0 && (
+            <div className="portfolio-swiper-shell primary">
+              <Swiper
+                key={`primary-${primaryServices.length}`}
+                className="portfolio-swiper primary-carousel"
+                modules={[Pagination, Autoplay]}
+                spaceBetween={8}
+                slidesPerView={1}
+                loop={primaryServices.length + 1 > 3}
+                speed={7000}
+                allowTouchMove
+                pagination={{
+                  clickable: true,
+                  el: ".swiper-pagination-primary",
+                }}
+                autoplay={{
+                  delay: 1,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: false,
+                }}
+                breakpoints={{
+                  340: { slidesPerView: 1, slidesPerGroup: 1 },
+                  590: { slidesPerView: 2, slidesPerGroup: 1 },
+                  770: { slidesPerView: 3, slidesPerGroup: 1 },
+                  1214: { slidesPerView: 3, slidesPerGroup: 1 },
+                  1524: { slidesPerView: 3, slidesPerGroup: 1 },
+                }}
+              >
+                {primaryServices.map((service, index) => (
+                  <SwiperSlide key={index}>
+                    <div
+                      className="portfolio-item"
+                      style={{ backgroundImage: `url(${service.image_url})` }}
+                    >
+                      <p>{service.description}</p>
+                      <span className="service-tag">{service.service.service_name}</span>
+                    </div>
+                  </SwiperSlide>
+                ))}
 
-            <SwiperSlide>
-              <div className="portfolio-item cta-slide">
-                <h2>¿Todavía no te convencemos?</h2>
-                <p>Inicia sesión o regístrate y déjate inspirar por nuestro portafolio completo.</p>
-                <button className="cta-btn" onClick={() => navigate("/login")}>
-                  ¡Llevame allí!
-                </button>
-              </div>
-            </SwiperSlide>
+                <SwiperSlide>
+                  <div className="portfolio-item cta-slide">
+                    <h2>Todavia no te convencemos</h2>
+                    <p>Inicia sesion o registrate y dejate inspirar por nuestro portafolio completo.</p>
+                    <button className="cta-btn" onClick={() => navigate("/login")}>
+                      Llevame alli
+                    </button>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+              <div className="swiper-pagination swiper-pagination-primary"></div>
+            </div>
+          )}
 
-            {/* contenedor de paginación */}
-            <div className="swiper-pagination"></div>
-          </Swiper>
+          {secondaryServices.length > 0 && (
+            <div className="portfolio-swiper-shell secondary">
+              <Swiper
+                key={`secondary-${secondaryServices.length}`}
+                className="portfolio-swiper secondary-carousel"
+                modules={[Pagination, Autoplay]}
+                spaceBetween={8}
+                slidesPerView={1}
+                loop={secondaryServices.length > 2}
+                speed={6600}
+                allowTouchMove
+                pagination={{
+                  clickable: true,
+                  el: ".swiper-pagination-secondary",
+                }}
+                autoplay={{
+                  delay: 1,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: false,
+                  reverseDirection: true,
+                }}
+                breakpoints={{
+                  340: { slidesPerView: 1, slidesPerGroup: 1 },
+                  590: { slidesPerView: 2, slidesPerGroup: 1 },
+                  770: { slidesPerView: 2, slidesPerGroup: 1 },
+                  1214: { slidesPerView: 2, slidesPerGroup: 1 },
+                  1524: { slidesPerView: 2, slidesPerGroup: 1 },
+                }}
+              >
+                {secondaryServices.map((service, index) => (
+                  <SwiperSlide key={`secondary-${index}`}>
+                    <article className="portfolio-feature-card">
+                      <div
+                        className="portfolio-feature-media"
+                        style={{ backgroundImage: `url(${service.image_url})` }}
+                      />
+
+                      <div className="portfolio-feature-content">
+                        <p>{service.description}</p>
+                        <span className="portfolio-feature-tag">
+                          {service.service.service_name}
+                        </span>
+                      </div>
+                    </article>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <div className="swiper-pagination swiper-pagination-secondary"></div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -190,26 +249,26 @@ function App() {
 
         <div className="about-container">
           <div className="about-image">
-            <img src={IMG2} alt="Dueña del salón" />
+            <img src={IMG2} alt="Duena del salon" />
           </div>
 
           <div className="about-text">
-            <h2>¿Quiénes somos?</h2>
+            <h2>Quienes somos</h2>
             <p>
-              Stylish Beauty Glori es mucho más que un salón de uñas. Somos un emprendimiento
-              costarricense liderado por Gloriana Méndez, manicurista con más de 10 años de
-              experiencia, apasionada por la belleza, el arte en las uñas y el trato humano cercano.
+              Stylish Beauty Glori es mucho mas que un salon de unas. Somos un emprendimiento
+              costarricense liderado por Gloriana Mendez, manicurista con mas de 10 anios de
+              experiencia, apasionada por la belleza, el arte en las unas y el trato humano cercano.
             </p>
             <p>
-              Nacimos con el sueño de ofrecer un espacio donde cada persona pueda consentirse,
-              expresarse y sentirse única. Después de años de trabajo en diferentes rincones de
-              salones, Stylish Beauty Glori abrió su propio local, convirtiéndose en un lugar de
-              confianza, innovación y estilo.
+              Nacimos con el suenio de ofrecer un espacio donde cada persona pueda consentirse,
+              expresarse y sentirse unica. Despues de anios de trabajo en diferentes rincones de
+              salones, Stylish Beauty Glori abrio su propio local, convirtiendose en un lugar de
+              confianza, innovacion y estilo.
             </p>
             <p>
-              Cada diseño, set de uñas y servicio es realizado con amor, detalle y profesionalismo,
-              priorizando siempre la salud de tus uñas y tu bienestar. Creemos en el poder del
-              cuidado personal, en la belleza auténtica y en la importancia de brindar una
+              Cada disenio, set de unas y servicio es realizado con amor, detalle y profesionalismo,
+              priorizando siempre la salud de tus unas y tu bienestar. Creemos en el poder del
+              cuidado personal, en la belleza autentica y en la importancia de brindar una
               experiencia que marque la diferencia.
             </p>
           </div>
@@ -236,7 +295,7 @@ function App() {
         </svg>
       </section>
 
-      {/* Sección Misión y Visión */}
+      {/* Seccion Mision y Vision */}
       <section className="mission-vision" id="mission-vision">
         <svg
           className="wave-bottom"
@@ -260,30 +319,28 @@ function App() {
 
         <div className="container">
           <div className="mission-vision-grid">
-            {/* Misión */}
             <div className="mv-item">
               <div className="mv-header">
                 <div className="icon">
                   <i className="fas fa-bullseye"></i>
                 </div>
-                <h3>Misión</h3>
+                <h3>Mision</h3>
               </div>
               <p>
                 Brindamos servicios de belleza personalizados, innovadores y de alta calidad,
-                cuidando la salud y estética de tus uñas en un ambiente acogedor.
+                cuidando la salud y estetica de tus unas en un ambiente acogedor.
               </p>
             </div>
 
-            {/* Visión */}
             <div className="mv-item">
               <div className="mv-header">
                 <div className="icon">
                   <i className="fas fa-eye"></i>
                 </div>
-                <h3>Visión</h3>
+                <h3>Vision</h3>
               </div>
               <p>
-                Ser reconocidos como líderes en el sector por nuestra innovación, compromiso social
+                Ser reconocidos como lideres en el sector por nuestra innovacion, compromiso social
                 y excelencia en cada servicio que ofrecemos.
               </p>
             </div>
@@ -294,7 +351,6 @@ function App() {
       {/* Footer */}
       <footer className="footer" id="contact">
         <div className="footer-container">
-          {/* Redes sociales */}
           <div className="footer-socials">
             <a href="https://www.instagram.com/dondeglori.bc" target="_blank" rel="noreferrer">
               <i className="fab fa-instagram"></i>
@@ -307,13 +363,11 @@ function App() {
             </a>
           </div>
 
-          {/* Información del local */}
           <div className="footer-info">
-            <p>Dirección: San José, Goicoechea, Purral, 25 Mts este del Super Purral #1.</p>
-            <p>Teléfono: +506 7133 8429</p>
+            <p>Direccion: San Jose, Goicoechea, Purral, 25 Mts este del Super Purral #1.</p>
+            <p>Telefono: +506 7133 8429</p>
           </div>
 
-          {/* Derechos */}
           <div className="footer-copy">
             <p>
               © 2025 - {new Date().getFullYear()} Stylish Beauty Glori. Todos los derechos
