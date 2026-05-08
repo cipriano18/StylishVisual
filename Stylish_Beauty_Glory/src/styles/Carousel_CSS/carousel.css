@@ -110,7 +110,7 @@ textarea {
 /* Slide especial de CTA */
 .cta-slide {
   background:
-    linear-gradient(to top, #261717 0%, rgba(38, 23, 23, 0.88) 24%, rgba(38, 23, 23, 0.3) 48%, rgba(38, 23, 23, 0) 68%),
+    linear-gradient(to top, #261717 0%, rgba(38, 23, 23, 0.532) 24%, rgba(38, 23, 23, 0.3) 48%, rgba(38, 23, 23, 0) 68%),
     var(--color-primary-deep, #4a2e2e);
   color: #f9ebe0;
   display: flex;
@@ -264,12 +264,10 @@ textarea {
   height: 132px;
   padding: 1rem 1rem 1rem;
   overflow: hidden;
-  background: linear-gradient(
-    0deg,
-    #261717 0%,
-    var(--portfolio-story-surface) 24%,
-    #5a3939 100%
-  );
+  background: linear-gradient(0deg,
+      #261717 0%,
+      var(--portfolio-story-surface) 24%,
+      #5a3939 100%);
   color: var(--color-text-inverse, #ffffff);
 }
 
@@ -315,11 +313,9 @@ textarea {
   height: 355px;
   border-radius: 34px;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    var(--color-surface-soft, #fef6f6),
-    var(--color-surface-panel, #fbeaea)
-  );
+  background: linear-gradient(135deg,
+      var(--color-surface-soft, #fef6f6),
+      var(--color-surface-panel, #fbeaea));
   box-shadow: var(--shadow-dark-hover, 0 5px 20px rgba(0, 0, 0, 0.2));
 }
 
@@ -339,12 +335,10 @@ textarea {
   min-width: 0;
   padding: 2.3rem 2.5rem 2.1rem 3.6rem;
   color: var(--color-text-inverse, #ffffff);
-  background: linear-gradient(
-    270deg,
-    #261717 0%,
-    var(--portfolio-feature-surface) 52%,
-    #5a3939 100%
-  );
+  background: linear-gradient(270deg,
+      #261717 0%,
+      var(--portfolio-feature-surface) 52%,
+      #5a3939 100%);
 }
 
 .portfolio-feature-divider {
