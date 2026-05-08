@@ -127,7 +127,7 @@ function App() {
                 spaceBetween={8}
                 slidesPerView={1}
                 loop={primaryServices.length + 1 > 3}
-                speed={7000}
+                speed={9000}
                 allowTouchMove
                 pagination={{
                   clickable: true,
@@ -148,20 +148,37 @@ function App() {
               >
                 {primaryServices.map((service, index) => (
                   <SwiperSlide key={index}>
-                    <div
-                      className="portfolio-item"
-                      style={{ backgroundImage: `url(${service.image_url})` }}
-                    >
-                      <p>{service.description}</p>
-                      <span className="service-tag">{service.service.service_name}</span>
-                    </div>
+                    <article className="portfolio-story-card">
+                      <div
+                        className="portfolio-story-media"
+                        style={{ backgroundImage: `url(${service.image_url})` }}
+                      />
+
+                      <div className="portfolio-story-divider" aria-hidden="true">
+                        <svg viewBox="0 0 100 32" preserveAspectRatio="none">
+                          <path
+                            className="portfolio-story-divider-path"
+                            d="M0 32V18C10 18 12 8 20 8C28 8 30 18 38 18C46 18 48 8 56 8C64 8 66 18 74 18C82 18 84 8 92 8C96 8 98 12 100 14V32H0Z"
+                          />
+                        </svg>
+                      </div>
+
+                      <div className="portfolio-story-content">
+                        <p>{service.description}</p>
+                        <span className="portfolio-story-tag">
+                          {service.service.service_name}
+                        </span>
+                      </div>
+                    </article>
                   </SwiperSlide>
                 ))}
 
                 <SwiperSlide>
                   <div className="portfolio-item cta-slide">
                     <h2>Todavia no te convencemos</h2>
-                    <p>Inicia sesion o registrate y dejate inspirar por nuestro portafolio completo.</p>
+                    <p>
+                      Inicia sesion o registrate y dejate inspirar por nuestro portafolio completo.
+                    </p>
                     <button className="cta-btn" onClick={() => navigate("/login")}>
                       Llevame alli
                     </button>
@@ -181,7 +198,7 @@ function App() {
                 spaceBetween={8}
                 slidesPerView={1}
                 loop={secondaryServices.length > 2}
-                speed={6600}
+                speed={15000}
                 allowTouchMove
                 pagination={{
                   clickable: true,
@@ -208,6 +225,15 @@ function App() {
                         className="portfolio-feature-media"
                         style={{ backgroundImage: `url(${service.image_url})` }}
                       />
+
+                      <div className="portfolio-feature-divider" aria-hidden="true">
+                        <svg viewBox="0 0 120 100" preserveAspectRatio="none">
+                          <path
+                            className="portfolio-feature-divider-path"
+                            d="M120 0H70C42 10 48 23 72 34C96 46 88 58 56 70C26 82 34 92 70 100H120V0Z"
+                          />
+                        </svg>
+                      </div>
 
                       <div className="portfolio-feature-content">
                         <p>{service.description}</p>
