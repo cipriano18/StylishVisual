@@ -403,7 +403,7 @@ function ManageSales() {
       {/* Modal agregar */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal-content medium">
+          <div className="modal-content medium sales-modal-content">
             <h2>Nueva venta</h2>
 
             <p>Cliente</p>
@@ -412,6 +412,8 @@ function ManageSales() {
               placeholder="Selecciona o escribe..."
               isClearable
               isSearchable
+              menuPortalTarget={document.body}
+              menuPosition="fixed"
               value={clientOptions.find((opt) => opt.value === newClientId) || null}
               onChange={(selected) => setNewClientId(selected ? selected.value : "")}
               styles={{
@@ -437,6 +439,14 @@ function ManageSales() {
                     : state.isFocused
                       ? "#fef6f6"
                       : "white",
+                }),
+                menuPortal: (base) => ({
+                  ...base,
+                  zIndex: 1400,
+                }),
+                menu: (base) => ({
+                  ...base,
+                  zIndex: 1400,
                 }),
               }}
             />
@@ -493,7 +503,7 @@ function ManageSales() {
       {/* Modal editar */}
       {showEditModal && (
         <div className="modal-overlay">
-          <div className="modal-content small">
+          <div className="modal-content small sales-modal-content">
             <h2>Editar venta</h2>
             <p>Cliente</p>
             <Select
@@ -501,6 +511,8 @@ function ManageSales() {
               placeholder="Selecciona o escribe..."
               isClearable
               isSearchable
+              menuPortalTarget={document.body}
+              menuPosition="fixed"
               value={clientOptions.find((opt) => opt.value === editClientId) || null}
               onChange={(selected) => setEditClientId(selected ? selected.value : "")}
               styles={{
@@ -526,6 +538,14 @@ function ManageSales() {
                     : state.isFocused
                       ? "#fef6f6"
                       : "white",
+                }),
+                menuPortal: (base) => ({
+                  ...base,
+                  zIndex: 1400,
+                }),
+                menu: (base) => ({
+                  ...base,
+                  zIndex: 1400,
                 }),
               }}
             />

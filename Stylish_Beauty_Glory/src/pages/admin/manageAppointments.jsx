@@ -509,6 +509,8 @@ function ManageAppointments() {
                   placeholder="Selecciona o escribe..."
                   isClearable
                   isSearchable
+                  menuPortalTarget={document.body}
+                  menuPosition="fixed"
                   value={clientOptions.find((opt) => opt.value === clientId) || null}
                   onChange={(selected) => setClientId(selected ? selected.value : "")}
                   styles={{
@@ -544,6 +546,14 @@ function ManageAppointments() {
                       ...base,
                       color: "#4a2e2e",
                     }),
+                    menuPortal: (base) => ({
+                      ...base,
+                      zIndex: 1400,
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 1400,
+                    }),
                   }}
                 />
               </label>
@@ -575,7 +585,7 @@ function ManageAppointments() {
       {/* Modal agregar cita */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal-content medium">
+          <div className="modal-content medium appointment-modal-content">
             <h2>Agregar nueva cita</h2>
 
             <div className="modal-form">
@@ -642,7 +652,7 @@ function ManageAppointments() {
       {/* Modal editar cita */}
       {editModal && selectedAppointment && (
         <div className="modal-overlay">
-          <div className="modal-content medium">
+          <div className="modal-content medium appointment-modal-content">
             <h2>Editar cita</h2>
 
             <div className="modal-form">

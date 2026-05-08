@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
+import Select from "react-select";
 import { FaSearch, FaEdit, FaEye, FaPlus, FaFilter } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
@@ -45,6 +46,51 @@ function ManageAccounts() {
     description: "",
     code: "",
   });
+
+  const supplierOptions = suppliers.map((prov) => ({
+    value: prov.supplier_id,
+    label: prov.name,
+  }));
+
+  const supplierSelectStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderRadius: "999px",
+      backgroundColor: state.isFocused ? "#fff1f1" : "#fef6f6",
+      boxShadow: state.isFocused
+        ? "0 0 0 3px rgba(186, 130, 130, 0.3)"
+        : "0 2px 6px rgba(186, 130, 130, 0.2)",
+      border: "none",
+      padding: "6px",
+      fontFamily: "Poppins, sans-serif",
+      fontSize: "0.95rem",
+      color: "#ba8282",
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isSelected ? "#ba8282" : state.isFocused ? "#fef6f6" : "#ffffff",
+      color: state.isSelected ? "#ffffff" : "#4a2e2e",
+      fontFamily: "Poppins, sans-serif",
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: "#ba8282",
+      fontFamily: "Poppins, sans-serif",
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: "#4a2e2e",
+      fontFamily: "Poppins, sans-serif",
+    }),
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 1400,
+    }),
+    menu: (base) => ({
+      ...base,
+      zIndex: 1400,
+    }),
+  };
   //carga de proveedores
   useEffect(() => {
     const cargarProveedores = async () => {
@@ -197,11 +243,11 @@ function ManageAccounts() {
     <>
       <div className="manage-accounts-container">
         {loading && <LoaderOverlay message="Cargando tus cuentas por pagar..." />}
-        {/* 🔹 Toolbar */}
+        {/* ðŸ”¹ Toolbar */}
         <div className="ui-toolbar">
-          <h1 className="ui-toolbar-title">Gestión de Cuentas por Pagar</h1>
+          <h1 className="ui-toolbar-title">GestiÃ³n de Cuentas por Pagar</h1>
           <div className="ui-toolbar-controls">
-            {/* Botón agregar - siempre visible */}
+            {/* BotÃ³n agregar - siempre visible */}
             <button className="ui-toolbar-btn" onClick={() => setShowAddModal(true)}>
               <FaPlus className="ui-toolbar-btn-icon" />
               Agregar cuenta
@@ -227,7 +273,7 @@ function ManageAccounts() {
               </button>
             </div>
 
-            {/* Botón filtro - móvil/tablet */}
+            {/* BotÃ³n filtro - mÃ³vil/tablet */}
             <div className="ui-toolbar-filter-wrapper">
               <button
                 className="ui-toolbar-btn ui-toolbar-filter-btn"
@@ -273,7 +319,7 @@ function ManageAccounts() {
           </div>
         </div>
 
-        {/* 🔹 Tabla */}
+        {/* ðŸ”¹ Tabla */}
         <div className="ui-table-wrapper">
           {loading ? (
             <p className="no-info">Cargando datos...</p>
@@ -294,11 +340,11 @@ function ManageAccounts() {
               <tbody>
                 {currentItems.map((factura) => (
                   <tr key={factura.invoice_id}>
-                    <td data-label="Nombre">{factura.name || "—"}</td>
+                    <td data-label="Nombre">{factura.name || "â€”"}</td>
                     <td data-label="Tipo">{factura.type}</td>
-                    <td data-label="Monto">₡{parseFloat(factura.amount).toFixed(2)}</td>
+                    <td data-label="Monto">â‚¡{parseFloat(factura.amount).toFixed(2)}</td>
                     <td data-label="Vencimiento">
-                      {factura.due_date ? factura.due_date.split("T")[0] : "—"}
+                      {factura.due_date ? factura.due_date.split("T")[0] : "â€”"}
                     </td>
                     <td data-label="Estado">
                       <span className={`status-label status-${factura.status.toLowerCase()}`}>
@@ -320,7 +366,7 @@ function ManageAccounts() {
                           const tipoNormalizado =
                             factura.type === "Contado"
                               ? "Co"
-                              : factura.type === "Crédito"
+                              : factura.type === "CrÃ©dito"
                                 ? "Cr"
                                 : factura.type;
                           const limpiarFecha = (f) => f?.split("T")[0] || "";
@@ -383,7 +429,7 @@ function ManageAccounts() {
       {/*Modal de crear*/}
       {showAddModal && (
         <div className="modal-overlay">
-          <div className="modal-content medium">
+          <div className="modal-content medium payables-modal-content">
             <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Nueva cuenta</h2>
 
             <div
@@ -404,7 +450,7 @@ function ManageAccounts() {
               </div>
 
               <div>
-                <p>Código</p>
+                <p>CÃ³digo</p>
                 <input
                   type="text"
                   value={nuevaFactura.code}
@@ -414,21 +460,25 @@ function ManageAccounts() {
 
               <div>
                 <p>Proveedor</p>
-                <select
-                  value={nuevaFactura.supplier_id}
-                  onChange={(e) =>
-                    setNuevaFactura({ ...nuevaFactura, supplier_id: parseInt(e.target.value, 10) })
+                <Select
+                  options={supplierOptions}
+                  placeholder="Selecciona o escribe..."
+                  isClearable
+                  isSearchable
+                  menuPortalTarget={document.body}
+                  menuPosition="fixed"
+                  value={
+                    supplierOptions.find((opt) => opt.value === nuevaFactura.supplier_id) || null
                   }
-                >
-                  <option value=""> Sin Proveedor</option>
-                  {suppliers.map((prov) => (
-                    <option key={prov.supplier_id} value={prov.supplier_id}>
-                      {prov.name}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(selected) =>
+                    setNuevaFactura({
+                      ...nuevaFactura,
+                      supplier_id: selected ? selected.value : "",
+                    })
+                  }
+                  styles={supplierSelectStyles}
+                />
               </div>
-
               <div>
                 <p>Monto</p>
                 <input
@@ -454,7 +504,7 @@ function ManageAccounts() {
                   onChange={(e) => setNuevaFactura({ ...nuevaFactura, type: e.target.value })}
                 >
                   <option value="Co">Contado</option>
-                  <option value="Cr">Crédito</option>
+                  <option value="Cr">CrÃ©dito</option>
                 </select>
               </div>
 
@@ -471,7 +521,7 @@ function ManageAccounts() {
             </div>
 
             <div>
-              <p>Descripción</p>
+              <p>DescripciÃ³n</p>
               <textarea
                 value={nuevaFactura.description}
                 onChange={(e) => setNuevaFactura({ ...nuevaFactura, description: e.target.value })}
@@ -501,7 +551,7 @@ function ManageAccounts() {
           <div className="modal-content large">
             <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Detalles de la cuenta</h2>
 
-            {/* 🔹 Datos de la factura */}
+            {/* ðŸ”¹ Datos de la factura */}
             <div
               style={{
                 display: "grid",
@@ -512,10 +562,10 @@ function ManageAccounts() {
             >
               <div>
                 <strong>Nombre:</strong>
-                <p>{facturaSeleccionada.name || "—"}</p>
+                <p>{facturaSeleccionada.name || "â€”"}</p>
               </div>
               <div>
-                <strong>Código:</strong>
+                <strong>CÃ³digo:</strong>
                 <p>{facturaSeleccionada.code}</p>
               </div>
               <div>
@@ -524,17 +574,17 @@ function ManageAccounts() {
               </div>
               <div>
                 <strong>Monto:</strong>
-                <p>₡{parseFloat(facturaSeleccionada.amount).toFixed(2)}</p>
+                <p>â‚¡{parseFloat(facturaSeleccionada.amount).toFixed(2)}</p>
               </div>
               <div>
                 <strong>Fecha:</strong>
-                <p>{facturaSeleccionada.date?.split("T")[0] || "—"}</p>
+                <p>{facturaSeleccionada.date?.split("T")[0] || "â€”"}</p>
               </div>
 
               <div>
                 <strong>Vencimiento:</strong>
                 <p>
-                  {facturaSeleccionada.due_date ? facturaSeleccionada.due_date.split("T")[0] : "—"}
+                  {facturaSeleccionada.due_date ? facturaSeleccionada.due_date.split("T")[0] : "â€”"}
                 </p>
               </div>
               <div>
@@ -542,12 +592,12 @@ function ManageAccounts() {
                 <p>{facturaSeleccionada.status}</p>
               </div>
               <div>
-                <strong>Descripción:</strong>
-                <p style={{ whiteSpace: "pre-wrap" }}>{facturaSeleccionada.description || "—"}</p>
+                <strong>DescripciÃ³n:</strong>
+                <p style={{ whiteSpace: "pre-wrap" }}>{facturaSeleccionada.description || "â€”"}</p>
               </div>
             </div>
 
-            {/* 🔹 Sección de proveedor */}
+            {/* ðŸ”¹ SecciÃ³n de proveedor */}
             <h3 style={{ marginBottom: "0.5rem", color: "#4a2e2e" }}>Proveedor</h3>
             <div
               style={{
@@ -563,11 +613,11 @@ function ManageAccounts() {
               </div>
               <div>
                 <strong>Nombre:</strong>
-                <p>{facturaSeleccionada.supplier?.name || "—"}</p>
+                <p>{facturaSeleccionada.supplier?.name || "â€”"}</p>
               </div>
               <div>
                 <strong>Estado:</strong>
-                <p>{facturaSeleccionada.supplier?.status || "—"}</p>
+                <p>{facturaSeleccionada.supplier?.status || "â€”"}</p>
               </div>
             </div>
 
@@ -583,7 +633,7 @@ function ManageAccounts() {
       {/*Modal Editar*/}
       {facturaEditando && (
         <div className="modal-overlay">
-          <div className="modal-content medium">
+          <div className="modal-content medium payables-modal-content">
             <h2 style={{ marginBottom: "1rem", color: "#4a2e2e" }}>Editar cuenta</h2>
 
             <div
@@ -604,22 +654,25 @@ function ManageAccounts() {
               </div>
               <div>
                 <p>Proveedor</p>
-                <select
-                  value={facturaEditando.supplier_id} // aquí usas el estado de la factura que estás editando
-                  onChange={(e) =>
+                <Select
+                  options={supplierOptions}
+                  placeholder="Selecciona o escribe..."
+                  isClearable
+                  isSearchable
+                  menuPortalTarget={document.body}
+                  menuPosition="fixed"
+                  value={
+                    supplierOptions.find((opt) => opt.value === facturaEditando.supplier_id) ||
+                    null
+                  }
+                  onChange={(selected) =>
                     setFacturaEditando({
                       ...facturaEditando,
-                      supplier_id: parseInt(e.target.value, 10),
+                      supplier_id: selected ? selected.value : "",
                     })
                   }
-                >
-                  <option value="">Sin proveedor</option>
-                  {suppliers.map((prov) => (
-                    <option key={prov.supplier_id} value={prov.supplier_id}>
-                      {prov.name}
-                    </option>
-                  ))}
-                </select>
+                  styles={supplierSelectStyles}
+                />
               </div>
 
               <div>
@@ -650,7 +703,7 @@ function ManageAccounts() {
                   onChange={(e) => setFacturaEditando({ ...facturaEditando, type: e.target.value })}
                 >
                   <option value="Co">Contado</option>
-                  <option value="Cr">Crédito</option>
+                  <option value="Cr">CrÃ©dito</option>
                 </select>
               </div>
 
@@ -685,7 +738,7 @@ function ManageAccounts() {
             </div>
 
             <div>
-              <p>Descripción</p>
+              <p>DescripciÃ³n</p>
               <textarea
                 value={facturaEditando.description}
                 onChange={(e) =>

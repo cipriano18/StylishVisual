@@ -51,6 +51,18 @@
   max-width: 500px;
 }
 
+.modal-content.appointment-modal-content {
+  overflow: visible;
+}
+
+.modal-content.sales-modal-content {
+  overflow: visible;
+}
+
+.modal-content.payables-modal-content {
+  overflow: visible;
+}
+
 .modal-content.large {
   max-width: 700px;
 }
