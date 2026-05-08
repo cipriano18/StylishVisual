@@ -48,11 +48,11 @@ textarea {
 }
 
 .portfolio-swiper-shell.primary {
-  max-width: min(1380px, 96vw);
+  max-width: 100%;
 }
 
 .portfolio-swiper-shell.secondary {
-  max-width: min(1380px, 96vw);
+  max-width: 100%;
 }
 
 .portfolio-item {
@@ -249,7 +249,7 @@ textarea {
 }
 
 .portfolio-story-divider-path {
-  fill: var(--portfolio-story-surface);
+  fill: #573737;
 }
 
 .portfolio-story-content {
@@ -264,7 +264,12 @@ textarea {
   height: 132px;
   padding: 1rem 1rem 1rem;
   overflow: hidden;
-  background: var(--portfolio-story-surface);
+  background: linear-gradient(
+    0deg,
+    #261717 0%,
+    var(--portfolio-story-surface) 24%,
+    #5a3939 100%
+  );
   color: var(--color-text-inverse, #ffffff);
 }
 
@@ -334,7 +339,12 @@ textarea {
   min-width: 0;
   padding: 2.3rem 2.5rem 2.1rem 3.6rem;
   color: var(--color-text-inverse, #ffffff);
-  background: var(--portfolio-feature-surface);
+  background: linear-gradient(
+    270deg,
+    #261717 0%,
+    var(--portfolio-feature-surface) 52%,
+    #5a3939 100%
+  );
 }
 
 .portfolio-feature-divider {
@@ -354,7 +364,7 @@ textarea {
 }
 
 .portfolio-feature-divider-path {
-  fill: var(--portfolio-feature-surface);
+  fill: #573737;
 }
 
 .portfolio-feature-content>* {
@@ -450,11 +460,11 @@ textarea {
 
 @media (min-width: 769px) and (max-width: 1180px) {
   .portfolio-swiper-shell.primary {
-    max-width: min(1120px, 94vw);
+    max-width: 100%;
   }
 
   .portfolio-swiper-shell.secondary {
-    max-width: min(1120px, 94vw);
+    max-width: 100%;
   }
 
   .portfolio-feature-card {

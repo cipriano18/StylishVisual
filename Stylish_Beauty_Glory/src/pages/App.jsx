@@ -165,9 +165,7 @@ function App() {
 
                       <div className="portfolio-story-content">
                         <p>{service.description}</p>
-                        <span className="portfolio-story-tag">
-                          {service.service.service_name}
-                        </span>
+                        <span className="portfolio-story-tag">{service.service.service_name}</span>
                       </div>
                     </article>
                   </SwiperSlide>
@@ -329,7 +327,7 @@ function App() {
           viewBox="0 0 1440 100"
           preserveAspectRatio="none"
         >
-          <path fill="#875858">
+          <path fill="#4a2e2e">
             <animate
               attributeName="d"
               dur="12s"

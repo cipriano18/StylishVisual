@@ -1,5 +1,5 @@
 .footer {
-  background-color: var(--color-primary-dark, #875858);
+  background-color: var(--color-primary-deep, #4a2e2e);
   color: var(--color-text-inverse, #ffffff);
   padding: 40px 20px;
   text-align: center;
