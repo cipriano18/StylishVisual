@@ -56,6 +56,13 @@ function PortfolioCard({ portfolio, onClick }) {
 function ClientHome() {
   const navigate = useNavigate();
 
+  const getAppointmentDateTime = (appointment) => {
+    const baseDate = appointment?.date?.split("T")[0];
+    const baseTime = appointment?.time || "23:59";
+
+    return new Date(`${baseDate}T${baseTime}`);
+  };
+
   //estado de overlay
   const [loading, setLoading] = useState(true);
 
@@ -121,11 +128,13 @@ function ClientHome() {
               (c) => c.status === "Agendada" && c.date.split("T")[0] >= hoy
             );
 
-            //Ordenar por fecha ascendente
-            const ordenadas = agendadas.sort((a, b) => new Date(a.date) - new Date(b.date));
+            //Ordenar por fecha y hora ascendente
+            const ordenadas = [...agendadas].sort(
+              (a, b) => getAppointmentDateTime(a) - getAppointmentDateTime(b)
+            );
             console.log("Citas ordenadas:", ordenadas);
-            //Primeras 3
-            setImportantDates(ordenadas.slice(0, 3));
+            //Primeras 2
+            setImportantDates(ordenadas.slice(0, 2));
           }
         }
       } catch (error) {

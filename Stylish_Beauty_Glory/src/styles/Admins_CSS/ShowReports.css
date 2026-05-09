@@ -1,95 +1,208 @@
-﻿.dashboard {
+.dashboard {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
   min-height: 100vh;
 }
 
-/* Fila superior: cards */
+/* Fila superior */
 .dashboard-top {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 .card {
-  flex: 1;
-  background: var(--color-surface-soft, #fdf7f7);
-  border-radius: 50px;
-  padding: 1rem;
-  font-weight: bold;
-  font-size: 14px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  box-shadow: var(--shadow-dark-soft, 0 2px 6px rgba(0, 0, 0, 0.1));
+  gap: 0.7rem;
+  min-height: 96px;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgba(205, 146, 146, 0.16);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-surface-soft, #fdf7f7) 0%,
+      var(--color-surface, #ffffff) 100%
+    );
+  box-shadow:
+    0 16px 28px rgba(135, 88, 88, 0.08),
+    0 8px 16px rgba(186, 130, 130, 0.12);
   color: var(--color-text-main, #4a2e2e);
   text-align: center;
   font-family: "Poppins", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.45;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-/* Fila central: graficos */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: 58%;
+  border-radius: 0 0 24px 24px;
+  background:
+    linear-gradient(
+      0deg,
+      rgba(236, 207, 184, 0.4) 0%,
+      rgba(236, 207, 184, 0.18) 38%,
+      rgba(236, 207, 184, 0) 100%
+    );
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 30px rgba(135, 88, 88, 0.1),
+    0 10px 18px rgba(186, 130, 130, 0.14);
+}
+
+.card svg {
+  font-size: 1.25rem;
+  color: var(--color-primary-dark, #875858);
+  flex-shrink: 0;
+}
+
+/* Zona de graficos */
 .dashboard-middle {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1.5rem;
 }
 
-/* Cada columna se organiza en vertical */
 .dashboard-left,
 .dashboard-right {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
-/* Contenedor de cada grafico o lista */
 .chart-container {
-  background: var(--color-surface-soft, #fdf7f7);
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: var(--shadow-dark-soft, 0 2px 6px rgba(0, 0, 0, 0.1));
+  position: relative;
+  background:
+    linear-gradient(
+      180deg,
+      var(--color-surface-soft, #fdf7f7) 0%,
+      var(--color-surface, #ffffff) 100%
+    );
+  border: 1px solid rgba(205, 146, 146, 0.16);
+  border-radius: 26px;
+  padding: 1.15rem 1.2rem 1.3rem;
+  box-shadow:
+    0 18px 32px rgba(135, 88, 88, 0.08),
+    0 8px 18px rgba(186, 130, 130, 0.12);
+  overflow: hidden;
+}
+
+.chart-container::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0));
 }
 
 .chart-container h3 {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
+  margin: 0 0 1rem;
+  font-family: "Yeseva One", serif;
+  font-size: 1.1rem;
+  font-weight: 400;
   color: var(--color-text-main, #4a2e2e);
+  letter-spacing: 0.01em;
 }
 
-/* Estilos base (desktop) ya los tienes definidos arriba */
+.chart-container p {
+  margin: 0;
+  padding: 1rem 0.5rem;
+  color: var(--color-text-soft, #8b5252);
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+}
 
-/* Tablet (pantallas hasta 768px) */
+/* Tabla de top clientes */
+.clients-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+.clients-table thead {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 241, 241, 0.95) 0%,
+      rgba(253, 247, 247, 0.92) 100%
+    );
+}
+
+.clients-table th {
+  text-align: left;
+  padding: 14px 14px 12px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--color-primary-dark, #875858);
+  border-bottom: 1px solid rgba(164, 106, 106, 0.2);
+}
+
+.clients-table td {
+  padding: 13px 14px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.92rem;
+  color: var(--color-text-main, #4a2e2e);
+  border-bottom: 1px solid rgba(242, 214, 213, 0.75);
+}
+
+.clients-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.clients-table tbody tr:nth-child(even) td {
+  background-color: rgba(255, 246, 246, 0.52);
+}
+
+.clients-table tbody tr:hover td {
+  background-color: rgba(251, 234, 234, 0.88);
+}
+
+/* Tablet */
 @media (min-width: 769px) and (max-width: 1180px) {
   .dashboard-top {
-    flex-wrap: wrap;
-    justify-content: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .card {
-    flex: 1 1 calc(50% - 1rem);
-    font-size: 13px;
-    border-radius: 20px;
+    min-height: 88px;
+    font-size: 0.88rem;
+    border-radius: 22px;
   }
 
   .dashboard-middle {
     grid-template-columns: 1fr;
-    /* columnas se apilan */
     gap: 1rem;
   }
 
   .chart-container {
-    padding: 0.75rem;
+    padding: 1rem;
   }
 
   .chart-container h3 {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
-  /* Toolbar */
   .ui-toolbar {
     flex-direction: column;
     gap: 0.5rem;
@@ -102,7 +215,6 @@
 
   .ui-toolbar-filter-desktop {
     display: none;
-    /* ocultamos filtros de escritorio */
   }
 
   .ui-toolbar-filter-wrapper {
@@ -111,18 +223,26 @@
   }
 }
 
-/* Movil (pantallas hasta 480px) */
+/* Movil */
 @media (max-width: 768px) {
+  .dashboard {
+    gap: 1rem;
+  }
+
   .dashboard-top {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 0.75rem;
   }
 
   .card {
-    flex: 1 1 100%;
-    font-size: 12px;
-    padding: 0.75rem;
-    border-radius: 15px;
+    min-height: 84px;
+    padding: 0.85rem 1rem;
+    border-radius: 20px;
+    font-size: 0.84rem;
+  }
+
+  .card svg {
+    font-size: 1.1rem;
   }
 
   .dashboard-middle {
@@ -130,23 +250,28 @@
     gap: 1rem;
   }
 
+  .dashboard-left,
+  .dashboard-right {
+    gap: 1rem;
+  }
+
   .chart-container {
-    padding: 0.5rem;
+    padding: 0.85rem 0.8rem 0.95rem;
+    border-radius: 22px;
   }
 
   .chart-container h3 {
-    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.92rem;
     text-align: center;
   }
 
-  /* Ajustes tabla clientes */
   .clients-table th,
   .clients-table td {
-    font-size: 12px;
-    padding: 0.25rem;
+    font-size: 0.78rem;
+    padding: 0.45rem;
   }
 
-  /* Toolbar mobile */
   .ui-toolbar {
     flex-direction: column;
     align-items: stretch;
@@ -164,6 +289,6 @@
   .ui-toolbar-popover {
     width: 90%;
     margin: 0 auto;
-    border-radius: 10px;
+    border-radius: 16px;
   }
 }

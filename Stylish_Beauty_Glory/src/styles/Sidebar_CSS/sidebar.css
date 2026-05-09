@@ -13,7 +13,7 @@
   overflow-y: auto;
   /* activa scroll vertical */
   overflow-x: hidden;
-  border-top: 1px solid var(--color-border-accent, #af7777);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
   padding-top: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -27,8 +27,11 @@
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary-dark, #875858);
-  border-radius: 4px;
+  background:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(87, 55, 55, 0.72) 100%);
+  border-radius: 999px;
   padding-left: 2rem;
 }
 
@@ -42,7 +45,10 @@
   overflow-y: auto;
   height: 100vh;
   padding: 24px;
-  background-color: var(--color-surface-panel, #fbeaea);
+  background:
+    linear-gradient(180deg,
+      var(--color-surface-panel, #fbeaea) 0%,
+      var(--color-surface-soft, #fdf7f7) 100%);
   animation: fadeIn 0.4s ease;
 }
 
@@ -63,7 +69,7 @@
   width: 100%;
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid var(--color-border-accent, #af7777);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 /* Estilo del enlace de perfil */
@@ -73,14 +79,22 @@
   text-decoration: none;
   color: inherit;
   padding: 12px;
-  transition: background-color 0.3s ease;
-  border-radius: 8px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border-radius: 18px;
+  border: 1px solid transparent;
 }
 
 .profile-link:hover {
-  background-color: var(--color-primary-dark, #875858);
-  /* Fondo mas claro al hacer hover */
-  border-radius: 8px;
+  background:
+    linear-gradient(135deg,
+      rgba(87, 55, 55, 0.9) 0%,
+      rgba(74, 46, 46, 0.96) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  box-shadow: 0 12px 18px rgba(46, 24, 24, 0.18);
 }
 
 .profile-text {
@@ -156,12 +170,17 @@
   height: 100vh;
   /* ocupa toda la altura de la ventana */
   padding: 16px;
-  background-color: var(--color-primary, #ba8282);
+  background:
+    linear-gradient(180deg,
+      var(--color-primary, #ba8282) 0%,
+      var(--color-primary-dark, #875858) 100%);
   position: sticky;
   /* Alternativa a fixed si quieres que se quede en scroll local */
   font-family: "Poppins", sans-serif;
   align-items: center;
-  box-shadow: var(--shadow-dark-medium, 0 4px 12px rgba(0, 0, 0, 0.2));
+  box-shadow:
+    12px 0 28px rgba(74, 46, 46, 0.12),
+    0 8px 18px rgba(74, 46, 46, 0.18);
 }
 
 .sidebar-nav a {
@@ -174,26 +193,45 @@
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
-    transform 0.3s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
   font-family: "Poppins", sans-serif;
   width: 230px;
   /* ancho fijo */
   box-sizing: border-box;
   margin-bottom: 8px;
+  border: 1px solid transparent;
 }
 
 .sidebar-nav a:hover {
-  background-color: var(--color-primary-dark, #875858);
+  background:
+    linear-gradient(135deg,
+      rgba(87, 55, 55, 0.92) 0%,
+      rgba(74, 46, 46, 0.98) 100%);
   color: var(--color-text-inverse, #ffffff);
   transform: scale(1.03);
   /* Pequeno agrandamiento */
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 18px rgba(46, 24, 24, 0.18);
 }
 
+.sidebar-nav a.active-link,
+.profile-link.active-link,
 .active-link {
-  background-color: var(--color-primary-active, #c89292);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(87, 55, 55, 0.92) 0%,
+      rgba(74, 46, 46, 0.98) 100%
+    );
   color: var(--color-text-inverse, #ffffff);
   font-weight: bold;
-  border-left: 4px solid var(--color-primary-dark, #875858);
+  border-color: rgba(249, 235, 224, 0.12);
+  border-left: 4px solid rgba(249, 235, 224, 0.85);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 10px 18px rgba(46, 24, 24, 0.16);
 }
 
 .sidebar-nav a:active {
@@ -272,7 +310,9 @@
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
-    transform 0.3s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
   font-family: "Poppins", sans-serif;
   width: 230px;
   /* igual que los NavLink */
@@ -280,15 +320,20 @@
   margin-bottom: 8px;
   background: none;
   /* elimina fondo por defecto del button */
-  border: none;
+  border: 1px solid transparent;
   /* elimina borde por defecto */
   cursor: pointer;
 }
 
 .sidebar-toggle:hover {
-  background-color: var(--color-primary-dark, #875858);
+  background:
+    linear-gradient(135deg,
+      rgba(87, 55, 55, 0.92) 0%,
+      rgba(74, 46, 46, 0.98) 100%);
   color: var(--color-text-inverse, #ffffff);
   transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 18px rgba(46, 24, 24, 0.18);
 }
 
 .sidebar-toggle:active {
@@ -296,10 +341,19 @@
 }
 
 .sidebar-toggle.active-link {
-  background-color: var(--color-primary-active, #c89292);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(87, 55, 55, 0.92) 0%,
+      rgba(74, 46, 46, 0.98) 100%
+    );
   color: var(--color-text-inverse, #ffffff);
   font-weight: bold;
-  border-left: 4px solid var(--color-primary-dark, #875858);
+  border-color: rgba(249, 235, 224, 0.12);
+  border-left: 4px solid rgba(249, 235, 224, 0.85);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 10px 18px rgba(46, 24, 24, 0.16);
 }
 
 .sidebar-toggle .sidebar-icon {
@@ -344,6 +398,7 @@
 }
 
 @media (max-width: 1180px) {
+
   /* Ocultar sidebar original */
   .sidebar {
     display: none;
@@ -360,7 +415,10 @@
     width: 52px;
     height: 52px;
     padding: 14px;
-    background-color: var(--color-primary, #ba8282);
+    background:
+      linear-gradient(135deg,
+        var(--color-primary, #ba8282) 0%,
+        var(--color-primary-dark, #875858) 100%);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -372,7 +430,10 @@
   }
 
   .hamburger-btn:hover {
-    background-color: var(--color-primary-dark, #875858);
+    background:
+      linear-gradient(135deg,
+        var(--color-primary-dark, #875858) 0%,
+        var(--color-primary-deep, #573737) 100%);
     transform: scale(1.08);
   }
 
@@ -427,7 +488,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--color-primary, #ba8282);
+    background:
+      linear-gradient(180deg,
+        var(--color-primary, #ba8282) 0%,
+        var(--color-primary-dark, #875858) 100%);
     border-radius: 20px;
     padding: 24px 20px;
     width: 85%;
@@ -485,14 +549,28 @@
 
   .hamburger-menu a:hover,
   .hamburger-menu .sidebar-toggle:hover {
-    background-color: var(--color-primary-dark, #875858);
+    background:
+      linear-gradient(135deg,
+        rgba(87, 55, 55, 0.92) 0%,
+        rgba(74, 46, 46, 0.98) 100%);
     transform: scale(1.02);
   }
 
+  .hamburger-menu a.active-link,
+  .hamburger-menu .sidebar-toggle.active-link,
   .hamburger-menu .active-link {
-    background-color: var(--color-primary-active, #c89292);
+    background:
+      linear-gradient(
+        135deg,
+        rgba(87, 55, 55, 0.92) 0%,
+        rgba(74, 46, 46, 0.98) 100%
+      );
     font-weight: bold;
-    border-left: 4px solid var(--color-primary-dark, #875858);
+    border-color: rgba(249, 235, 224, 0.12);
+    border-left: 4px solid rgba(249, 235, 224, 0.85);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 10px 18px rgba(46, 24, 24, 0.16);
   }
 
   /* Submenu */
