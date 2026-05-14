@@ -1,17 +1,16 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { FaFilter } from "react-icons/fa";
-//Servicios & overlays
+import { FaArrowLeft, FaFilter } from "react-icons/fa";
+
 import { getAvailableAppointments, bookAppointment } from "../../services/Serv_appointments";
 import { API_BASE } from "../../services/config";
+import { formatAppointmentDuration } from "../../utils/appointmentFormat";
 import LoaderOverlay from "../overlay/UniversalOverlay";
 
-//CSS
 import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 
-//Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
@@ -19,25 +18,22 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function ClientAppointments() {
-  //Selecciones
-  const [clientId, setClientId] = useState(null); // client_id para agendar
-  const [selectedAppointment, setSelectedAppointment] = useState(null); // cita seleccionada
+  const [clientId, setClientId] = useState(null);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
-  //Estados
-  const [loading, setLoading] = useState(true); //estado de overlay
-  const [showModal, setShowModal] = useState(false); //estado modal para agendar
-  const [selectedDate, setSelectedDate] = useState(""); //estado para filtro de fecha
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
 
-  //Filtros
-  const [availableAppointments, setAvailableAppointments] = useState([]); // citas disponibles
-  const [filteredAppointments, setFilteredAppointments] = useState([]); //filtradas por fecha
+  const [availableAppointments, setAvailableAppointments] = useState([]);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+
   const handleAgendar = (cita) => {
     setSelectedAppointment(cita);
     setShowModal(true);
   };
 
-  // Función para confirmar agendar cita
   const handleConfirmAgendar = async () => {
     if (!clientId) {
       toast.error("No se pudo identificar al cliente.");
@@ -47,6 +43,7 @@ function ClientAppointments() {
     try {
       setLoading(true);
       const res = await bookAppointment(selectedAppointment.appointment_id, clientId);
+
       if (res && !res.error) {
         toast.success(
           res.message || "¡Cita agendada con éxito! Revisa tu agenda para más detalles."
@@ -72,7 +69,6 @@ function ClientAppointments() {
     setShowModal(false);
   };
 
-  // Agrupar citas por fecha
   const citasPorFecha = filteredAppointments.reduce((acc, cita) => {
     const fecha = cita.date.split("T")[0];
     if (!acc[fecha]) {
@@ -113,13 +109,12 @@ function ClientAppointments() {
         const res = await getAvailableAppointments();
 
         if (Array.isArray(res.appointments)) {
-          const hoy = new Date().toLocaleDateString("sv-SE"); // YYYY-MM-DD
-
-          //hoy en adelante
+          const hoy = new Date().toLocaleDateString("sv-SE");
           const filtradas = res.appointments.filter((cita) => {
             const citaFecha = cita.date.split("T")[0];
             return citaFecha >= hoy;
           });
+
           const ordenadas = filtradas.sort((a, b) => new Date(a.date) - new Date(b.date));
           setAvailableAppointments(ordenadas);
         } else {
@@ -140,7 +135,7 @@ function ClientAppointments() {
     if (selectedDate) {
       const filtradas = availableAppointments.filter((cita) => {
         const citaFecha = cita.date.split("T")[0];
-        return citaFecha === selectedDate; // solo las de ese día exacto
+        return citaFecha === selectedDate;
       });
       setFilteredAppointments(filtradas);
     } else {
@@ -149,14 +144,13 @@ function ClientAppointments() {
   }, [selectedDate, availableAppointments]);
 
   return (
-    <div className="client-appointments">
+    <div className="client-appointments client-appointments--available">
       {loading && <LoaderOverlay message="Cargando tu información..." />}
-      {/* Barra superior de búsqueda */}
+
       <section className="search-section">
         <div className="ui-toolbar">
           <div className="ui-toolbar-title">Citas disponibles</div>
           <div className="ui-toolbar-controls">
-            {/* Filtros desktop */}
             <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
               <span className="filter-label">Filtrar:</span>
               <input
@@ -166,7 +160,6 @@ function ClientAppointments() {
               />
             </div>
 
-            {/* Botón filtro - móvil/tablet */}
             <div className="ui-toolbar-filter-wrapper">
               <button
                 className="ui-toolbar-btn ui-toolbar-filter-btn"
@@ -197,10 +190,12 @@ function ClientAppointments() {
         </div>
       </section>
 
-      {/* Sección de citas */}
       <section className="appointments-section">
         {Object.keys(citasPorFecha).length === 0 ? (
-          <p className="no-appointments">Parece que no hay citas disponibles.</p>
+          <div className="no-appointments">
+            <strong>No hay citas disponibles por ahora.</strong>
+            <span>Cuando se habiliten nuevos espacios, aparecerán aquí listos para reservar.</span>
+          </div>
         ) : (
           Object.keys(citasPorFecha).map((fecha) => {
             const [year, month, day] = fecha.split("-");
@@ -213,57 +208,81 @@ function ClientAppointments() {
 
             return (
               <div key={fecha} className="appointment-section">
-                <h3>{formattedDate}</h3>
+                <div className="appointment-section-header">
+                  <h3 className="appointment-section-date">{formattedDate}</h3>
+                  <span className="appointment-section-count">
+                    {citasPorFecha[fecha].length} disponibles
+                  </span>
+                </div>
+
                 <Swiper
+                  className="appointments-swiper"
                   modules={[Pagination]}
-                  spaceBetween={12}
-                  slidesPerView={2}
-                  slidesPerGroup={2}
+                  spaceBetween={14}
+                  slidesPerView="auto"
+                  slidesPerGroup={1}
                   navigation
                   pagination={{ clickable: true, type: "bullets" }}
-                  breakpoints={{
-                    340: { slidesPerView: 2, slidesPerGroup: 2 },
-                    590: { slidesPerView: 3, slidesPerGroup: 3 },
-                    770: { slidesPerView: 4, slidesPerGroup: 4 },
-                    1214: { slidesPerView: 5, slidesPerGroup: 5 },
-                    1524: { slidesPerView: 6, slidesPerGroup: 6 },
-                  }}
                 >
                   {citasPorFecha[fecha].map((cita) => (
-                    <SwiperSlide key={cita.appointment_id}>
-                      <div className="appointment-card">
-                        <h4>{cita.service?.name}</h4>
-                        <p>
-                          Hora:{" "}
-                          {new Date(`1970-01-01T${cita.time}`).toLocaleTimeString("es-ES", {
-                            hour: "numeric",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </p>
-                        <p>Duración: {cita.duration}</p>
-                        <span className="appointment-tag">{cita.status}</span>
+                    <SwiperSlide key={cita.appointment_id} className="appointment-slide">
+                      <div className="appointment-card appointment-card--available">
+                        <span className="appointment-card-accent" aria-hidden="true" />
 
-                        {/* Botón para agendar */}
-                        <button className="appointment-btn" onClick={() => handleAgendar(cita)}>
-                          Agendar
-                        </button>
+                        <div className="appointment-card-body">
+                          <span className="appointment-card-caption">Reserva disponible</span>
+                          <h4>{cita.service?.name}</h4>
+
+                          <div className="appointment-card-meta">
+                            <div className="appointment-card-meta-item">
+                              <span className="appointment-card-meta-label">Hora</span>
+                              <strong>
+                                {new Date(`1970-01-01T${cita.time}`).toLocaleTimeString(
+                                  "es-ES",
+                                  {
+                                    hour: "numeric",
+                                    minute: "2-digit",
+                                    hour12: true,
+                                  }
+                                )}
+                              </strong>
+                            </div>
+
+                            <div className="appointment-card-meta-item">
+                              <span className="appointment-card-meta-label">Duración</span>
+                              <strong>{formatAppointmentDuration(cita.duration)}</strong>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="appointment-card-footer">
+                          <span className="appointment-tag">{cita.status}</span>
+                          <button className="appointment-btn" onClick={() => handleAgendar(cita)}>
+                            Agendar
+                          </button>
+                        </div>
                       </div>
                     </SwiperSlide>
                   ))}
                 </Swiper>
+
+                {citasPorFecha[fecha].length > 1 && (
+                  <p className="appointment-swipe-hint">
+                    <FaArrowLeft className="appointment-swipe-hint-icon" />
+                    <span>Desliza para ver mas</span>
+                  </p>
+                )}
               </div>
             );
           })
         )}
       </section>
 
-      {/* Modal de confirmación */}
       {showModal && selectedAppointment && (
         <div className="modal-overlay">
           <div className="modal-content medium">
             <h2>Confirmar cita</h2>
-            <p> Estás a punto de agendar esta cita ¿Deseas continuar?</p>
+            <p>Estás a punto de agendar esta cita. ¿Deseas continuar?</p>
             <div className="modal-actions">
               <button className="modal-btn confirm" onClick={handleConfirmAgendar}>
                 Confirmar

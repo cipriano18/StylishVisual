@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { FaFilter } from "react-icons/fa";
-//Servicios & overlays
+import { FaArrowLeft, FaFilter } from "react-icons/fa";
+
 import {
   cancelAppointmentByClient,
   getAppointmentsByClient,
 } from "../../services/Serv_appointments";
 import { API_BASE } from "../../services/config";
+import { formatAppointmentDuration } from "../../utils/appointmentFormat";
 import LoaderOverlay from "../overlay/UniversalOverlay";
 
-//CSS
 import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
-//Swiper
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
@@ -21,30 +21,27 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function ClientSchedule() {
-  //estado de overlay
   const [loading, setLoading] = useState(true);
-  const [showFilters, setShowFilters] = useState(false); //filtros
+  const [showFilters, setShowFilters] = useState(false);
 
-  const [clientId, setClientId] = useState(null); //cliente
-  const [selectedDate, setSelectedDate] = useState(""); //fecha de filtrado seleccionada
-  const [appointments, setAppointments] = useState([]); //lista de citas
-  const [filteredAppointments, setFilteredAppointments] = useState([]); //citas filtradas por fecha
+  const [clientId, setClientId] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [appointments, setAppointments] = useState([]);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
 
-  //Modal para agendar
-  const [showModal, setShowModal] = useState(false); //Modal
-  const [selectedAppointment, setSelectedAppointment] = useState(null); //cita en cuestion
+  const [showModal, setShowModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   const handleCancel = (cita) => {
     setSelectedAppointment(cita);
     setShowModal(true);
   };
 
-  // Función para cancelar cita
   const handleCancelAppointment = async () => {
     if (!clientId || !selectedAppointment) return;
 
     try {
-      const res = await cancelAppointmentByClient(selectedAppointment.appointment_id, clientId); //API
+      const res = await cancelAppointmentByClient(selectedAppointment.appointment_id, clientId);
 
       if (res && !res.error) {
         toast.success(res.message || "¡Cita cancelada con éxito!");
@@ -68,7 +65,6 @@ function ClientSchedule() {
     setShowModal(false);
   };
 
-  // Agrupar por fecha
   const citasPorFecha = filteredAppointments.reduce((acc, cita) => {
     const fecha = cita.date.split("T")[0];
     if (!acc[fecha]) {
@@ -87,7 +83,7 @@ function ClientSchedule() {
 
         const res = await axios.get(`${API_BASE}/profile/client`, {
           headers: { Authorization: `Bearer ${token}` },
-        }); //API
+        });
 
         const client = res.data.client;
         setClientId(client.client_id);
@@ -98,6 +94,7 @@ function ClientSchedule() {
         setLoading(false);
       }
     };
+
     fetchClientId();
   }, []);
 
@@ -106,12 +103,13 @@ function ClientSchedule() {
       try {
         setLoading(true);
         if (!clientId) return;
-        const res = await getAppointmentsByClient(clientId); //API
+
+        const res = await getAppointmentsByClient(clientId);
         if (Array.isArray(res.appointments)) {
           const hoy = new Date().toLocaleDateString("sv-SE");
           const futuras = res.appointments.filter((cita) => cita.date.split("T")[0] >= hoy);
-
           const ordenadas = futuras.sort((a, b) => new Date(a.date) - new Date(b.date));
+
           setAppointments(ordenadas);
           setFilteredAppointments(ordenadas);
         } else {
@@ -124,6 +122,7 @@ function ClientSchedule() {
         setLoading(false);
       }
     };
+
     fetchClientAppointments();
   }, [clientId]);
 
@@ -131,23 +130,22 @@ function ClientSchedule() {
     if (selectedDate) {
       const filtradas = appointments.filter((cita) => {
         const citaFecha = cita.date.split("T")[0];
-        return citaFecha === selectedDate; // día exacto
+        return citaFecha === selectedDate;
       });
       setFilteredAppointments(filtradas);
     } else {
-      setFilteredAppointments(appointments); // todas si no hay filtro
+      setFilteredAppointments(appointments);
     }
   }, [selectedDate, appointments]);
 
   return (
-    <div className="client-appointments">
+    <div className="client-appointments client-appointments--agenda">
       {loading && <LoaderOverlay message="Cargando tu información..." />}
-      {/* Barra superior de búsqueda */}
+
       <section className="search-section">
         <div className="ui-toolbar">
           <div className="ui-toolbar-title">Mi agenda</div>
           <div className="ui-toolbar-controls">
-            {/* Filtros desktop */}
             <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
               <span className="filter-label">Fecha:</span>
               <input
@@ -157,7 +155,6 @@ function ClientSchedule() {
               />
             </div>
 
-            {/* Botón filtro - móvil/tablet */}
             <div className="ui-toolbar-filter-wrapper">
               <button
                 className="ui-toolbar-btn ui-toolbar-filter-btn"
@@ -188,10 +185,12 @@ function ClientSchedule() {
         </div>
       </section>
 
-      {/* Sección de citas */}
       <section className="appointments-section">
         {Object.keys(citasPorFecha).length === 0 ? (
-          <p className="no-appointments">Parece que no tienes citas agendadas.</p>
+          <div className="no-appointments">
+            <strong>No tienes citas agendadas en este momento.</strong>
+            <span>Cuando reserves una nueva cita, aparecerá aquí con sus detalles.</span>
+          </div>
         ) : (
           Object.keys(citasPorFecha).map((fecha) => {
             const [year, month, day] = fecha.split("-");
@@ -204,60 +203,85 @@ function ClientSchedule() {
 
             return (
               <div key={fecha} className="appointment-section">
-                <h3>{formattedDate}</h3>
+                <div className="appointment-section-header">
+                  <h3 className="appointment-section-date">{formattedDate}</h3>
+                  <span className="appointment-section-count">
+                    {citasPorFecha[fecha].length} agendadas
+                  </span>
+                </div>
+
                 <Swiper
+                  className="appointments-swiper"
                   modules={[Pagination]}
-                  spaceBetween={12}
-                  slidesPerView={2}
-                  slidesPerGroup={2}
+                  spaceBetween={14}
+                  slidesPerView="auto"
+                  slidesPerGroup={1}
                   navigation
                   pagination={{ clickable: true, type: "bullets" }}
-                  breakpoints={{
-                    340: { slidesPerView: 2, slidesPerGroup: 2 },
-                    590: { slidesPerView: 3, slidesPerGroup: 3 },
-                    770: { slidesPerView: 4, slidesPerGroup: 4 },
-                    1214: { slidesPerView: 5, slidesPerGroup: 5 },
-                    1524: { slidesPerView: 6, slidesPerGroup: 6 },
-                  }}
                 >
                   {citasPorFecha[fecha].map((cita) => (
-                    <SwiperSlide key={cita.appointment_id}>
-                      <div className={`appointment-card ${cita.status.toLowerCase()}`}>
-                        <h4>{cita.service?.name}</h4>
-                        <p>
-                          Hora:{" "}
-                          {new Date(`1970-01-01T${cita.time}`).toLocaleTimeString("es-ES", {
-                            hour: "numeric",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </p>
-                        <p>Duración: {cita.duration}</p>
+                    <SwiperSlide key={cita.appointment_id} className="appointment-slide">
+                      <div
+                        className={`appointment-card appointment-card--agenda ${cita.status.toLowerCase()}`}
+                      >
+                        <span className="appointment-card-accent" aria-hidden="true" />
 
-                        {cita.status !== "Agendada" && (
-                          <span className={`appointment-tag ${cita.status.toLowerCase()}`}>
-                            {cita.status}
-                          </span>
-                        )}
-                        {cita.status === "Agendada" && (
-                          <span className="appointment-tag pendiente">Pendiente</span>
-                        )}
-                        {cita.status === "Agendada" && (
-                          <button className="appointment-btn" onClick={() => handleCancel(cita)}>
-                            Cancelar cita
-                          </button>
-                        )}
+                        <div className="appointment-card-body">
+                          <span className="appointment-card-caption">Tu próxima experiencia</span>
+                          <h4>{cita.service?.name}</h4>
+
+                          <div className="appointment-card-meta">
+                            <div className="appointment-card-meta-item">
+                              <span className="appointment-card-meta-label">Hora</span>
+                              <strong>
+                                {new Date(`1970-01-01T${cita.time}`).toLocaleTimeString("es-ES", {
+                                  hour: "numeric",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                })}
+                              </strong>
+                            </div>
+
+                            <div className="appointment-card-meta-item">
+                              <span className="appointment-card-meta-label">Duración</span>
+                              <strong>{formatAppointmentDuration(cita.duration)}</strong>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="appointment-card-footer">
+                          {cita.status !== "Agendada" && (
+                            <span className={`appointment-tag ${cita.status.toLowerCase()}`}>
+                              {cita.status}
+                            </span>
+                          )}
+                          {cita.status === "Agendada" && (
+                            <span className="appointment-tag pendiente">Pendiente</span>
+                          )}
+
+                          {cita.status === "Agendada" && (
+                            <button className="appointment-btn" onClick={() => handleCancel(cita)}>
+                              Cancelar cita
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </SwiperSlide>
                   ))}
                 </Swiper>
+
+                {citasPorFecha[fecha].length > 1 && (
+                  <p className="appointment-swipe-hint">
+                    <FaArrowLeft className="appointment-swipe-hint-icon" />
+                    <span>Desliza para ver mas</span>
+                  </p>
+                )}
               </div>
             );
           })
         )}
       </section>
 
-      {/* Modal de confirmación */}
       {showModal && selectedAppointment && (
         <div className="modal-overlay">
           <div className="modal-content medium">

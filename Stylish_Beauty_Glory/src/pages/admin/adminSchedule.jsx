@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE } from "../../services/config";
 import { toast } from "react-hot-toast";
-import { FaFilter } from "react-icons/fa";
-//CSS
+import { FaArrowLeft, FaCheck, FaFilter, FaTimes } from "react-icons/fa";
+
 import "../../styles/Carousel_CSS/appointmentsCarousel.css";
 import "../../styles/Ui-Toolbar_CSS/Ui-toolbar.css";
 import "../../styles/Modals_CSS/modalBase.css";
 
-//Servicios & Overlays
 import {
   getAdminSchedule,
   cancelAppointmentByAdmin,
@@ -16,9 +15,9 @@ import {
 } from "../../services/Serv_appointments";
 import { createSale } from "../../services/Serv_sales";
 import { notifyAppointmentCanceled } from "../../services/Serv_notifications";
+import { formatAppointmentDuration } from "../../utils/appointmentFormat";
 import LoaderOverlay from "../overlay/UniversalOverlay";
 
-//Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -26,7 +25,8 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 
 function AdminSchedule() {
-  //estado de overlay
+  const DEFAULT_CANCEL_REASON = "Su cita no puede ser atendida por algún inconveniente.";
+
   const [loading, setLoading] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState("");
@@ -36,23 +36,21 @@ function AdminSchedule() {
   const [showFinalizeModal, setShowFinalizeModal] = useState(false);
   const [finalizeAmount, setFinalizeAmount] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-  //Modal para agendar
   const [showModal, setShowModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
-  // Función para cancelar cita
   const handleCancelAppointment = async () => {
     if (!selectedAppointment) return;
 
+    const notificationReason = cancelReason.trim() || DEFAULT_CANCEL_REASON;
+
     try {
       setLoading(true);
-      // Cancelar en backend
       const res = await cancelAppointmentByAdmin(selectedAppointment.appointment_id);
 
       if (res && !res.error) {
         toast.success(res.message || "¡Cita cancelada con éxito!");
 
-        // 🔹 Actualizar estado en la interfaz
         setFilteredAppointments((prev) =>
           prev.map((cita) =>
             cita.appointment_id === selectedAppointment.appointment_id
@@ -61,7 +59,6 @@ function AdminSchedule() {
           )
         );
 
-        // Obtener admin_id desde el perfil del admin logueado
         const token = localStorage.getItem("access_token");
         if (token) {
           const resAdmin = await axios.get(`${API_BASE}/profile/admin`, {
@@ -70,15 +67,15 @@ function AdminSchedule() {
 
           const admin = resAdmin.data.admin;
           if (selectedAppointment.client?.client_id) {
-            // Notificar al cliente con todos los datos
-            const res = await notifyAppointmentCanceled({
+            const notifyRes = await notifyAppointmentCanceled({
               client_id: selectedAppointment.client.client_id,
               appointment_id: selectedAppointment.appointment_id,
               admin_id: admin.admin_id,
-              reason: cancelReason, // puedes personalizar el motivo
+              reason: notificationReason,
             });
-            if (res && !res.error) {
-              toast.success(res.message || "Notificación enviada al cliente.");
+
+            if (notifyRes && !notifyRes.error) {
+              toast.success(notifyRes.message || "Notificación enviada al cliente.");
             }
           }
         }
@@ -96,7 +93,6 @@ function AdminSchedule() {
     }
   };
 
-  // Finalizar cita y registrar venta
   const handleFinalizeAppointment = async (cita, amount) => {
     try {
       setLoading(true);
@@ -106,8 +102,6 @@ function AdminSchedule() {
 
       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
       const citaStr = citaDate.toISOString().split("T")[0];
-
-      console.log("HOY:", todayStr, "- CITA:", citaStr);
 
       if (citaStr > todayStr) {
         toast.error("No se pueden finalizar citas de fechas futuras.");
@@ -123,13 +117,11 @@ function AdminSchedule() {
         return;
       }
 
-      // 1. Finalizar cita en backend
       const res = await finalizeAppointment(cita.appointment_id);
 
       if (res && !res.error) {
         toast.success(res.message || "¡Cita finalizada con éxito!");
 
-        // 2. Crear venta asociada
         const newSaleData = {
           amount: numericAmount,
           date: new Date(cita.date).toISOString(),
@@ -148,7 +140,6 @@ function AdminSchedule() {
           toast.error(saleRes?.error || "No se pudo registrar la venta.");
         }
 
-        // 3. Actualizar estado en la interfaz
         setFilteredAppointments((prev) =>
           prev.map((item) =>
             item.appointment_id === cita.appointment_id
@@ -175,7 +166,6 @@ function AdminSchedule() {
     setShowModal(false);
   };
 
-  // Agrupar citas por fecha
   const citasPorFecha = filteredAppointments.reduce((acc, cita) => {
     const fecha = cita.date.split("T")[0];
     if (!acc[fecha]) {
@@ -221,14 +211,13 @@ function AdminSchedule() {
   }, [selectedDate, appointments]);
 
   return (
-    <div className="client-appointments">
+    <div className="client-appointments client-appointments--admin">
       {loading && <LoaderOverlay message="Cargando Agenda..." />}
-      {/* Barra superior de búsqueda */}
+
       <section className="search-section">
         <div className="ui-toolbar">
           <div className="ui-toolbar-title">Agenda</div>
           <div className="ui-toolbar-controls">
-            {/* Filtro desktop */}
             <div className="ui-toolbar-filter ui-toolbar-filter-desktop">
               <label>Fecha:</label>
               <input
@@ -238,7 +227,6 @@ function AdminSchedule() {
               />
             </div>
 
-            {/* Botón filtro - móvil/tablet */}
             <div className="ui-toolbar-filter-wrapper">
               <button
                 className="ui-toolbar-btn ui-toolbar-filter-btn"
@@ -269,10 +257,12 @@ function AdminSchedule() {
         </div>
       </section>
 
-      {/* Sección de citas */}
       <section className="appointments-section">
         {Object.keys(citasPorFecha).length === 0 ? (
-          <p className="no-appointments">Parece que no hay citas disponibles.</p>
+          <div className="no-appointments">
+            <strong>No hay citas en esta agenda por ahora.</strong>
+            <span>Cuando existan reservas para la fecha filtrada, aparecerán aquí.</span>
+          </div>
         ) : (
           Object.keys(citasPorFecha).map((fecha) => {
             const [year, month, day] = fecha.split("-");
@@ -285,76 +275,106 @@ function AdminSchedule() {
 
             return (
               <div key={fecha} className="appointment-section">
-                <h3>{formattedDate}</h3>
+                <div className="appointment-section-header">
+                  <h3 className="appointment-section-date">{formattedDate}</h3>
+                  <span className="appointment-section-count">
+                    {citasPorFecha[fecha].length} en agenda
+                  </span>
+                </div>
+
                 <Swiper
+                  className="appointments-swiper"
                   modules={[Pagination]}
-                  spaceBetween={12}
-                  slidesPerView={2}
-                  slidesPerGroup={2}
+                  spaceBetween={14}
+                  slidesPerView="auto"
+                  slidesPerGroup={1}
                   navigation
                   pagination={{ clickable: true, type: "bullets" }}
-                  breakpoints={{
-                    340: { slidesPerView: 1, slidesPerGroup: 1 },
-                    590: { slidesPerView: 3, slidesPerGroup: 3 },
-                    770: { slidesPerView: 4, slidesPerGroup: 4 },
-                    1214: { slidesPerView: 5, slidesPerGroup: 5 },
-                    1524: { slidesPerView: 6, slidesPerGroup: 6 },
-                  }}
                 >
                   {citasPorFecha[fecha].map((cita) => (
-                    <SwiperSlide key={cita.appointment_id}>
-                      <div className={`appointment-card ${cita.status.toLowerCase()}`}>
-                        <h4>{cita.service?.name}</h4>
-                        <p>
-                          Hora:{" "}
-                          {new Date(`1970-01-01T${cita.time}`).toLocaleTimeString("es-ES", {
-                            hour: "numeric",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </p>
-                        <p>Duración: {cita.duration}</p>
-                        <p>Cliente: {cita.client?.name || "No registrado"}</p>
+                    <SwiperSlide key={cita.appointment_id} className="appointment-slide">
+                      <div
+                        className={`appointment-card appointment-card--admin ${cita.status.toLowerCase()}`}
+                      >
+                        <span className="appointment-card-accent" aria-hidden="true" />
 
-                        {cita.status !== "Agendada" && (
-                          <span className={`appointment-tag ${cita.status.toLowerCase()}`}>
-                            {cita.status}
-                          </span>
-                        )}
+                        <div className="appointment-card-body">
+                          <span className="appointment-card-caption">Gestión de agenda</span>
+                          <h4>{cita.service?.name}</h4>
 
-                        {cita.status === "Agendada" && (
-                          <>
-                            <button
-                              className="appointment-btn"
-                              onClick={() => {
-                                setSelectedAppointment(cita);
-                                setShowModal(true);
-                              }}
-                            >
-                              Cancelar cita
-                            </button>
-                            <button
-                              className="appointment-btn"
-                              onClick={() => {
-                                setSelectedAppointment(cita);
-                                setShowFinalizeModal(true);
-                              }}
-                            >
-                              Finalizar cita
-                            </button>
-                          </>
-                        )}
+                          <div className="appointment-card-meta">
+                            <div className="appointment-card-meta-item">
+                              <span className="appointment-card-meta-label">Hora</span>
+                              <strong>
+                                {new Date(`1970-01-01T${cita.time}`).toLocaleTimeString("es-ES", {
+                                  hour: "numeric",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                })}
+                              </strong>
+                            </div>
+
+                            <div className="appointment-card-meta-item">
+                              <span className="appointment-card-meta-label">Duración</span>
+                              <strong>{formatAppointmentDuration(cita.duration)}</strong>
+                            </div>
+
+                            <div className="appointment-card-meta-item appointment-card-meta-item--full">
+                              <span className="appointment-card-meta-label">Cliente</span>
+                              <strong>{cita.client?.name || "No registrado"}</strong>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="appointment-card-footer">
+                          {cita.status !== "Agendada" && (
+                            <span className={`appointment-tag ${cita.status.toLowerCase()}`}>
+                              {cita.status}
+                            </span>
+                          )}
+
+                          {cita.status === "Agendada" && (
+                            <div className="appointment-card-actions">
+                              <button
+                                className="appointment-btn appointment-btn-cancel"
+                                onClick={() => {
+                                  setSelectedAppointment(cita);
+                                  setShowModal(true);
+                                }}
+                              >
+                                <FaTimes className="appointment-btn-icon" />
+                                Cancelar
+                              </button>
+                              <button
+                                className="appointment-btn appointment-btn-complete"
+                                onClick={() => {
+                                  setSelectedAppointment(cita);
+                                  setShowFinalizeModal(true);
+                                }}
+                              >
+                                <FaCheck className="appointment-btn-icon" />
+                                Finalizar
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </SwiperSlide>
                   ))}
                 </Swiper>
+
+                {citasPorFecha[fecha].length > 1 && (
+                  <p className="appointment-swipe-hint">
+                    <FaArrowLeft className="appointment-swipe-hint-icon" />
+                    <span>Desliza para ver mas</span>
+                  </p>
+                )}
               </div>
             );
           })
         )}
       </section>
 
-      {/* Modal de confirmación */}
       {showModal && selectedAppointment && (
         <div className="modal-overlay">
           <div className="modal-content medium">
@@ -369,11 +389,7 @@ function AdminSchedule() {
             />
 
             <div className="modal-actions">
-              <button
-                className="modal-btn confirm"
-                onClick={handleCancelAppointment}
-                disabled={!cancelReason.trim()}
-              >
+              <button className="modal-btn confirm" onClick={handleCancelAppointment}>
                 Confirmar
               </button>
               <button className="modal-btn cancel" onClick={handleCancelDeletion}>
@@ -383,7 +399,7 @@ function AdminSchedule() {
           </div>
         </div>
       )}
-      {/* Modal para finalizar cita */}
+
       {showFinalizeModal && selectedAppointment && (
         <div className="modal-overlay">
           <div className="modal-content small">

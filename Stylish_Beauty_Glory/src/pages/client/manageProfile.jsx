@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle, FaPencilAlt, FaKey, FaUserSlash, FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
@@ -9,6 +9,16 @@ import { updateUser, inactivateUser } from "../../services/Serv_users";
 import { updateClient } from "../../services/Serv_clients";
 import { getContactValue, formatIsoDate } from "../../utils/profile";
 import { getStoredUser, setStoredUser } from "../../utils/session";
+
+const normalizeGenderValue = (genderValue = "") => {
+  const normalizedValue = genderValue.trim().toLowerCase();
+
+  if (normalizedValue.startsWith("m")) return "Masculino";
+  if (normalizedValue.startsWith("f")) return "Femenino";
+  if (normalizedValue.startsWith("o")) return "Otro";
+
+  return genderValue;
+};
 
 function ManageProfile() {
   const navigate = useNavigate();
@@ -24,6 +34,7 @@ function ManageProfile() {
     confirmPassword: false,
   });
   const [isEditingPersonal, setIsEditingPersonal] = useState(false);
+  const [isEditingContacts, setIsEditingContacts] = useState(false);
   const [editedPrimaryName, setEditedPrimaryName] = useState("");
   const [editedSecondaryName, setEditedSecondaryName] = useState("");
   const [editedFirstSurname, setEditedFirstSurname] = useState("");
@@ -49,7 +60,7 @@ function ManageProfile() {
         setEditedFirstSurname(client.first_surname || "");
         setEditedSecondSurname(client.second_surname || "");
         setEditedBirthDate(formatIsoDate(client.birth_date));
-        setEditedGender(client.gender || "");
+        setEditedGender(normalizeGenderValue(client.gender || ""));
         setEditedPhone(getContactValue(client.contacts, "TELEFONO"));
         setEditedEmail(getContactValue(client.contacts, "EMAIL"));
       } catch (error) {
@@ -87,21 +98,28 @@ function ManageProfile() {
     setEditedFirstSurname(profile?.first_surname || "");
     setEditedSecondSurname(profile?.second_surname || "");
     setEditedBirthDate(formatIsoDate(profile?.birth_date));
-    setEditedGender(profile?.gender || "");
-    setEditedPhone(getContactValue(profile?.contacts, "TELEFONO"));
-    setEditedEmail(getContactValue(profile?.contacts, "EMAIL"));
+    setEditedGender(normalizeGenderValue(profile?.gender || ""));
     setIsEditingPersonal(false);
   };
 
-  const hasChanges =
+  const resetContactFields = () => {
+    setEditedPhone(getContactValue(profile?.contacts, "TELEFONO"));
+    setEditedEmail(getContactValue(profile?.contacts, "EMAIL"));
+    setIsEditingContacts(false);
+  };
+
+  const hasPersonalChanges =
     profile &&
     (editedPrimaryName !== (profile.primary_name || "") ||
       editedSecondaryName !== (profile.secondary_name || "") ||
       editedFirstSurname !== (profile.first_surname || "") ||
       editedSecondSurname !== (profile.second_surname || "") ||
       editedBirthDate !== formatIsoDate(profile.birth_date) ||
-      editedGender !== (profile.gender || "") ||
-      editedPhone !== getContactValue(profile.contacts, "TELEFONO") ||
+      editedGender !== normalizeGenderValue(profile.gender || ""));
+
+  const hasContactChanges =
+    profile &&
+    (editedPhone !== getContactValue(profile.contacts, "TELEFONO") ||
       editedEmail !== getContactValue(profile.contacts, "EMAIL"));
 
   const handleUpdateUser = async () => {
@@ -183,8 +201,6 @@ function ManageProfile() {
       second_surname: editedSecondSurname,
       gender: editedGender?.trim().charAt(0).toUpperCase(),
       birth_date: editedBirthDate,
-      phone: editedPhone,
-      email: editedEmail,
     };
 
     try {
@@ -197,16 +213,40 @@ function ManageProfile() {
       setProfile((previousValue) => ({
         ...previousValue,
         ...updatedData,
-        contacts: [
-          { contact_type: "TELEFONO", contact_value: editedPhone },
-          { contact_type: "EMAIL", contact_value: editedEmail },
-        ],
       }));
       setIsEditingPersonal(false);
       toast.success(result?.message || "Datos personales actualizados correctamente");
     } catch (error) {
       console.error("Error en handleSavePersonal:", error);
       toast.error("Error al actualizar datos personales");
+    }
+  };
+
+  const handleSaveContacts = async () => {
+    const updatedData = {
+      phone: editedPhone,
+      email: editedEmail,
+    };
+
+    try {
+      const result = await updateClient(profile.identity_card, updatedData);
+      if (result?.error) {
+        toast.error(result.error || "Error al actualizar datos de contacto");
+        return;
+      }
+
+      setProfile((previousValue) => ({
+        ...previousValue,
+        contacts: [
+          { contact_type: "TELEFONO", contact_value: editedPhone },
+          { contact_type: "EMAIL", contact_value: editedEmail },
+        ],
+      }));
+      setIsEditingContacts(false);
+      toast.success(result?.message || "Datos de contacto actualizados correctamente");
+    } catch (error) {
+      console.error("Error en handleSaveContacts:", error);
+      toast.error("Error al actualizar datos de contacto");
     }
   };
 
@@ -263,7 +303,7 @@ function ManageProfile() {
               <div className="edit-actions">
                 <button
                   className="profile-btn profile-btn-save"
-                  disabled={!hasChanges}
+                  disabled={!hasPersonalChanges}
                   onClick={handleSavePersonal}
                 >
                   Guardar
@@ -288,26 +328,38 @@ function ManageProfile() {
               <strong>Nombre completo</strong>
               {isEditingPersonal ? (
                 <div className="name-inputs">
-                  <input
-                    className="contact-input"
-                    value={editedPrimaryName}
-                    onChange={(event) => setEditedPrimaryName(event.target.value)}
-                  />
-                  <input
-                    className="contact-input"
-                    value={editedSecondaryName}
-                    onChange={(event) => setEditedSecondaryName(event.target.value)}
-                  />
-                  <input
-                    className="contact-input"
-                    value={editedFirstSurname}
-                    onChange={(event) => setEditedFirstSurname(event.target.value)}
-                  />
-                  <input
-                    className="contact-input"
-                    value={editedSecondSurname}
-                    onChange={(event) => setEditedSecondSurname(event.target.value)}
-                  />
+                  <label className="name-input-group">
+                    <span className="name-input-label">Primer nombre</span>
+                    <input
+                      className="contact-input"
+                      value={editedPrimaryName}
+                      onChange={(event) => setEditedPrimaryName(event.target.value)}
+                    />
+                  </label>
+                  <label className="name-input-group">
+                    <span className="name-input-label">Segundo nombre</span>
+                    <input
+                      className="contact-input"
+                      value={editedSecondaryName}
+                      onChange={(event) => setEditedSecondaryName(event.target.value)}
+                    />
+                  </label>
+                  <label className="name-input-group">
+                    <span className="name-input-label">Primer apellido</span>
+                    <input
+                      className="contact-input"
+                      value={editedFirstSurname}
+                      onChange={(event) => setEditedFirstSurname(event.target.value)}
+                    />
+                  </label>
+                  <label className="name-input-group">
+                    <span className="name-input-label">Segundo apellido</span>
+                    <input
+                      className="contact-input"
+                      value={editedSecondSurname}
+                      onChange={(event) => setEditedSecondSurname(event.target.value)}
+                    />
+                  </label>
                 </div>
               ) : (
                 <span>
@@ -331,7 +383,7 @@ function ManageProfile() {
                   <option value="Otro">Otro</option>
                 </select>
               ) : (
-                <span>{editedGender}</span>
+                <span>{normalizeGenderValue(editedGender)}</span>
               )}
             </div>
 
@@ -348,10 +400,41 @@ function ManageProfile() {
                 <span>{editedBirthDate}</span>
               )}
             </div>
+          </div>
+        </section>
 
+        <section className="profile-section contacts">
+          <div className="section-header">
+            <h3>Información de contacto</h3>
+
+            {isEditingContacts ? (
+              <div className="edit-actions">
+                <button
+                  className="profile-btn profile-btn-save"
+                  disabled={!hasContactChanges}
+                  onClick={handleSaveContacts}
+                >
+                  Guardar
+                </button>
+                <button className="profile-btn profile-btn-edit" onClick={resetContactFields}>
+                  Cancelar
+                </button>
+              </div>
+            ) : (
+              <button
+                className="profile-btn profile-btn-edit"
+                onClick={() => setIsEditingContacts(true)}
+              >
+                <FaPencilAlt className="btn-icon" />
+                Editar
+              </button>
+            )}
+          </div>
+
+          <div className="contact-info">
             <div className="contact-field">
               <strong>Teléfono</strong>
-              {isEditingPersonal ? (
+              {isEditingContacts ? (
                 <input
                   type="tel"
                   className="contact-input"
@@ -363,12 +446,12 @@ function ManageProfile() {
               )}
             </div>
 
-            <div className="contact-field">
+            <div className="contact-field contact-field-email">
               <strong>Email</strong>
-              {isEditingPersonal ? (
+              {isEditingContacts ? (
                 <input
                   type="email"
-                  className="contact-input"
+                  className="contact-input contact-input-email"
                   value={editedEmail}
                   onChange={(event) => setEditedEmail(event.target.value)}
                 />
@@ -378,104 +461,104 @@ function ManageProfile() {
             </div>
           </div>
         </section>
-      </div>
 
-      {showPasswordModal && (
-        <div className="modal-overlay">
-          <div className="modal-content small">
-            <h3>Editar usuario</h3>
+        {showPasswordModal && (
+          <div className="modal-overlay">
+            <div className="modal-content small">
+              <h3>Editar usuario</h3>
 
-            <p>Nombre de usuario:</p>
-            <input
-              type="text"
-              placeholder="Nuevo nombre"
-              value={newUsername}
-              onChange={(event) => setNewUsername(event.target.value)}
-              className="contact-input"
-            />
-
-            <p>Nueva contraseña:</p>
-            <div className="password-input-wrapper">
+              <p>Nombre de usuario:</p>
               <input
-                type={visiblePasswords.newPassword ? "text" : "password"}
-                placeholder="Nueva contraseña"
-                value={newPassword}
-                onChange={(event) => setNewPassword(event.target.value)}
+                type="text"
+                placeholder="Nuevo nombre"
+                value={newUsername}
+                onChange={(event) => setNewUsername(event.target.value)}
                 className="contact-input"
               />
-              <button
-                type="button"
-                className="password-toggle-btn"
-                onClick={() => togglePasswordVisibility("newPassword")}
-                aria-label={
-                  visiblePasswords.newPassword ? "Ocultar contraseña" : "Mostrar contraseña"
-                }
-              >
-                {visiblePasswords.newPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
 
-            <p>Confirmar contraseña:</p>
-            <div className="password-input-wrapper">
-              <input
-                type={visiblePasswords.confirmPassword ? "text" : "password"}
-                placeholder="Confirmar contraseña"
-                value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
-                className="contact-input"
-              />
-              <button
-                type="button"
-                className="password-toggle-btn"
-                onClick={() => togglePasswordVisibility("confirmPassword")}
-                aria-label={
-                  visiblePasswords.confirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"
-                }
-              >
-                {visiblePasswords.confirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-
-            <div className="modal-actions">
-              <button
-                className="modal-btn confirm"
-                onClick={() => {
-                  if (!newPassword || newPassword === confirmPassword) {
-                    handleUpdateUser();
-                  } else {
-                    toast.error("Las contraseñas no coinciden");
+              <p>Nueva contraseña:</p>
+              <div className="password-input-wrapper">
+                <input
+                  type={visiblePasswords.newPassword ? "text" : "password"}
+                  placeholder="Nueva contraseña"
+                  value={newPassword}
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  className="contact-input"
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={() => togglePasswordVisibility("newPassword")}
+                  aria-label={
+                    visiblePasswords.newPassword ? "Ocultar contraseña" : "Mostrar contraseña"
                   }
-                }}
-              >
-                Guardar
-              </button>
-              <button className="modal-btn cancel" onClick={resetUserFields}>
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                >
+                  {visiblePasswords.newPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
 
-      {showDeactivateModal && (
-        <div className="modal-overlay">
-          <div className="modal-content medium">
-            <h3>Estas seguro?</h3>
-            <p>
-              Esta acción desactivara tu cuenta permanentemente. Para reactivarla, deberás contactar
-              al administrador.
-            </p>
-            <div className="modal-actions">
-              <button className="modal-btn confirm" onClick={handleDeactivateAccount}>
-                Confirmar
-              </button>
-              <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>
-                Cancelar
-              </button>
+              <p>Confirmar contraseña:</p>
+              <div className="password-input-wrapper">
+                <input
+                  type={visiblePasswords.confirmPassword ? "text" : "password"}
+                  placeholder="Confirmar contraseña"
+                  value={confirmPassword}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
+                  className="contact-input"
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={() => togglePasswordVisibility("confirmPassword")}
+                  aria-label={
+                    visiblePasswords.confirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                  }
+                >
+                  {visiblePasswords.confirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              <div className="modal-actions">
+                <button
+                  className="modal-btn confirm"
+                  onClick={() => {
+                    if (!newPassword || newPassword === confirmPassword) {
+                      handleUpdateUser();
+                    } else {
+                      toast.error("Las contraseñas no coinciden");
+                    }
+                  }}
+                >
+                  Guardar
+                </button>
+                <button className="modal-btn cancel" onClick={resetUserFields}>
+                  Cancelar
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {showDeactivateModal && (
+          <div className="modal-overlay">
+            <div className="modal-content medium">
+              <h3>Estas seguro?</h3>
+              <p>
+                Esta acción desactivara tu cuenta permanentemente. Para reactivarla, deberÃ¡s
+                contactar al administrador.
+              </p>
+              <div className="modal-actions">
+                <button className="modal-btn confirm" onClick={handleDeactivateAccount}>
+                  Confirmar
+                </button>
+                <button className="modal-btn cancel" onClick={() => setShowDeactivateModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }
