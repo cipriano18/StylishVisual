@@ -20,7 +20,7 @@ import { fetchServices } from "../../services/Serv_services";
 import LoaderOverlay from "../overlay/UniversalOverlay";
 
 /* ===============================
-   🔹 Componente PortfolioCard
+    Componente PortfolioCard
    =============================== */
 function PortfolioCard({ portfolio, onEdit, onDelete }) {
   const serviceName = portfolio.service?.service_name || portfolio.service_name;
@@ -90,7 +90,7 @@ function ManagePortfolio() {
     image: null,
     service_name: "",
   });
-  //Modal elimiar
+  //Modal eliminar
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [portfolioToDelete, setPortfolioToDelete] = useState(null);
 
@@ -510,7 +510,7 @@ function ManagePortfolio() {
           </div>
         </div>
       )}
-      {/*Modal elimiar*/}
+      {/*Modal eliminar*/}
       {showDeleteModal && (
         <div className="modal-overlay">
           <div className="modal-content medium">

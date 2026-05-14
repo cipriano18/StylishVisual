@@ -160,13 +160,13 @@ function ClientHome() {
     "Descansa de esmalte al menos una semana al mes para que respiren.",
     "Usa guantes al limpiar o lavar platos para proteger manos y uñas.",
     "Hidrata tus manos con mascarillas caseras de miel o aloe vera.",
-    "No cortes las cutículas, solo empújalas suavemente.",
+    "No cortes las cutículas, solo empújelas suavemente.",
     "Prefiere removedores de esmalte sin acetona para evitar resequedad.",
   ]);
 
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
 
-  // Rotacion de consejos
+  // Rotación de consejos
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTipIndex((prev) => (prev + 1) % tips.length);

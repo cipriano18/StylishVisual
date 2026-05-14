@@ -245,7 +245,7 @@ function ManageAccounts() {
         {loading && <LoaderOverlay message="Cargando tus cuentas por pagar..." />}
         {/* ðŸ”¹ Toolbar */}
         <div className="ui-toolbar">
-          <h1 className="ui-toolbar-title">GestiÃ³n de Cuentas por Pagar</h1>
+          <h1 className="ui-toolbar-title">Gestión de Cuentas por Pagar</h1>
           <div className="ui-toolbar-controls">
             {/* BotÃ³n agregar - siempre visible */}
             <button className="ui-toolbar-btn" onClick={() => setShowAddModal(true)}>
@@ -340,11 +340,11 @@ function ManageAccounts() {
               <tbody>
                 {currentItems.map((factura) => (
                   <tr key={factura.invoice_id}>
-                    <td data-label="Nombre">{factura.name || "â€”"}</td>
+                    <td data-label="Nombre">{factura.name || "-"}</td>
                     <td data-label="Tipo">{factura.type}</td>
-                    <td data-label="Monto">â‚¡{parseFloat(factura.amount).toFixed(2)}</td>
+                    <td data-label="Monto">₡{parseFloat(factura.amount).toFixed(2)}</td>
                     <td data-label="Vencimiento">
-                      {factura.due_date ? factura.due_date.split("T")[0] : "â€”"}
+                      {factura.due_date ? factura.due_date.split("T")[0] : "-"}
                     </td>
                     <td data-label="Estado">
                       <span className={`status-label status-${factura.status.toLowerCase()}`}>
@@ -366,7 +366,7 @@ function ManageAccounts() {
                           const tipoNormalizado =
                             factura.type === "Contado"
                               ? "Co"
-                              : factura.type === "CrÃ©dito"
+                              : factura.type === "Crédito"
                                 ? "Cr"
                                 : factura.type;
                           const limpiarFecha = (f) => f?.split("T")[0] || "";
@@ -504,7 +504,7 @@ function ManageAccounts() {
                   onChange={(e) => setNuevaFactura({ ...nuevaFactura, type: e.target.value })}
                 >
                   <option value="Co">Contado</option>
-                  <option value="Cr">CrÃ©dito</option>
+                  <option value="Cr">Crédito</option>
                 </select>
               </div>
 
@@ -521,7 +521,7 @@ function ManageAccounts() {
             </div>
 
             <div>
-              <p>DescripciÃ³n</p>
+              <p>Descripción</p>
               <textarea
                 value={nuevaFactura.description}
                 onChange={(e) => setNuevaFactura({ ...nuevaFactura, description: e.target.value })}
@@ -562,7 +562,7 @@ function ManageAccounts() {
             >
               <div>
                 <strong>Nombre:</strong>
-                <p>{facturaSeleccionada.name || "â€”"}</p>
+                <p>{facturaSeleccionada.name || "-"}</p>
               </div>
               <div>
                 <strong>CÃ³digo:</strong>
@@ -574,17 +574,17 @@ function ManageAccounts() {
               </div>
               <div>
                 <strong>Monto:</strong>
-                <p>â‚¡{parseFloat(facturaSeleccionada.amount).toFixed(2)}</p>
+                <p>₡{parseFloat(facturaSeleccionada.amount).toFixed(2)}</p>
               </div>
               <div>
                 <strong>Fecha:</strong>
-                <p>{facturaSeleccionada.date?.split("T")[0] || "â€”"}</p>
+                <p>{facturaSeleccionada.date?.split("T")[0] || "-"}</p>
               </div>
 
               <div>
                 <strong>Vencimiento:</strong>
                 <p>
-                  {facturaSeleccionada.due_date ? facturaSeleccionada.due_date.split("T")[0] : "â€”"}
+                  {facturaSeleccionada.due_date ? facturaSeleccionada.due_date.split("T")[0] : "-"}
                 </p>
               </div>
               <div>
@@ -592,12 +592,12 @@ function ManageAccounts() {
                 <p>{facturaSeleccionada.status}</p>
               </div>
               <div>
-                <strong>DescripciÃ³n:</strong>
-                <p style={{ whiteSpace: "pre-wrap" }}>{facturaSeleccionada.description || "â€”"}</p>
+                <strong>Descripción:</strong>
+                <p style={{ whiteSpace: "pre-wrap" }}>{facturaSeleccionada.description || "-"}</p>
               </div>
             </div>
 
-            {/* ðŸ”¹ SecciÃ³n de proveedor */}
+            {/* Sección de proveedor */}
             <h3 style={{ marginBottom: "0.5rem", color: "#4a2e2e" }}>Proveedor</h3>
             <div
               style={{
@@ -613,11 +613,11 @@ function ManageAccounts() {
               </div>
               <div>
                 <strong>Nombre:</strong>
-                <p>{facturaSeleccionada.supplier?.name || "â€”"}</p>
+                <p>{facturaSeleccionada.supplier?.name || "-"}</p>
               </div>
               <div>
                 <strong>Estado:</strong>
-                <p>{facturaSeleccionada.supplier?.status || "â€”"}</p>
+                <p>{facturaSeleccionada.supplier?.status || "-"}</p>
               </div>
             </div>
 
@@ -662,8 +662,7 @@ function ManageAccounts() {
                   menuPortalTarget={document.body}
                   menuPosition="fixed"
                   value={
-                    supplierOptions.find((opt) => opt.value === facturaEditando.supplier_id) ||
-                    null
+                    supplierOptions.find((opt) => opt.value === facturaEditando.supplier_id) || null
                   }
                   onChange={(selected) =>
                     setFacturaEditando({
@@ -703,7 +702,7 @@ function ManageAccounts() {
                   onChange={(e) => setFacturaEditando({ ...facturaEditando, type: e.target.value })}
                 >
                   <option value="Co">Contado</option>
-                  <option value="Cr">CrÃ©dito</option>
+                  <option value="Cr">Crédito</option>
                 </select>
               </div>
 
@@ -738,7 +737,7 @@ function ManageAccounts() {
             </div>
 
             <div>
-              <p>DescripciÃ³n</p>
+              <p>Descripción</p>
               <textarea
                 value={facturaEditando.description}
                 onChange={(e) =>

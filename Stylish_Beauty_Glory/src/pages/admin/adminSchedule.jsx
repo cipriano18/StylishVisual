@@ -61,7 +61,7 @@ function AdminSchedule() {
           )
         );
 
-        // 🔹 Obtener admin_id desde el perfil del admin logueado
+        // Obtener admin_id desde el perfil del admin logueado
         const token = localStorage.getItem("access_token");
         if (token) {
           const resAdmin = await axios.get(`${API_BASE}/profile/admin`, {
@@ -70,7 +70,7 @@ function AdminSchedule() {
 
           const admin = resAdmin.data.admin;
           if (selectedAppointment.client?.client_id) {
-            // 🔹 Notificar al cliente con todos los datos
+            // Notificar al cliente con todos los datos
             const res = await notifyAppointmentCanceled({
               client_id: selectedAppointment.client.client_id,
               appointment_id: selectedAppointment.appointment_id,

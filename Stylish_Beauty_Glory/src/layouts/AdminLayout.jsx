@@ -32,7 +32,7 @@ function AdminAppointmentLinks({ openCitas, onToggle, onNavigate, isMobile = fal
     <li>
       <button className={`sidebar-toggle ${openCitas ? "active-link" : ""}`} onClick={onToggle}>
         <FaCalendarAlt className="sidebar-icon" />
-        <span className={isMobile ? undefined : "sidebar-text"}>GestiÃ³n de citas</span>
+        <span className={isMobile ? undefined : "sidebar-text"}>Gestión de citas</span>
         <span className="sidebar-arrow">{openCitas ? <FaChevronDown /> : <FaChevronRight />}</span>
       </button>
 
@@ -132,7 +132,7 @@ export default function AdminLayout() {
                   onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaUsers className="sidebar-icon" /> GestiÃ³n de Usuarios
+                  <FaUsers className="sidebar-icon" /> Gestión de Usuarios
                 </NavLink>
               </li>
               <li>
@@ -141,7 +141,7 @@ export default function AdminLayout() {
                   onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaUserTie className="sidebar-icon" /> GestiÃ³n de Administradores
+                  <FaUserTie className="sidebar-icon" /> Gestión de Administradores
                 </NavLink>
               </li>
               <li>
@@ -150,7 +150,7 @@ export default function AdminLayout() {
                   onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaSpa className="sidebar-icon" /> GestiÃ³n de Servicios
+                  <FaSpa className="sidebar-icon" /> Gestión de Servicios
                 </NavLink>
               </li>
               <li>
@@ -159,7 +159,7 @@ export default function AdminLayout() {
                   onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaImages className="sidebar-icon" /> GestiÃ³n de Portafolio
+                  <FaImages className="sidebar-icon" /> Gestión de Portafolio
                 </NavLink>
               </li>
               <li>
@@ -168,7 +168,7 @@ export default function AdminLayout() {
                   onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaTags className="sidebar-icon" /> GestiÃ³n de Ventas
+                  <FaTags className="sidebar-icon" /> Gestión de Ventas
                 </NavLink>
               </li>
               <li>
@@ -186,7 +186,7 @@ export default function AdminLayout() {
                   onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaTruck className="sidebar-icon" /> Gestion de Proveedores
+                  <FaTruck className="sidebar-icon" /> Gestión de Proveedores
                 </NavLink>
               </li>
               <li>
@@ -195,7 +195,7 @@ export default function AdminLayout() {
                   onClick={handleCloseMenu}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <FaChartBar className="sidebar-icon" /> Reportes & Graficos
+                  <FaChartBar className="sidebar-icon" /> Reportes & Gráficos
                 </NavLink>
               </li>
               <li>
@@ -209,7 +209,7 @@ export default function AdminLayout() {
               </li>
               <li>
                 <NavLink to="/" onClick={handleCloseMenu}>
-                  <FaSignOutAlt className="sidebar-icon" /> Cerrar sesion
+                  <FaSignOutAlt className="sidebar-icon" /> Cerrar sesión
                 </NavLink>
               </li>
             </ul>
@@ -237,7 +237,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaUsers className="sidebar-icon" />
-                Gestion de Usuarios
+                Gestión de Usuarios
               </NavLink>
             </li>
             <li>
@@ -246,7 +246,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaUserTie className="sidebar-icon" />
-                Gestion de Administradores
+                Gestión de Administradores
               </NavLink>
             </li>
             <li>
@@ -255,7 +255,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaSpa className="sidebar-icon" />
-                Gestion de Servicios
+                Gestión de Servicios
               </NavLink>
             </li>
             <li>
@@ -264,7 +264,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaImages className="sidebar-icon" />
-                Gestion de Portafolio
+                Gestión de Portafolio
               </NavLink>
             </li>
             <li>
@@ -273,7 +273,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaTags className="sidebar-icon" />
-                GestiÃ³n de Ventas
+                Gestión de Ventas
               </NavLink>
             </li>
             <li>
@@ -282,7 +282,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaMoneyBillWave className="sidebar-icon" />
-                GestiÃ³n de Cuentas por Pagar
+                Gestión de Cuentas por Pagar
               </NavLink>
             </li>
             <li>
@@ -291,7 +291,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaTruck className="sidebar-icon" />
-                GestiÃ³n de Proveedores
+                Gestión de Proveedores
               </NavLink>
             </li>
             <li>
@@ -300,7 +300,7 @@ export default function AdminLayout() {
                 className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 <FaChartBar className="sidebar-icon" />
-                Reportes & GrÃ¡ficos
+                Reportes & Gráficos
               </NavLink>
             </li>
             <li className="sidebar-profile-mobile">

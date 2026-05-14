@@ -226,7 +226,7 @@ function ManageProfile() {
             <div className="profile-info">
               <div className="profile-username">{profile.user.username}</div>
               <div className="profile-entry-date">
-                <strong>Cedula:</strong> {profile.identity_card}
+                <strong>Cédula:</strong> {profile.identity_card}
               </div>
 
               <div className={`profile-status ${profile.user.status.toLowerCase()}`}>
@@ -242,7 +242,7 @@ function ManageProfile() {
               onClick={() => setShowPasswordModal(true)}
             >
               <FaKey className="btn-icon" />
-              Cambiar contrasena
+              Cambiar contraseña
             </button>
 
             <button
@@ -257,7 +257,7 @@ function ManageProfile() {
 
         <section className="profile-section contacts">
           <div className="section-header">
-            <h3>Informacion personal</h3>
+            <h3>Información personal</h3>
 
             {isEditingPersonal ? (
               <div className="edit-actions">
@@ -350,7 +350,7 @@ function ManageProfile() {
             </div>
 
             <div className="contact-field">
-              <strong>Telefono</strong>
+              <strong>Teléfono</strong>
               {isEditingPersonal ? (
                 <input
                   type="tel"
@@ -394,11 +394,11 @@ function ManageProfile() {
               className="contact-input"
             />
 
-            <p>Nueva contrasena:</p>
+            <p>Nueva contraseña:</p>
             <div className="password-input-wrapper">
               <input
                 type={visiblePasswords.newPassword ? "text" : "password"}
-                placeholder="Nueva contrasena"
+                placeholder="Nueva contraseña"
                 value={newPassword}
                 onChange={(event) => setNewPassword(event.target.value)}
                 className="contact-input"
@@ -408,18 +408,18 @@ function ManageProfile() {
                 className="password-toggle-btn"
                 onClick={() => togglePasswordVisibility("newPassword")}
                 aria-label={
-                  visiblePasswords.newPassword ? "Ocultar contrasena" : "Mostrar contrasena"
+                  visiblePasswords.newPassword ? "Ocultar contraseña" : "Mostrar contraseña"
                 }
               >
                 {visiblePasswords.newPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
 
-            <p>Confirmar contrasena:</p>
+            <p>Confirmar contraseña:</p>
             <div className="password-input-wrapper">
               <input
                 type={visiblePasswords.confirmPassword ? "text" : "password"}
-                placeholder="Confirmar contrasena"
+                placeholder="Confirmar contraseña"
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 className="contact-input"
@@ -429,9 +429,7 @@ function ManageProfile() {
                 className="password-toggle-btn"
                 onClick={() => togglePasswordVisibility("confirmPassword")}
                 aria-label={
-                  visiblePasswords.confirmPassword
-                    ? "Ocultar contrasena"
-                    : "Mostrar contrasena"
+                  visiblePasswords.confirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"
                 }
               >
                 {visiblePasswords.confirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -445,7 +443,7 @@ function ManageProfile() {
                   if (!newPassword || newPassword === confirmPassword) {
                     handleUpdateUser();
                   } else {
-                    toast.error("Las contrasenas no coinciden");
+                    toast.error("Las contraseñas no coinciden");
                   }
                 }}
               >
@@ -464,7 +462,7 @@ function ManageProfile() {
           <div className="modal-content medium">
             <h3>Estas seguro?</h3>
             <p>
-              Esta accion desactivara tu cuenta permanentemente. Para reactivarla, deberas contactar
+              Esta acción desactivara tu cuenta permanentemente. Para reactivarla, deberás contactar
               al administrador.
             </p>
             <div className="modal-actions">

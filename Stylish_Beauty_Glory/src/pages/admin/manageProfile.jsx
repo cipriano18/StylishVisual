@@ -272,7 +272,7 @@ function ManageProfile() {
 
         <section className="profile-section contacts">
           <div className="section-header">
-            <h3>Informacion de contacto</h3>
+            <h3>Información de contacto</h3>
 
             {isEditingContacts ? (
               <div className="edit-actions">
@@ -300,7 +300,7 @@ function ManageProfile() {
 
           <div className="contact-info">
             <div className="contact-field">
-              <strong>Telefono</strong>
+              <strong>Teléfono</strong>
               {isEditingContacts ? (
                 <input
                   value={editedPhone}
@@ -410,11 +410,11 @@ function ManageProfile() {
               className="contact-input"
             />
 
-            <p>Nueva contrasena:</p>
+            <p>Nueva contraseña:</p>
             <div className="password-input-wrapper">
               <input
                 type={visiblePasswords.newPassword ? "text" : "password"}
-                placeholder="Nueva contrasena"
+                placeholder="Nueva contraseña"
                 value={newPassword}
                 onChange={(event) => setNewPassword(event.target.value)}
                 className="contact-input"
@@ -424,18 +424,18 @@ function ManageProfile() {
                 className="password-toggle-btn"
                 onClick={() => togglePasswordVisibility("newPassword")}
                 aria-label={
-                  visiblePasswords.newPassword ? "Ocultar contrasena" : "Mostrar contrasena"
+                  visiblePasswords.newPassword ? "Ocultar contraseña" : "Mostrar contraseña"
                 }
               >
                 {visiblePasswords.newPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
 
-            <p>Confirmar contrasena:</p>
+            <p>Confirmar contraseña:</p>
             <div className="password-input-wrapper">
               <input
                 type={visiblePasswords.confirmPassword ? "text" : "password"}
-                placeholder="Confirmar contrasena"
+                placeholder="Confirmar contraseña"
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 className="contact-input"
@@ -445,9 +445,7 @@ function ManageProfile() {
                 className="password-toggle-btn"
                 onClick={() => togglePasswordVisibility("confirmPassword")}
                 aria-label={
-                  visiblePasswords.confirmPassword
-                    ? "Ocultar contrasena"
-                    : "Mostrar contrasena"
+                  visiblePasswords.confirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"
                 }
               >
                 {visiblePasswords.confirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -461,7 +459,7 @@ function ManageProfile() {
                   if (!newPassword || newPassword === confirmPassword) {
                     handleUpdateUser();
                   } else {
-                    toast.error("Las contrasenas no coinciden");
+                    toast.error("Las contraseñas no coinciden");
                   }
                 }}
               >
@@ -480,7 +478,7 @@ function ManageProfile() {
           <div className="modal-content medium">
             <h3>Estas seguro?</h3>
             <p>
-              Esta accion desactivara tu cuenta permanentemente. Para reactivarla, deberas contactar
+              Esta acción desactivara tu cuenta permanentemente. Para reactivarla, deberás contactar
               al administrador.
             </p>
             <div className="modal-actions">

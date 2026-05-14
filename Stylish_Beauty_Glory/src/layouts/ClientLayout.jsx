@@ -99,7 +99,7 @@ export default function ClientLayout() {
                   </li>
                   <li>
                     <NavLink to="/login" onClick={handleCloseMenu}>
-                      <FaSignOutAlt className="sidebar-icon" /> Cerrar sesiÃ³n
+                      <FaSignOutAlt className="sidebar-icon" /> Cerrar sesión
                     </NavLink>
                   </li>
                 </ul>

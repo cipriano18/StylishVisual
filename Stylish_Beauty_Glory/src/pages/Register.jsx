@@ -67,7 +67,7 @@ function Register() {
     const { nombre, fechaNacimiento, genero, telefono, cedula, correo } = formData;
 
     if (cedula && !/^[A-Za-z0-9]{9,20}$/.test(cedula.trim())) {
-      toast.error("La cedula debe contener entre 9 y 20 caracteres.");
+      toast.error("La cédula debe contener entre 9 y 20 caracteres.");
       return false;
     }
 
@@ -77,7 +77,7 @@ function Register() {
     }
 
     if (telefono && !/^\d{8}$/.test(telefono.trim())) {
-      toast.error("El telefono debe contener exactamente 8 digitos.");
+      toast.error("El teléfono debe contener exactamente 8 dígitos.");
       return false;
     }
 
@@ -106,8 +106,8 @@ function Register() {
       primary_name: "Nombre",
       first_surname: "Primer apellido",
       second_surname: "Segundo apellido",
-      identity_card: "Cedula",
-      phone: "Telefono",
+      identity_card: "Cédula",
+      phone: "Teléfono",
       gender: "Genero",
     };
 
@@ -139,10 +139,10 @@ function Register() {
         return;
       }
 
-      toast.error(response?.error || "No se pudo enviar el codigo de verificacion.");
+      toast.error(response?.error || "No se pudo enviar el código de verificación.");
     } catch (error) {
-      console.error("Error al solicitar el codigo:", error);
-      toast.error("Error al solicitar el codigo de verificacion");
+      console.error("Error al solicitar el código:", error);
+      toast.error("Error al solicitar el código de verificación");
     }
   };
 
@@ -152,7 +152,7 @@ function Register() {
     const code = secondStepData.codigo.trim();
 
     if (!username || !password || !code) {
-      toast.error("Completa usuario, contrasena y codigo.");
+      toast.error("Completa usuario, contraseña y código.");
       return;
     }
 
@@ -161,13 +161,13 @@ function Register() {
       const email = initialData?.correo;
 
       if (!email) {
-        toast.error("No se encontro el correo del registro.");
+        toast.error("No se encontró el correo del registro.");
         return;
       }
 
       const verificationResponse = await verifyCode(email, code);
       if (!verificationResponse?.message?.includes("Correo verificado correctamente")) {
-        toast.error(verificationResponse?.error || "El codigo de verificacion no es valido.");
+        toast.error(verificationResponse?.error || "El código de verificación no es valido.");
         return;
       }
 
@@ -212,15 +212,15 @@ function Register() {
           return;
         }
       } catch (loginError) {
-        console.error("Error en login automatico:", loginError);
-        toast.error("No se pudo iniciar sesion automaticamente");
+        console.error("Error en login automático:", loginError);
+        toast.error("No se pudo iniciar sesión automáticamente");
       }
 
       localStorage.removeItem(REGISTER_STORAGE_KEY);
       navigate("/login");
     } catch (error) {
-      console.error("Error al verificar el codigo:", error);
-      toast.error("Error al verificar el codigo");
+      console.error("Error al verificar el código:", error);
+      toast.error("Error al verificar el código");
     }
   };
 
@@ -233,26 +233,26 @@ function Register() {
         return;
       }
 
-      toast.error(response?.error || "No se pudo reenviar el codigo");
+      toast.error(response?.error || "No se pudo reenviar el código");
     } catch (error) {
-      console.error("Error al reenviar el codigo:", error);
-      toast.error("Error al solicitar nuevamente el codigo");
+      console.error("Error al reenviar el código:", error);
+      toast.error("Error al solicitar nuevamente el código");
     }
   };
 
   return (
     <div className="register-section">
       <section className="registerr-left">
-        <h2>Estamos aqui para ayudarte!</h2>
+        <h2>Estamos aquí para ayudarte!</h2>
         <p>
           <strong>Descubre </strong>tu yo interior y hazlo relucir.
         </p>
         <p className="tell">
-          <strong>Contactanos: </strong>
+          <strong>Contáctanos: </strong>
           <br />
           +506 7133-8429
         </p>
-        <img src={IMG1} alt="Decoracion" className="handR-img" />
+        <img src={IMG1} alt="Decoración" className="handR-img" />
       </section>
 
       <section className="register-right">
@@ -295,45 +295,45 @@ function Register() {
 
             <div className="form-row">
               <label>
-                Telefono
+                Teléfono
                 <input
                   type="tel"
                   name="telefono"
                   value={formData.telefono}
                   onChange={handleChange}
-                  placeholder="Ingresa tu telefono"
+                  placeholder="Ingresa tu teléfono"
                 />
               </label>
 
               <label>
-                Cedula
+                Cédula
                 <input
                   type="text"
                   name="cedula"
                   value={formData.cedula}
                   onChange={handleChange}
-                  placeholder="Ingresa tu cedula"
+                  placeholder="Ingresa tu cédula"
                 />
               </label>
             </div>
 
             <label>
-              Correo electronico
+              Correo electrónico
               <input
                 type="email"
                 name="correo"
                 value={formData.correo}
                 onChange={handleChange}
-                placeholder="Ingresa tu correo electronico"
+                placeholder="Ingresa tu correo electrónico"
               />
             </label>
 
             <button type="button" onClick={handleFirstSubmit}>
-              Obtener codigo de verificacion
+              Obtener código de verificación
             </button>
 
             <p className="login-text">
-              Ya tienes un usuario? <a href="/login">Inicia sesion aqui!</a>
+              Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
             </p>
           </form>
         )}
@@ -360,34 +360,34 @@ function Register() {
               </label>
 
               <label>
-                Contrasena
+                Contraseña
                 <input
                   type="password"
                   name="contrasena"
                   value={secondStepData.contrasena}
                   onChange={handleSecondChange}
-                  placeholder="Ingresa tu contrasena"
+                  placeholder="Ingresa tu contraseña"
                 />
               </label>
             </div>
 
             <small className="legend-text">
-              No olvides estos datos; los necesitaras para iniciar sesion mas adelante.
+              No olvides estos datos; los necesitaras para iniciar sesión mas adelante.
             </small>
 
             <label>
-              Codigo de verificacion
+              Código de verificación
               <input
                 type="text"
                 name="codigo"
                 value={secondStepData.codigo}
                 onChange={handleSecondChange}
-                placeholder="Ingresa el codigo enviado"
+                placeholder="Ingresa el código enviado"
               />
             </label>
 
             <div className="resend-container">
-              <span>Aun no te llega el codigo?</span>
+              <span>Aun no te llega el código?</span>
               <button
                 type="button"
                 className="resend-btn"
@@ -407,7 +407,7 @@ function Register() {
             </button>
 
             <p className="login-text">
-              Ya tienes un usuario? <a href="/login">Inicia sesion aqui!</a>
+              Ya tienes un usuario? <a href="/login">Inicia sesión aquí!</a>
             </p>
           </form>
         )}

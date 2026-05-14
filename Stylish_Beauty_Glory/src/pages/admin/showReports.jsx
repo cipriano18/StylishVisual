@@ -101,7 +101,7 @@ function DashboardReports() {
         setSalesData(Array.isArray(res.chart_data) ? res.chart_data : []); // ← FIX
       } else {
         setSalesData([]); // ← FIX: limpiar si no hay datos
-        toast.error(res?.error || "Ocurrio un error al cargar los datos del grafico de ventas.");
+        toast.error(res?.error || "Ocurrió un error al cargar los datos del gráfico de ventas.");
       }
     });
 
@@ -112,7 +112,7 @@ function DashboardReports() {
         setTotals((prev) => ({ ...prev, services: res.total_services }));
       } else {
         setServicesData([]); // ← FIX: limpiar si no hay datos
-        toast.error(res?.error || "Ocurrio un error al cargar los servicios mas solicitados.");
+        toast.error(res?.error || "Ocurrió un error al cargar los servicios mas solicitados.");
       }
     });
 

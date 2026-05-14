@@ -64,10 +64,10 @@ function App() {
 
         <div className="header-buttons">
           <button className="login-btn" onClick={() => navigate("/login")}>
-            Iniciar sesion
+            Iniciar sesión
           </button>
           <button className="register-btn" onClick={() => navigate("/register")}>
-            Registrate
+            Regístrate
           </button>
         </div>
       </header>
@@ -76,12 +76,12 @@ function App() {
       <main className="main" id="home">
         <div className="main-content">
           <div className="text">
-            <h1>Bienvenida a nuestro rincon de inspiracion y cuidado</h1>
+            <h1>Bienvenida a nuestro rincón de inspiración y cuidado</h1>
             <p>
               En Stylish Beauty Glori creemos que cada mujer merece consentirse, brillar y sentirse
               segura de si misma. Somos un espacio creado con amor, pensado para realzar tu belleza
-              y cuidar de ti en cada detalle. Aqui no solo se trata de unas hermosas, se trata de
-              vivir una experiencia donde el carino, la dedicacion y la creatividad se reflejan en
+              y cuidar de ti en cada detalle. Aquí no solo se trata de unas hermosas, se trata de
+              vivir una experiencia donde el cariño, la dedicación y la creatividad se reflejan en
               cada servicio.
             </p>
           </div>
@@ -173,12 +173,12 @@ function App() {
 
                 <SwiperSlide>
                   <div className="portfolio-item cta-slide">
-                    <h2>Todavia no te convencemos</h2>
+                    <h2>Todavía no te convencemos</h2>
                     <p>
-                      Inicia sesion o registrate y dejate inspirar por nuestro portafolio completo.
+                      Inicia sesión o regístrate y déjate inspirar por nuestro portafolio completo.
                     </p>
                     <button className="cta-btn" onClick={() => navigate("/login")}>
-                      Llevame alli
+                      ¡Llévame allí!
                     </button>
                   </div>
                 </SwiperSlide>
@@ -273,24 +273,24 @@ function App() {
 
         <div className="about-container">
           <div className="about-image">
-            <img src={IMG2} alt="Duena del salon" />
+            <img src={IMG2} alt="Dueña del salon" />
           </div>
 
           <div className="about-text">
             <h2>Quienes somos</h2>
             <p>
               Stylish Beauty Glori es mucho mas que un salon de unas. Somos un emprendimiento
-              costarricense liderado por Gloriana Mendez, manicurista con mas de 10 anios de
+              costarricense liderado por Gloriana Mendez, manicurista con mas de 10 años de
               experiencia, apasionada por la belleza, el arte en las unas y el trato humano cercano.
             </p>
             <p>
-              Nacimos con el suenio de ofrecer un espacio donde cada persona pueda consentirse,
-              expresarse y sentirse unica. Despues de anios de trabajo en diferentes rincones de
-              salones, Stylish Beauty Glori abrio su propio local, convirtiendose en un lugar de
-              confianza, innovacion y estilo.
+              Nacimos con el sueño de ofrecer un espacio donde cada persona pueda consentirse,
+              expresarse y sentirse unica. Después de años de trabajo en diferentes rincones de
+              salones, Stylish Beauty Glori abrió su propio local, convirtiéndose en un lugar de
+              confianza, innovación y estilo.
             </p>
             <p>
-              Cada disenio, set de unas y servicio es realizado con amor, detalle y profesionalismo,
+              Cada diseño, set de unas y servicio es realizado con amor, detalle y profesionalismo,
               priorizando siempre la salud de tus unas y tu bienestar. Creemos en el poder del
               cuidado personal, en la belleza autentica y en la importancia de brindar una
               experiencia que marque la diferencia.
@@ -319,7 +319,7 @@ function App() {
         </svg>
       </section>
 
-      {/* Seccion Mision y Vision */}
+      {/* Sección Misión y Vision */}
       <section className="mission-vision" id="mission-vision">
         <svg
           className="wave-bottom"
@@ -348,11 +348,11 @@ function App() {
                 <div className="icon">
                   <i className="fas fa-bullseye"></i>
                 </div>
-                <h3>Mision</h3>
+                <h3>Misión</h3>
               </div>
               <p>
                 Brindamos servicios de belleza personalizados, innovadores y de alta calidad,
-                cuidando la salud y estetica de tus unas en un ambiente acogedor.
+                cuidando la salud y estética de tus unas en un ambiente acogedor.
               </p>
             </div>
 
@@ -364,7 +364,7 @@ function App() {
                 <h3>Vision</h3>
               </div>
               <p>
-                Ser reconocidos como lideres en el sector por nuestra innovacion, compromiso social
+                Ser reconocidos como lideres en el sector por nuestra innovación, compromiso social
                 y excelencia en cada servicio que ofrecemos.
               </p>
             </div>
@@ -388,8 +388,8 @@ function App() {
           </div>
 
           <div className="footer-info">
-            <p>Direccion: San Jose, Goicoechea, Purral, 25 Mts este del Super Purral #1.</p>
-            <p>Telefono: +506 7133 8429</p>
+            <p>Dirección: San José, Goicoechea, Purral, 25 metros al este del Super Purral #1.</p>
+            <p>Teléfono: +506 7133 8429</p>
           </div>
 
           <div className="footer-copy">

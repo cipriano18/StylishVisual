@@ -66,8 +66,8 @@ function Login() {
 
       toast.error("Rol no reconocido");
     } catch (error) {
-      console.error("Error de inicio de sesion:", error);
-      toast.error(error.message || "No se pudo iniciar sesion");
+      console.error("Error de inicio de sesión:", error);
+      toast.error(error.message || "No se pudo iniciar sesión");
     } finally {
       setIsLoading(false);
     }
@@ -88,10 +88,10 @@ function Login() {
         return;
       }
 
-      toast.error(response?.error || "No se pudo iniciar la recuperacion");
+      toast.error(response?.error || "No se pudo iniciar la recuperación");
     } catch (error) {
-      console.error("Error en recuperacion:", error);
-      toast.error("Error al iniciar la recuperacion");
+      console.error("Error en recuperación:", error);
+      toast.error("Error al iniciar la recuperación");
     } finally {
       setIsLoading(false);
     }
@@ -99,14 +99,14 @@ function Login() {
 
   const handleResetPassword = async () => {
     if (newPassword !== confirmPassword) {
-      toast.error("Las contrasenas no coinciden.");
+      toast.error("Las contraseñas no coinciden.");
       return;
     }
 
     try {
       const verifyResponse = await verifyRecoveryCode(mail, verificationCode);
       if (!verifyResponse?.message) {
-        toast.error(verifyResponse?.error || "No se pudo validar el codigo");
+        toast.error(verifyResponse?.error || "No se pudo validar el código");
         return;
       }
 
@@ -117,10 +117,10 @@ function Login() {
         return;
       }
 
-      toast.error(resetResponse?.error || "No se pudo restablecer la contrasena");
+      toast.error(resetResponse?.error || "No se pudo restablecer la contraseña");
     } catch (error) {
       console.error("Error en el flujo de reset:", error);
-      toast.error("Error en la comunicacion con el servidor.");
+      toast.error("Error en la comunicación con el servidor.");
     }
   };
 
@@ -133,7 +133,7 @@ function Login() {
         <p>
           Tu <strong>proxima</strong> experiencia de cuidado <strong>te espera</strong>.
         </p>
-        <img src={IMG2} alt="Decoracion" className="hand-img" />
+        <img src={IMG2} alt="Decoración" className="hand-img" />
       </section>
 
       <section className="register-right">
@@ -153,11 +153,11 @@ function Login() {
               </label>
 
               <label>
-                Contrasena
+                Contraseña
                 <div className="password-input-wrapper">
                   <input
                     type={visiblePasswords.login ? "text" : "password"}
-                    placeholder="Contrasena"
+                    placeholder="Contraseña"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
@@ -166,7 +166,7 @@ function Login() {
                     className="password-toggle-btn"
                     onClick={() => togglePasswordVisibility("login")}
                     aria-label={
-                      visiblePasswords.login ? "Ocultar contrasena" : "Mostrar contrasena"
+                      visiblePasswords.login ? "Ocultar contraseña" : "Mostrar contraseña"
                     }
                   >
                     {visiblePasswords.login ? <FaEyeSlash /> : <FaEye />}
@@ -175,7 +175,7 @@ function Login() {
               </label>
 
               <p className="forgot-password">
-                <span onClick={() => setStep(2)}>Olvidaste tu contrasena?</span>
+                <span onClick={() => setStep(2)}>Olvidaste tu contraseña?</span>
               </p>
             </div>
 
@@ -184,7 +184,7 @@ function Login() {
             </button>
 
             <p className="login-text">
-              No tienes un usuario? <a href="/register">Registrate aqui!</a>
+              No tienes un usuario? <a href="/register">Regístrate aquí!</a>
             </p>
           </form>
         )}
@@ -192,17 +192,17 @@ function Login() {
         {step === 2 && (
           <form className="registerr-form" onSubmit={(event) => event.preventDefault()}>
             <img src={resetIcon} alt="Icon" className="icon-img" />
-            <h2>Restablecer contrasena</h2>
+            <h2>Restablecer contraseña</h2>
             <p className="login-text">
-              Ingresa tu nombre de usuario o tu correo electronico para identificar tu cuenta.
+              Ingresa tu nombre de usuario o tu correo electrónico para identificar tu cuenta.
             </p>
 
             <div className="formleft-row">
               <label>
-                Usuario o correo electronico
+                Usuario o correo electrónico
                 <input
                   type="text"
-                  placeholder="Usuario o correo electronico"
+                  placeholder="Usuario o correo electrónico"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                 />
@@ -222,19 +222,19 @@ function Login() {
         {step === 3 && (
           <form className="registerr-form" onSubmit={(event) => event.preventDefault()}>
             <img src={resetIcon} alt="Icon" className="icon-img" />
-            <h2>Restablecer contrasena</h2>
+            <h2>Restablecer contraseña</h2>
             <p className="login-text">
-              Ingresa tu nueva contrasena, confirmala y escribe el codigo que recibiste en "{mail}
+              Ingresa tu nueva contraseña, confírmala y escribe el código que recibiste en "{mail}
               ".
             </p>
 
             <div className="formleft-row">
               <label>
-                Nueva contrasena
+                Nueva contraseña
                 <div className="password-input-wrapper">
                   <input
                     type={visiblePasswords.reset ? "text" : "password"}
-                    placeholder="Nueva contrasena"
+                    placeholder="Nueva contraseña"
                     value={newPassword}
                     onChange={(event) => setNewPassword(event.target.value)}
                   />
@@ -243,7 +243,7 @@ function Login() {
                     className="password-toggle-btn"
                     onClick={() => togglePasswordVisibility("reset")}
                     aria-label={
-                      visiblePasswords.reset ? "Ocultar contrasena" : "Mostrar contrasena"
+                      visiblePasswords.reset ? "Ocultar contraseña" : "Mostrar contraseña"
                     }
                   >
                     {visiblePasswords.reset ? <FaEyeSlash /> : <FaEye />}
@@ -252,11 +252,11 @@ function Login() {
               </label>
 
               <label>
-                Confirmar contrasena
+                Confirmar contraseña
                 <div className="password-input-wrapper">
                   <input
                     type={visiblePasswords.confirm ? "text" : "password"}
-                    placeholder="Confirmar contrasena"
+                    placeholder="Confirmar contraseña"
                     value={confirmPassword}
                     onChange={(event) => setConfirmPassword(event.target.value)}
                   />
@@ -265,7 +265,7 @@ function Login() {
                     className="password-toggle-btn"
                     onClick={() => togglePasswordVisibility("confirm")}
                     aria-label={
-                      visiblePasswords.confirm ? "Ocultar contrasena" : "Mostrar contrasena"
+                      visiblePasswords.confirm ? "Ocultar contraseña" : "Mostrar contraseña"
                     }
                   >
                     {visiblePasswords.confirm ? <FaEyeSlash /> : <FaEye />}
@@ -274,10 +274,10 @@ function Login() {
               </label>
 
               <label>
-                Codigo de verificacion
+                Código de verificación
                 <input
                   type="text"
-                  placeholder="Codigo"
+                  placeholder="Código"
                   value={verificationCode}
                   onChange={(event) => setVerificationCode(event.target.value)}
                 />

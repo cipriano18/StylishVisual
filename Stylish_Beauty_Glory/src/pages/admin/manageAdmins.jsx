@@ -722,7 +722,7 @@ function ManageAdmins() {
                       type="button"
                       className="password-toggle-btn"
                       onClick={() => setShowCreatePassword((previousValue) => !previousValue)}
-                      aria-label={showCreatePassword ? "Ocultar contrasena" : "Mostrar contrasena"}
+                      aria-label={showCreatePassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     >
                       {showCreatePassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
